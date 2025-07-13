@@ -1,18 +1,19 @@
 import { createMemoryHistory, createRouter } from "vue-router"
-import About from "@/views/About.vue"
-import Login from "@/views/Login.vue"
+
+import Home from "@/views/Home.vue"
+import Login from "@/components/Login.vue"
 import DosenHome from "@/views/dosen/Home.vue"
 import MhsHome from "@/views/mhs/Home.vue"
-import PilihPbb from "@/views/mhs/PilihPbb.vue"
+import Sempro from "@/views/mhs/Sempro.vue"
 
 const router = createRouter({
   history: createMemoryHistory(),
   routes: [
-    { path: '/', component: Login },
-    { path: '/about', component: About },
+    { path: '/', component: Home },
+    { path: '/login', component: Login },
     { path: '/dosen', component: DosenHome },
     { path: '/mhs', component: MhsHome },
-    { path: '/mhs/pilih-pbb', component: PilihPbb },
+    { path: '/mhs//sempro', component: Sempro },
   ],
 })
 

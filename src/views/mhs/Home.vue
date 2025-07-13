@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { baseUrl } from '@/baseUrl';
 
 import Header from '../../components/layout/mhs/Header.vue';
@@ -10,7 +10,7 @@ const userData = ref()
 
 onMounted(async () => {
   try {
-    const response = await fetch(baseUrl + '/mhs/data')
+    const response = await fetch(baseUrl + '/mhs/')
     userData.value = await response.json()
   } catch (error) {
     console.log(error)
@@ -22,7 +22,8 @@ onMounted(async () => {
   <Header />
 
   <div v-if="userData">
-    <p>Selamat datang {{ userData.nama }} [{{ userData.nim }}]</p>
+    <p>Halaman Mahasiswa</p>
+    <p>{{ userData }}</p>
   </div>
 </template>
 

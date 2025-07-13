@@ -1,18 +1,35 @@
 <script setup>
-import { RouterLink } from 'vue-router';
-import Button from '../../ui/button/Button.vue';
+import { RouterLink, useRouter } from 'vue-router';
+import Button from '@/components/ui/button/Button.vue';
+import { baseUrl } from '@/baseUrl';
+
+const router = useRouter()
+
+async function logout() {
+  try {
+    await fetch(`${baseUrl}/logout`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+    })
+
+    router.push(`/`)
+  } catch (error) {
+    console.error(error)
+  }
+}
 </script>
 
 <template>
   <div class="body border">
-    <RouterLink to="/mhs">
+    <RouterLink to="/">
       <Button variant="link">Home</Button>
     </RouterLink>
-    <RouterLink to="/mhs/pilih-pbb">
-      <Button variant="link">Pilih Pembimbing</Button>
+    <RouterLink to="/mhs/sempro">
+      <Button variant="link">Seminar Proposal</Button>
     </RouterLink>
     <RouterLink to="/">
-      <Button variant="destructive">Logout</Button>
+      <Button variant="destructive" @click="logout">Logout</Button>
     </RouterLink>
   </div>
 </template>

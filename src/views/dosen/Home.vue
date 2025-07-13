@@ -5,8 +5,6 @@ import { useRouter, RouterLink } from 'vue-router';
 import Header from '../../components/layout/dosen/Header.vue';
 import Button from '@/components/ui/button/Button.vue';
 
-const router = useRouter()
-
 const counter = ref(0)
 
 function increment() {
