@@ -7,6 +7,7 @@ import Header from '../../components/layout/mhs/Header.vue';
 import { Button } from '@/components/ui/button';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectLabel, SelectItem } from '@/components/ui/select';
 
+const username = localStorage.getItem('username')
 const kbkList = ref(['nirkabel', 'jaringan', 'aplikasi'])
 const dosenList = ref([])
 const dosenListPendamping = ref([])
@@ -56,6 +57,7 @@ function removeDosen(index) {
 }
 
 onMounted(async () => {
+  console.log(`sempro`)
   try {
     const response = await fetch(`${baseUrl}/dosen/list`)
     dosenList.value = await response.json()
@@ -69,16 +71,16 @@ onMounted(async () => {
   <Header />
 
   <div class="flex flex-wrap">
-    <div class="mr-4 py-1 w-[20vh]">Judul Proposal</div>
+    <div class="w-[20vh]">Judul Proposal</div>
     <div>
-      <textarea type="text" placeholder="judul" class="resize max-h-[30vh] w-[300px] max-w-[70vh] px-2 py-1 border"
+      <textarea type="text" placeholder="judul" class="resize max-h-[30vh] min-w-[300px] max-w-[300px] px-2 py-1 border"
         v-model="ajuanMhs.judulSeminar" />
       <div class="text-xs italic">* Pastikan ejaan judul sudah benar</div>
     </div>
   </div>
 
   <div class="flex flex-wrap">
-    <div class="mr-4 content-center w-[20vh]">KBK</div>
+    <div class="content-center w-[20vh]">KBK</div>
     <Select v-model="ajuanMhs.kbk">
       <SelectTrigger class="w-[300px]">
         <SelectValue placeholder="Pilih KBK" />
@@ -93,7 +95,7 @@ onMounted(async () => {
     </Select>
   </div>
 
-  <div class="text-center">
+  <div class="text-center border rounded-md">
     <div class="">
       Pembimbing Utama
       <div v-if="ajuanMhs.pbb.dosen1">
@@ -112,11 +114,10 @@ onMounted(async () => {
           </div>
         </div>
       </div>
-
     </div>
   </div>
 
-  <div v-if="ajuanMhs.pbb.dosen1" class="text-center">
+  <div v-if="ajuanMhs.pbb.dosen1" class="text-center border rounded-md">
     <div class="">
       Pembimbing Pendamping
       <div v-if="ajuanMhs.pbb.dosen2">

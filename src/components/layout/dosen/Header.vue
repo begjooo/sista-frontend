@@ -13,6 +13,7 @@ async function logout() {
       credentials: 'include',
     })
 
+    localStorage.clear()
     router.push(`/`)
   } catch (error) {
     console.error(error)
@@ -22,7 +23,7 @@ async function logout() {
 
 <template>
   <div class="body border">
-    <RouterLink to="/">
+    <RouterLink to="/dosen">
       <Button variant="link">Home</Button>
     </RouterLink>
     <Button variant="destructive" @click="logout">Logout</Button>

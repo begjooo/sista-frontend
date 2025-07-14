@@ -6,11 +6,13 @@ import { baseUrl } from '@/baseUrl';
 import Header from '../../components/layout/mhs/Header.vue';
 import Button from '@/components/ui/button/Button.vue';
 
+const username = localStorage.getItem('username')
 const userData = ref()
 
 onMounted(async () => {
+  console.log(`/mhs onMounted()`)
   try {
-    const response = await fetch(baseUrl + '/mhs/')
+    const response = await fetch(`${baseUrl}/mhs/data/${username}`)
     userData.value = await response.json()
   } catch (error) {
     console.log(error)
@@ -22,8 +24,7 @@ onMounted(async () => {
   <Header />
 
   <div v-if="userData">
-    <p>Halaman Mahasiswa</p>
-    <p>{{ userData }}</p>
+    Selamat datang {{ userData.name }}
   </div>
 </template>
 

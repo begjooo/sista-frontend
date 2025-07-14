@@ -11,7 +11,7 @@ const router = createRouter({
     { path: '/', component: Login },
     { path: '/dosen', component: DosenHome },
     { path: '/mhs', component: MhsHome },
-    { path: '/mhs//sempro', component: Sempro },
+    { path: '/mhs/sempro', component: Sempro },
   ],
 })
 

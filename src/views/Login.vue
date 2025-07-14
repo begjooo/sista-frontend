@@ -21,23 +21,29 @@ const username = ref('')
 const password = ref('')
 const loginStatus = ref()
 
-function routeToHome(status) {
-  switch (status) {
+function routeToHome(data) {
+  // console.log(`routeToHome()`)
+  // console.log(data)
+  console.log(`login success! save username to local storage`)
+  console.log(data)
+  localStorage.setItem('username', data.username)
+  switch (data.access) {
     case 'admin':
-      console.log(`loncat ke admin`)
+      console.log(`go to /admin`)
       break
     case 'dosen/tendik':
-      console.log(`loncat ke dosen`)
+      console.log(`go to /dosen`)
       router.push('/dosen')
       break
     default:
-      console.log(`loncat ke mhs`)
-      router.push(`/mhs`)
+      console.log(`go to /mhs`)
+      router.push('/mhs')
       break
   }
 }
 
 async function login(user, pass) {
+  // console.log(`login()`)
   if (user && pass) {
     try {
       const response = await fetch(`${baseUrl}/login`, {
@@ -48,22 +54,26 @@ async function login(user, pass) {
       })
 
       loginStatus.value = await response.json()
-      console.log(loginStatus.value)
+      // console.log('loginStatus.value', loginStatus.value)
 
       if (loginStatus.value) {
-        routeToHome(loginStatus.value.access)
+        // console.log(`login success`)
+        routeToHome(loginStatus.value)
       } else {
-        console.log(`gagal login!`)
+        // console.log(`login failed!`)
         username.value = ''
         password.value = ''
       }
     } catch (error) {
       console.error(error)
     }
+  } else {
+    // console.log(`user or pass is empty`)
   }
 }
 
 onMounted(async () => {
+  // console.log(`/ onMounted()`)
   try {
     const response = await fetch(`${baseUrl}/user`, {
       method: 'POST',
@@ -72,10 +82,13 @@ onMounted(async () => {
     })
 
     loginStatus.value = await response.json()
+    // console.log('loginStatus.value', loginStatus.value)
+
     if (loginStatus.value) {
-      routeToHome(loginStatus.value.access)
+      // console.log(`user has been stored`)
+      routeToHome(loginStatus.value)
     } else {
-      console.log(`cookies kadaluarsa!`)
+      // console.log(`no cookies! please login`)
     }
   } catch (error) {
     console.log(error)
@@ -115,7 +128,6 @@ onMounted(async () => {
         </CardContent>
 
         <CardFooter class="flex flex-wrap justify-between">
-          <!-- <Button class="cursor-pointer w-[100px]" @click.prevent="login(username, password)">Login</Button> -->
           <Button class="cursor-pointer w-[100px]" @click="login(username, password)">Login</Button>
           <Button class="cursor-pointer w-[100px]" variant="link">Sign-Up</Button>
         </CardFooter>
