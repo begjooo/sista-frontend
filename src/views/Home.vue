@@ -1,6 +1,7 @@
 <script setup>
 import { baseUrl } from '@/baseUrl';
-import Login from '@/components/Login.vue';
+import Login from '@/views/Login.vue';
+import Button from '@/components/ui/button/Button.vue';
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -21,12 +22,12 @@ onMounted(async () => {
         console.log(`loncat ke admin`)
         break
       case 'dosen/tendik':
-        router.push('/dosen')
         console.log(`loncat ke dosen`)
+        router.push('/dosen')
         break
       default:
-        router.push(`/mhs`)
         console.log(`loncat ke mhs`)
+        router.push(`/mhs`)
         break
     }
   }
@@ -37,6 +38,13 @@ onMounted(async () => {
   <div v-if="userData === 0">
     <Login />
   </div>
+  <!-- <div v-else>
+    berhasil login, selamat datang {{ userData }}
+  </div> -->
+  <!-- berhasil login, selamat datang {{ userData }}
+  <div v-if="userData === 0">
+    <RouterLink to="/login"><Button>Login</Button></RouterLink>
+  </div> -->
 </template>
 
 <style scoped></style>
