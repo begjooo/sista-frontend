@@ -14,7 +14,8 @@ const dosenListPendamping = ref([])
 const statusDone = ref(true)
 
 const ajuanMhs = ref({
-  judulSeminar: '',
+  username: '',
+  judulSempro: '',
   kbk: '',
   pbb: {},
 })
@@ -31,9 +32,12 @@ function pilihDosen2(data) {
 }
 
 async function submitDosenPbb() {
-  if (ajuanMhs.value.judulSeminar && ajuanMhs.value.kbk &&
+  if (ajuanMhs.value.judulSempro && ajuanMhs.value.kbk &&
     ajuanMhs.value.pbb.dosen1) {
     statusDone.value = false
+    ajuanMhs.value.username = username
+
+    console.log(ajuanMhs.value)
 
     try {
       const response = await fetch(`${baseUrl}/mhs/sempro`, {
@@ -73,8 +77,8 @@ onMounted(async () => {
   <div class="flex flex-wrap">
     <div class="w-[20vh]">Judul Proposal</div>
     <div>
-      <textarea type="text" placeholder="judul" class="resize max-h-[30vh] min-w-[300px] max-w-[300px] px-2 py-1 border"
-        v-model="ajuanMhs.judulSeminar" />
+      <textarea type="text" placeholder="judul" class="resize max-h-[30vh] min-w-[300px] max-w-[300px] px-2 py-1 border rounded-md"
+        v-model="ajuanMhs.judulSempro" />
       <div class="text-xs italic">* Pastikan ejaan judul sudah benar</div>
     </div>
   </div>
