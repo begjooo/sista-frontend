@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, defineProps } from 'vue';
 import { useRouter } from 'vue-router';
 import { baseUrl } from '@/baseUrl';
 
@@ -8,16 +8,19 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectLabel, SelectItem } from '@/components/ui/select';
 
 const username = localStorage.getItem('username')
-const kbkList = ref(['nirkabel', 'jaringan', 'aplikasi'])
 const dosenList = ref([])
 const dosenListPendamping = ref([])
 const statusDone = ref(true)
 
+const props = defineProps(['kbk'])
+
 const ajuanMhs = ref({
   username: '',
-  judulSempro: '',
   kbk: '',
   pbb: {},
+  judul: '',
+  deskripsi: '',
+  status: status,
 })
 
 function pilihDosen1(data) {
@@ -32,7 +35,7 @@ function pilihDosen2(data) {
 }
 
 async function submitDosenPbb() {
-  if (ajuanMhs.value.judulSempro && ajuanMhs.value.kbk &&
+  if (ajuanMhs.value.judul && ajuanMhs.value.kbk &&
     ajuanMhs.value.pbb.dosen1) {
     statusDone.value = false
     ajuanMhs.value.username = username
@@ -72,18 +75,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <Header />
-
-  <div class="flex flex-wrap">
-    <div class="w-[20vh]">Judul Proposal</div>
-    <div>
-      <textarea type="text" placeholder="judul" class="resize max-h-[30vh] min-w-[300px] max-w-[300px] px-2 py-1 border rounded-md"
-        v-model="ajuanMhs.judulSempro" />
-      <div class="text-xs italic">* Pastikan ejaan judul sudah benar</div>
-    </div>
-  </div>
-
-  <div class="flex flex-wrap">
+  <!-- <div class="flex flex-wrap">
     <div class="content-center w-[20vh]">KBK</div>
     <Select v-model="ajuanMhs.kbk">
       <SelectTrigger class="w-[300px]">
@@ -97,8 +89,9 @@ onMounted(async () => {
         <SelectItem :value="kbkList[2]">Aplikasi</SelectItem>
       </SelectContent>
     </Select>
-  </div>
+  </div> -->
 
+  KBK dari parent{{ props.kbk }}
   <div class="text-center border rounded-md">
     <div class="">
       Pembimbing Utama
@@ -147,7 +140,7 @@ onMounted(async () => {
   <div class="border">
     <div class="flex flex-wrap">
       <div class="w-[30vh]">
-        Pembimbing Utama
+        Calon Pembimbing Utama
       </div>
       <div v-if="ajuanMhs.pbb.dosen1">
         <div>
@@ -158,11 +151,30 @@ onMounted(async () => {
 
     <div v-if="ajuanMhs.pbb.dosen2" class="flex flex-wrap">
       <div class="w-[30vh]">
-        Pembimbing Pendamping
+        Calon Pembimbing Pendamping
       </div>
       <div>
         {{ ajuanMhs.pbb.dosen2.name }}
         <Button variant="destructive" class="mx-2" @click="removeDosen('dosen2')">Delete</Button>
+      </div>
+    </div>
+
+    <div class="flex flex-wrap text-sm">
+      <div class="w-[25vh]">Judul Tugas Akhir</div>
+      <div>
+        <textarea type="text" placeholder="Judul"
+          class="resize max-h-[30vh] min-w-[300px] max-w-[300px] px-2 py-1 border rounded-md"
+          v-model="ajuanMhs.judul" />
+        <div class="text-xs italic">* Pastikan ejaan judul sudah benar</div>
+      </div>
+    </div>
+    
+    <div class="flex flex-wrap text-sm">
+      <div class="w-[25vh]">Deskripsi</div>
+      <div>
+        <textarea type="text" placeholder="Segala hal tentang ide anda seperti Latar Belakang, Tujuan, Manfaat, Metodologi, dan lain-lain."
+          class="resize max-h-[60vh] min-w-[300px] max-w-[300px] px-2 py-1 border rounded-md"
+          v-model="ajuanMhs.deskripsi" />
       </div>
     </div>
 
