@@ -27,13 +27,17 @@ function routeToHome(data) {
   console.log(`login success! save username to local storage`)
   console.log(data)
   localStorage.setItem('username', data.username)
-  switch (data.access) {
+  switch (data.job) {
     case 'admin':
       console.log(`go to /admin`)
       break
-    case 'dosen/tendik':
+    case 'dosen':
       console.log(`go to /dosen`)
       router.push('/dosen')
+      break
+    case 'tendik':
+      console.log(`go to /tendik`)
+      // router.push('/dosen')
       break
     default:
       console.log(`go to /mhs`)
@@ -54,7 +58,7 @@ async function login(user, pass) {
       })
 
       loginStatus.value = await response.json()
-      // console.log('loginStatus.value', loginStatus.value)
+      console.log('loginStatus.value', loginStatus.value)
 
       if (loginStatus.value) {
         // console.log(`login success`)

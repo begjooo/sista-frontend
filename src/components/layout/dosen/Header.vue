@@ -26,6 +26,12 @@ async function logout() {
     <RouterLink to="/dosen">
       <Button variant="link">Home</Button>
     </RouterLink>
+    <RouterLink to="/dosen/permintaan-pembimbing">
+      <Button variant="link">Permintaan Pembimbing</Button>
+    </RouterLink>
+    <RouterLink to="/dosen/bimbingan">
+      <Button variant="link">Bimbingan</Button>
+    </RouterLink>
     <Button variant="destructive" @click="logout">Logout</Button>
   </div>
 </template>
