@@ -11,7 +11,7 @@ import AjuanDosen from '@/components/mhs/tugas_akhir/AjuanDosen.vue';
 const username = localStorage.getItem('username')
 const mhsData = ref()
 const pengajuanStatus = ref()
-const kbkList = ['nirkabel', 'jaringan', 'aplikasi']
+const kbkList = ['Nirkabel', 'Infrastruktur Jaringan', 'Layanan dan Aplikasi']
 const kbkPilihan = ref('')
 
 const jenisAjuan = ref()
@@ -20,7 +20,8 @@ onMounted(async () => {
   try {
     const response = await fetch(`${baseUrl}/mhs/data/${username}`)
     mhsData.value = await response.json()
-    pengajuanStatus.value = mhsData.value.ta.pengajuan.status
+    console.log(mhsData.value)
+    pengajuanStatus.value = mhsData.value.pengajuan_id
   } catch (error) {
     console.log(error)
   }

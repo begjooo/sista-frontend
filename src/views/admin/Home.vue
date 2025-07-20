@@ -1,19 +1,17 @@
 <script setup>
 import { onMounted, ref } from 'vue';
-import { useRouter, RouterLink } from 'vue-router';
 import { baseUrl } from '@/baseUrl';
 
-import Header from '../../components/layout/dosen/Header.vue';
+import Header from '../../components/layout/admin/Header.vue';
 
 const username = localStorage.getItem('username')
 const userData = ref()
 
 onMounted(async () => {
-  console.log(`/dosen onMounted()`)
+  console.log(`/admin onMounted()`)
   try {
-    const response = await fetch(`${baseUrl}/dosen/data/${username}`)
+    const response = await fetch(`${baseUrl}/admin/data/${username}`)
     userData.value = await response.json()
-    console.log(userData.value)
   } catch (error) {
     console.log(error)
   }
@@ -24,7 +22,8 @@ onMounted(async () => {
   <Header />
 
   <div v-if="userData">
-    Selamat datang {{ userData.fullname }}
+    <div>ADMIN!!!!!!!!!!!!!</div>
+    Selamat datang {{ userData.name }}
   </div>
 </template>
 

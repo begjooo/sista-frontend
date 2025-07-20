@@ -25,21 +25,21 @@ async function logout() {
   <div class="body border p-2 content-end">
     <div class="flex flex-wrap gap-2 justify-between">
       <div class="flex flex-wrap gap-2">
-        <RouterLink to="/dosen">
-          <Button variant="ghost" class="w-[] hover:bg-blue-800 hover:text-white">Home</Button>
+        <RouterLink to="/admin" class="">
+          <Button variant="ghost" class="w-[100px] hover:bg-blue-800 hover:text-white">Home</Button>
         </RouterLink>
-        <RouterLink to="/dosen/permintaan-pembimbing">
-          <Button variant="ghost" class="w-[] hover:bg-blue-800 hover:text-white">Permintaan Pembimbing</Button>
+        <RouterLink to="/admin/dosen">
+          <Button variant="ghost" class="w-[100px] hover:bg-blue-800 hover:text-white">Dosen</Button>
         </RouterLink>
-        <RouterLink to="/dosen/bimbingan">
-          <Button variant="ghost" class="w-[] hover:bg-blue-800 hover:text-white">Bimbingan</Button>
+        <RouterLink to="/admin/mhs">
+          <Button variant="ghost" class="w-[100px] hover:bg-blue-800 hover:text-white">Mahasiswa</Button>
         </RouterLink>
-        <RouterLink to="/dosen/profile">
-          <Button variant="ghost" class="w-[] hover:bg-blue-800 hover:text-white">Profile</Button>
+        <RouterLink to="/admin/tendik">
+          <Button variant="ghost" class="w-[100px] hover:bg-blue-800 hover:text-white">Tendik</Button>
         </RouterLink>
       </div>
 
-      <div class="">
+      <div>
         <Button variant="ghost" class="w-[100px] hover:bg-red-600 hover:text-white" @click="logout">Logout</Button>
       </div>
     </div>
@@ -49,6 +49,6 @@ async function logout() {
 <style scoped>
 .body {
   width: 100%;
-  /* height: 20vh; */
+  /* min-height: 20vh; */
 }
 </style>

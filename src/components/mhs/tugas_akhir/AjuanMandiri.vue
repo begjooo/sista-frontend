@@ -8,8 +8,8 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectLabel, SelectItem } from '@/components/ui/select';
 
 const username = localStorage.getItem('username')
-const dosenList = ref([])
-const dosenListPendamping = ref([])
+const dosenList1 = ref([])
+const dosenList2 = ref([])
 const statusDone = ref(true)
 
 const statusPengajuan = {
@@ -30,16 +30,16 @@ const ajuanMhs = ref({
   status: '',
 })
 
-function pilihDosen1(data) {
+function pilihDosenUtama1(data) {
   ajuanMhs.value.pbb.dosen1 = data
   ajuanMhs.value.pbb.dosen1.status = statusPengajuan[1]
 
-  dosenListPendamping.value = dosenList.value.filter((item) => {
+  dosenList2.value = dosenList1.value.filter((item) => {
     return item.username !== data.username
   })
 }
 
-function pilihDosen2(data) {
+function pilihDosenUtama2(data) {
   ajuanMhs.value.pbb.dosen2 = data
   ajuanMhs.value.pbb.dosen2.status = statusPengajuan[1]
 }
@@ -78,7 +78,7 @@ function removeDosen(index) {
 onMounted(async () => {
   try {
     const response = await fetch(`${baseUrl}/dosen/list`)
-    dosenList.value = await response.json()
+    dosenList1.value = await response.json()
   } catch (error) {
     console.log(error)
   }
@@ -97,8 +97,8 @@ onMounted(async () => {
 
       <div class="my-2 overflow-auto">
         <div class="max-h-[30vh] flex flex-wrap gap-3 justify-center">
-          <div v-for="dosen in dosenList">
-            <div class="border w-[40vh] hover:bg-blue-100 cursor-pointer" @click="pilihDosen1(dosen)">
+          <div v-for="dosen in dosenList1">
+            <div class="border w-[40vh] hover:bg-blue-100 cursor-pointer" @click="pilihDosenUtama1(dosen)">
               <ul>
                 <li>{{ dosen.name }}</li>
                 <li>{{ dosen.username }}</li>
@@ -119,8 +119,8 @@ onMounted(async () => {
 
       <div class="my-2 overflow-auto">
         <div class="max-h-[30vh] flex flex-wrap gap-3 justify-center">
-          <div v-for="dosen in dosenListPendamping">
-            <div class="border w-[40vh] hover:bg-blue-100 cursor-pointer" @click="pilihDosen2(dosen)">
+          <div v-for="dosen in dosenList2">
+            <div class="border w-[40vh] hover:bg-blue-100 cursor-pointer" @click="pilihDosenUtama2(dosen)">
               <ul>
                 <li>{{ dosen.name }}</li>
                 <li>{{ dosen.username }}</li>

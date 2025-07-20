@@ -22,14 +22,14 @@ const password = ref('')
 const loginStatus = ref()
 
 function routeToHome(data) {
-  // console.log(`routeToHome()`)
-  // console.log(data)
+  console.log(`routeToHome()`)
   console.log(`login success! save username to local storage`)
-  console.log(data)
+
   localStorage.setItem('username', data.username)
   switch (data.job) {
     case 'admin':
       console.log(`go to /admin`)
+      router.push('/admin')
       break
     case 'dosen':
       console.log(`go to /dosen`)
@@ -37,7 +37,7 @@ function routeToHome(data) {
       break
     case 'tendik':
       console.log(`go to /tendik`)
-      // router.push('/dosen')
+      router.push('/tendik')
       break
     default:
       console.log(`go to /mhs`)
@@ -58,7 +58,6 @@ async function login(user, pass) {
       })
 
       loginStatus.value = await response.json()
-      console.log('loginStatus.value', loginStatus.value)
 
       if (loginStatus.value) {
         // console.log(`login success`)
@@ -77,7 +76,7 @@ async function login(user, pass) {
 }
 
 onMounted(async () => {
-  // console.log(`/ onMounted()`)
+  console.log(`/ onMounted()`)
   try {
     const response = await fetch(`${baseUrl}/user`, {
       method: 'POST',
@@ -133,7 +132,10 @@ onMounted(async () => {
 
         <CardFooter class="flex flex-wrap justify-between">
           <Button class="cursor-pointer w-[100px]" @click="login(username, password)">Login</Button>
-          <Button class="cursor-pointer w-[100px]" variant="link">Sign-Up</Button>
+          <RouterLink to="/mhs/signup">
+            <!-- <RouterLink to="/dosen/signup"> -->
+            <Button class="cursor-pointer w-[100px]" variant="link">Sign-Up</Button>
+          </RouterLink>
         </CardFooter>
       </Card>
     </div>
