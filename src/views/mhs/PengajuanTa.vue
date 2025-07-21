@@ -7,21 +7,23 @@ import Header from '@/components/layout/mhs/Header.vue';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectLabel, SelectItem } from '@/components/ui/select';
 import AjuanMandiri from '@/components/mhs/tugas_akhir/AjuanMandiri.vue';
 import AjuanDosen from '@/components/mhs/tugas_akhir/AjuanDosen.vue';
+import PilihPbbUtama from '@/components/PilihPbbUtama.vue';
 
 const username = localStorage.getItem('username')
 const mhsData = ref()
-const pengajuanStatus = ref()
-const kbkList = ['Nirkabel', 'Infrastruktur Jaringan', 'Layanan dan Aplikasi']
-const kbkPilihan = ref('')
-
-const jenisAjuan = ref()
+const dosenList = ref()
 
 onMounted(async () => {
   try {
     const response = await fetch(`${baseUrl}/mhs/data/${username}`)
     mhsData.value = await response.json()
-    console.log(mhsData.value)
-    pengajuanStatus.value = mhsData.value.pengajuan_id
+  } catch (error) {
+    console.log(error)
+  }
+
+  try {
+    const response = await fetch(`${baseUrl}/dosen/list`)
+    dosenList.value = await response.json()
   } catch (error) {
     console.log(error)
   }
@@ -31,52 +33,28 @@ onMounted(async () => {
 <template>
   <Header />
 
-  <div v-if="!pengajuanStatus">
-    <div class="flex flex-wrap">
-      <div class="content-center w-[20vh]">KBK</div>
-      <Select v-model="kbkPilihan">
-        <SelectTrigger class="w-[300px]">
-          <SelectValue placeholder="Pilih KBK" />
-        </SelectTrigger>
-
-        <SelectContent class="max-h-[300px]">
-          <SelectLabel>KBK</SelectLabel>
-          <SelectItem :value="kbkList[0]">Nirkabel</SelectItem>
-          <SelectItem :value="kbkList[1]">Infrastruktur Jaringan</SelectItem>
-          <SelectItem :value="kbkList[2]">Aplikasi</SelectItem>
-        </SelectContent>
-      </Select>
+  <div v-if="mhsData && dosenList">
+    <!-- <div>
+      {{ mhsData }}
     </div>
-
-    <div class="flex flex-wrap">
-      <div class="content-center w-[20vh]">Jenis Ajuan</div>
-      <Select v-model="jenisAjuan" :disabled="kbkPilihan === ''">
-        <SelectTrigger class="w-[300px]">
-          <SelectValue placeholder="Pilih Pengajuan TA" />
-        </SelectTrigger>
-
-        <SelectContent class="max-h-[300px]">
-          <SelectItem value="mandiri">Pengajuan Mandiri</SelectItem>
-          <SelectItem value="dosen">Tawaran Dosen</SelectItem>
-        </SelectContent>
-      </Select>
-    </div>
-
-    <div v-if="jenisAjuan === 'mandiri'">
-      <AjuanMandiri :kbk="kbkPilihan" />
-    </div>
-    <div v-else-if="jenisAjuan === 'dosen'">
-      <AjuanDosen />
-    </div>
-  </div>
-  <div v-else>
     <div>
-      Pengajuan tugas akhir anda sudah di kirim kepada {{ mhsData.ta.pengajuan.pbb.dosen1.name }}<span
-        v-if="mhsData.ta.pengajuan.pbb.dosen2"> dan {{ mhsData.ta.pengajuan.pbb.dosen2.name }}</span>.
-      Silahkan hubungan dosen terkait.
+      {{ dosenList }}
+    </div> -->
+    <div>
+      <div>pilih kbk</div>
+      <div>daftar dosen per kbk</div>
+      <div>jika setiap dosen di klik, ada:</div>
+      <div>1. minat dosen</div>
+      <div>2. judul2 yang ditawarkan dosen berdasarkan minat</div>
+      <div>3. input ajuan mandiri dari mhs</div>
     </div>
-    <div>KBK: {{ mhsData.ta.pengajuan.kbk }}</div>
-    <div>Judul: {{ mhsData.ta.pengajuan.judul }}</div>
-    <div>Deskripsi: {{ mhsData.ta.pengajuan.deskripsi }}</div>
+    <div v-if="!mhsData.pengajuan_id">
+      Belum mengajukan ta. ajukan calon dosen pbb utama!
+    </div>
+    <div v-else>
+      Sudah mengajukan ta
+    </div>
+
+    <PilihPbbUtama :dosenList="dosenList" />
   </div>
 </template>

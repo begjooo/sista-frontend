@@ -12,7 +12,6 @@ import DosenHome from "@/views/dosen/Home.vue"
 import DosenPermintaanPbb from "@/views/dosen/PermintaanPbb.vue"
 import DosenBimbingan from "@/views/dosen/Bimbingan.vue"
 import DosenProfile from "@/views/dosen/Profile.vue"
-import DosenEditProfile from "@/views/dosen/EditProfile.vue"
 
 import TendikHome from "@/views/tendik/Home.vue"
 
@@ -35,7 +34,6 @@ const router = createRouter({
     { path: '/dosen/permintaan-pembimbing', component: DosenPermintaanPbb },
     { path: '/dosen/bimbingan', component: DosenBimbingan },
     { path: '/dosen/profile', component: DosenProfile },
-    { path: '/dosen/profile/edit', component: DosenEditProfile },
 
     { path: '/tendik', component: TendikHome },
 

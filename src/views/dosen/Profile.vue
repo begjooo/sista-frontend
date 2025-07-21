@@ -2,8 +2,8 @@
 import { onMounted, ref } from 'vue';
 import { baseUrl } from '@/baseUrl';
 import Header from '../../components/layout/dosen/Header.vue';
-import Button from '@/components/ui/button/Button.vue';
 import GantiPassword from '@/components/GantiPassword.vue';
+import EditProfile from '@/components/EditProfile.vue';
 
 const username = localStorage.getItem('username')
 
@@ -56,10 +56,7 @@ onMounted(async () => {
     </div>
 
     <div class="flex flex-wrap gap-2">
-      <RouterLink to="/dosen/profile/edit">
-        <Button>Edit Profile</Button>
-      </RouterLink>
-
+      <EditProfile :currentData="userData" :dbName="'dosen'" />
       <GantiPassword :pass="userData.password" />
     </div>
   </div>
