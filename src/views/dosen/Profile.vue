@@ -13,6 +13,7 @@ onMounted(async () => {
   try {
     const response = await fetch(`${baseUrl}/dosen/data-full/${username}`)
     userData.value = await response.json()
+    console.log(userData.value)
   } catch (error) {
     console.log(error)
   }
@@ -22,7 +23,7 @@ onMounted(async () => {
 <template>
   <Header />
 
-  <div class="p-2 text-sm">
+  <div v-if="userData" class="p-2 text-sm">
     <div v-if="userData" class="border flex flex-col gap-2 p-2 mb-2">
       <div class="flex gap-2">
         <div class="min-w-[20vh]">NIP</div>
@@ -54,10 +55,12 @@ onMounted(async () => {
       </div>
     </div>
 
-    <RouterLink to="/dosen/profile/edit">
-      <Button>Edit Profile</Button>
-    </RouterLink>
+    <div class="flex flex-wrap gap-2">
+      <RouterLink to="/dosen/profile/edit">
+        <Button>Edit Profile</Button>
+      </RouterLink>
 
-    <GantiPassword />
+      <GantiPassword :pass="userData.password" />
+    </div>
   </div>
 </template>
