@@ -8,11 +8,13 @@ const kbkList = ['Nirkabel', 'Infrastruktur Jaringan', 'Layanan dan Aplikasi']
 const selectedKbk = ref('')
 const dosenPerKbk = ref()
 const selectedDosen = ref()
+const selectedMinat = ref('')
+const minatDummy = ['Minat A', 'Minat B', 'Minat C', 'Minat D', 'Minat E', 'Minat F', 'Minat G']
 
 function handleKbk(kbk) {
   console.log(kbk)
   dosenPerKbk.value = props.dosenList.filter((item) => item.kbk === kbk)
-  selectedDosen.value = null
+  // selectedDosen.value = null
 }
 </script>
 
@@ -27,30 +29,22 @@ function handleKbk(kbk) {
       </div>
     </div>
 
-    <div class="flex flex-wrap border w-full min-h-[60vh] max-h-[60vh] overflow">
-      <div class="min-h-[60vh] max-h-[60vh] min-w-[40vh] max-w-[40vh] border">
+    <div class="grid grid-cols-4 gap-2 border min-h-[60vh] max-h-[60vh] overflow-auto">
+      <div class="border min-w-[40vh] flex flex-col gap-2">
         <div v-for="dosen in dosenPerKbk" class="border">
           <div @click="selectedDosen = dosen">{{ dosen.fullname }}</div>
         </div>
       </div>
 
-      <div class="border">
+      <div class="border col-span-3">
+        <div class="flex flex-wrap justify-center">
+          <div class="border rounded-md font-bold m-2 px-4 py-1 cursor-pointer select-none hover:bg-blue-800 hover:text-white" v-for="minat in minatDummy">
+            <div @click="selectedMinat = minat">{{ minat }}</div>
+          </div>
+        </div>
         <div>
           {{ selectedDosen }}
         </div>
-      </div>
-
-    </div>
-    <div v-for="dosen in dosenPerKbk" class="border m-2">
-      <div>{{ dosen.fullname }}</div>
-      <div v-for="minat in dosen.minat">
-        {{ minat }}
-      </div>
-      <div class="flex flex-wrap gap-2">
-        <div class="border">minat 1</div>
-        <div class="border">minat 2</div>
-        <div class="border">minat 3</div>
-        <div class="border">minat 4</div>
       </div>
     </div>
   </div>

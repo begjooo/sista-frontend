@@ -44,7 +44,7 @@ async function submit() {
     console.log(`email valid`)
     console.log(`update data`)
     try {
-      const response = await fetch(`${baseUrl}/${props.dbName}/${username}/profile/edit`, {
+      const response = await fetch(`${baseUrl}/${props.dbName}/data/${username}/profile/edit`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newData.value),
