@@ -40,7 +40,7 @@ onMounted(async () => {
     <div>
       {{ dosenList }}
     </div> -->
-    <div>
+    <!-- <div>
       <div>pilih kbk</div>
       <div>daftar dosen per kbk</div>
       <div>jika setiap dosen di klik, ada:</div>
@@ -53,7 +53,7 @@ onMounted(async () => {
     </div>
     <div v-else>
       Sudah mengajukan ta
-    </div>
+    </div> -->
 
     <PilihPbbUtama :dosenList="dosenList" />
   </div>
