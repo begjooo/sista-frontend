@@ -11,7 +11,7 @@ const userData = ref();
 
 onMounted(async () => {
   try {
-    const response = await fetch(`${baseUrl}/dosen/data-full/${username}`)
+    const response = await fetch(`${baseUrl}/dosen/data/${username}`)
     userData.value = await response.json()
     console.log(userData.value)
   } catch (error) {
@@ -25,8 +25,8 @@ onMounted(async () => {
   <Profile />
 
   <div class="body border">
-    <div v-if="userData" class="p-2 text-sm min-h-[1000px]">
-      <div v-if="userData" class="border flex flex-col gap-2 p-2 mb-2">
+    <div v-if="userData" class="p-2 text-sm">
+      <div class="border flex flex-col gap-2 p-2 mb-2">
         <div class="flex gap-2">
           <div class="min-w-[20vh]">NIP</div>
           <div>{{ userData.username }}</div>
@@ -38,6 +38,10 @@ onMounted(async () => {
         <div class="flex gap-2">
           <div class="min-w-[20vh]">Email</div>
           <div>{{ userData.email }}</div>
+        </div>
+        <div class="flex gap-2">
+          <div class="min-w-[20vh]">KBK</div>
+          <div>{{ userData.kbk }}</div>
         </div>
         <div class="flex gap-2">
           <div class="min-w-[20vh]">Jabatan Fungsional</div>

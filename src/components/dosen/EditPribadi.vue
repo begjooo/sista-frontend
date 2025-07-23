@@ -27,7 +27,7 @@ const newData = ref({
   name: '',
   email: '',
   kode: '',
-  // kbk: '',
+  kbk: '',
   jabatan_fungsional: '',
   gelar_depan: '',
   gelar_belakang: '',
@@ -67,19 +67,19 @@ async function submit() {
 }
 
 onMounted(async () => {
-  // try {
-  //   const response = await fetch(`${baseUrl}/dosen/data/${username}`)
-  // props.currentData.value = await response.json()
-  newData.value.name = props.currentData.name
-  newData.value.email = props.currentData.email
-  newData.value.kode = props.currentData.kode
-  newData.value.kbk = props.currentData.kbk
-  newData.value.jabatan_fungsional = props.currentData.jabatan_fungsional
-  newData.value.gelar_depan = props.currentData.gelar_depan
-  newData.value.gelar_belakang = props.currentData.gelar_belakang
-  // } catch (error) {
-  //   console.log(error)
-  // }
+  try {
+    const response = await fetch(`${baseUrl}/dosen/data/${username}`)
+    props.currentData.value = await response.json()
+    newData.value.name = props.currentData.name
+    newData.value.email = props.currentData.email
+    newData.value.kode = props.currentData.kode
+    newData.value.kbk = props.currentData.kbk
+    newData.value.jabatan_fungsional = props.currentData.jabatan_fungsional
+    newData.value.gelar_depan = props.currentData.gelar_depan
+    newData.value.gelar_belakang = props.currentData.gelar_belakang
+  } catch (error) {
+    console.log(error)
+  }
 })
 </script>
 
@@ -111,7 +111,7 @@ onMounted(async () => {
           <input id="kode" placeholder="Kode" class="w-full border rounded-md py-1 px-2 min-w-[20vh]"
             v-model="newData.kode" />
         </div>
-        <!-- <div class="flex gap-4">
+        <div class="flex gap-4">
           <Label for="jafung" class="min-w-[20vh] max-w-[20vh]">KBK</Label>
           <Select id="jafung" v-model="newData.kbk">
             <SelectTrigger class="w-full min-w-[20vh]">
@@ -124,7 +124,7 @@ onMounted(async () => {
               <SelectItem value="Layanan dan Aplikasi">Layanan dan Aplikasi</SelectItem>
             </SelectContent>
           </Select>
-        </div> -->
+        </div>
         <div class="flex gap-4">
           <Label for="jafung" class="min-w-[20vh] max-w-[20vh]">Jabatan Fungsional</Label>
           <Select id="jafung" v-model="newData.jabatan_fungsional">
@@ -151,9 +151,6 @@ onMounted(async () => {
           <input id="gelarBelakang" placeholder="A. Md., S.T., M.T., ..."
             class="w-full border rounded-md py-1 px-2 min-w-[20vh]" v-model="newData.gelar_belakang" />
         </div>
-        <!-- <div v-if="!registrationStatus.status" class="text-right text-sm italic font-bold text-red-500">
-          {{ registrationStatus.message }}
-        </div> -->
       </div>
       <DialogFooter>
         <DialogClose as-child>
