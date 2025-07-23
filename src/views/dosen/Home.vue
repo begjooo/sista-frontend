@@ -23,9 +23,15 @@ onMounted(async () => {
 <template>
   <Header />
 
-  <div v-if="userData">
-    Selamat datang {{ userData.fullname }}
+  <div class="body">
+    <div v-if="userData">
+      Selamat datang {{ userData.fullname }}
+    </div>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.body {
+  padding-top: 10vh;
+}
+</style>

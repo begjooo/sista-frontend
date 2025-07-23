@@ -11,7 +11,9 @@ import AdminTendik from "@/views/admin/Tendik.vue"
 import DosenHome from "@/views/dosen/Home.vue"
 import DosenPermintaanPbb from "@/views/dosen/PermintaanPbb.vue"
 import DosenBimbingan from "@/views/dosen/Bimbingan.vue"
-import DosenProfile from "@/views/dosen/Profile.vue"
+import DosenProfilePribadi from "@/views/dosen/profile/Pribadi.vue"
+import DosenProfilePenelitian from "@/views/dosen/profile/Penelitian.vue"
+import DosenProfileKeamanan from "@/views/dosen/profile/Keamanan.vue"
 
 import TendikHome from "@/views/tendik/Home.vue"
 
@@ -33,7 +35,9 @@ const router = createRouter({
     { path: '/dosen', component: DosenHome },
     { path: '/dosen/permintaan-pembimbing', component: DosenPermintaanPbb },
     { path: '/dosen/bimbingan', component: DosenBimbingan },
-    { path: '/dosen/profile', component: DosenProfile },
+    { path: '/dosen/profile/pribadi', component: DosenProfilePribadi },
+    { path: '/dosen/profile/penelitian', component: DosenProfilePenelitian },
+    { path: '/dosen/profile/keamanan', component: DosenProfileKeamanan },
 
     { path: '/tendik', component: TendikHome },
 

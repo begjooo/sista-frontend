@@ -16,9 +16,6 @@ const selectedJudul = ref({
   deskripsi: '',
   type: '',
 })
-const pengajuanMandiri = ref(false)
-const judulMandiri = ref('')
-const deskripsiMandiri = ref('')
 const minatListDummy = [
   {
     name: 'Minat A',

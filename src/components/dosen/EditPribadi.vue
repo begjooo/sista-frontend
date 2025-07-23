@@ -27,7 +27,7 @@ const newData = ref({
   name: '',
   email: '',
   kode: '',
-  kbk: '',
+  // kbk: '',
   jabatan_fungsional: '',
   gelar_depan: '',
   gelar_belakang: '',
@@ -87,12 +87,12 @@ onMounted(async () => {
   <Dialog>
     <DialogTrigger as-child>
       <Button variant="">
-        Edit Profile
+        Edit Data
       </Button>
     </DialogTrigger>
     <DialogContent class="min-w-[200px]">
       <DialogHeader>
-        <DialogTitle>Edit Profile</DialogTitle>
+        <DialogTitle>Data Pribadi</DialogTitle>
         <DialogDescription></DialogDescription>
       </DialogHeader>
       <div class="grid items-center gap-2">
@@ -111,7 +111,7 @@ onMounted(async () => {
           <input id="kode" placeholder="Kode" class="w-full border rounded-md py-1 px-2 min-w-[20vh]"
             v-model="newData.kode" />
         </div>
-        <div class="flex gap-4">
+        <!-- <div class="flex gap-4">
           <Label for="jafung" class="min-w-[20vh] max-w-[20vh]">KBK</Label>
           <Select id="jafung" v-model="newData.kbk">
             <SelectTrigger class="w-full min-w-[20vh]">
@@ -124,7 +124,7 @@ onMounted(async () => {
               <SelectItem value="Layanan dan Aplikasi">Layanan dan Aplikasi</SelectItem>
             </SelectContent>
           </Select>
-        </div>
+        </div> -->
         <div class="flex gap-4">
           <Label for="jafung" class="min-w-[20vh] max-w-[20vh]">Jabatan Fungsional</Label>
           <Select id="jafung" v-model="newData.jabatan_fungsional">

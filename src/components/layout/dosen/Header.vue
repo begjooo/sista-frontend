@@ -22,7 +22,7 @@ async function logout() {
 </script>
 
 <template>
-  <div class="body border p-2 content-end">
+  <div class="header-nav border p-2 content-end">
     <div class="flex flex-wrap gap-2 justify-between">
       <div class="flex flex-wrap gap-2">
         <RouterLink to="/dosen">
@@ -34,7 +34,7 @@ async function logout() {
         <RouterLink to="/dosen/bimbingan">
           <Button variant="ghost" class="w-[] hover:bg-blue-800 hover:text-white">Bimbingan</Button>
         </RouterLink>
-        <RouterLink to="/dosen/profile">
+        <RouterLink to="/dosen/profile/pribadi">
           <Button variant="ghost" class="w-[] hover:bg-blue-800 hover:text-white">Profile</Button>
         </RouterLink>
       </div>
@@ -47,8 +47,11 @@ async function logout() {
 </template>
 
 <style scoped>
-.body {
+.header-nav {
   width: 100%;
-  /* height: 20vh; */
+  height: 10vh;
+  position: fixed;
+  overflow: auto;
+  background: white;
 }
 </style>
