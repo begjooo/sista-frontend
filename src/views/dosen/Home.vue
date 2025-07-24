@@ -23,7 +23,7 @@ onMounted(async () => {
 <template>
   <Header />
 
-  <div class="body">
+  <div class="body-head">
     <div v-if="userData">
       Selamat datang {{ userData.fullname }}
     </div>
@@ -31,7 +31,4 @@ onMounted(async () => {
 </template>
 
 <style scoped>
-.body {
-  padding-top: 10vh;
-}
 </style>

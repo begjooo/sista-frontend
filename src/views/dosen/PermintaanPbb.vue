@@ -19,15 +19,17 @@ onMounted(async () => {
 
 <template>
   <Header />
-  
-  <div>Daftar Permintaan Bimbingan</div>
-  <div v-for="mhs in mhsList">
-    <div class="border p-2">
-      <div>Nama: {{ mhs.name }}</div>
-      <div>NIM: {{ mhs.username }}</div>
-      <div>KBK: {{ mhs.kbk }}</div>
-      <div>Judul: {{ mhs.judul }}</div>
-      <div>Deskripsi: {{ mhs.deskripsi }}</div>
+
+  <div class="body-head">
+    <div>Daftar Permintaan Bimbingan</div>
+    <div v-for="mhs in mhsList">
+      <div class="border p-2">
+        <div>Nama: {{ mhs.name }}</div>
+        <div>NIM: {{ mhs.username }}</div>
+        <div>KBK: {{ mhs.kbk }}</div>
+        <div>Judul: {{ mhs.judul }}</div>
+        <div>Deskripsi: {{ mhs.deskripsi }}</div>
+      </div>
     </div>
   </div>
 </template>

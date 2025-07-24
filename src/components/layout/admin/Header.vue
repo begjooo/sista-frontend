@@ -22,7 +22,7 @@ async function logout() {
 </script>
 
 <template>
-  <div class="body border p-2 content-end">
+  <div class="header-nav">
     <div class="flex flex-wrap gap-2 justify-between">
       <div class="flex flex-wrap gap-2">
         <RouterLink to="/admin" class="">
@@ -45,10 +45,3 @@ async function logout() {
     </div>
   </div>
 </template>
-
-<style scoped>
-.body {
-  width: 100%;
-  /* min-height: 20vh; */
-}
-</style>

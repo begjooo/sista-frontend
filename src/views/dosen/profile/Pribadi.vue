@@ -24,7 +24,7 @@ onMounted(async () => {
   <Header />
   <Profile />
 
-  <div class="body border">
+  <div class="body-head-side">
     <div v-if="userData" class="p-2 text-sm">
       <div class="border flex flex-col gap-2 p-2 mb-2">
         <div class="flex gap-2">
@@ -57,8 +57,4 @@ onMounted(async () => {
 </template>
 
 <style scoped>
-.body {
-  padding-top: 10vh;
-  padding-left: 200px;
-}
 </style>

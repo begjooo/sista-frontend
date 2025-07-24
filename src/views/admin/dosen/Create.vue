@@ -19,6 +19,7 @@ const usernameLength = 6;
 const newData = ref({
   username: '',
   password: '',
+  job: 'dosen',
 })
 
 const inputUsername = ref('')
@@ -61,9 +62,10 @@ async function submit() {
   } else if (!newData.value.password) {
     return `Invalid 'Password'`
   } else {
-    console.log(`submit new dosen account`)
+    console.log(`submit new ${newData.value.job} account`)
 
     try {
+      console.log(newData.value)
       const response = await fetch(`${baseUrl}/register/dosen`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -100,6 +102,19 @@ async function submit() {
                 :class="[(checkUsername(inputUsername) === false ? 'bg-red-200' : 'bg-blue-100'), (inputUsername.length === usernameLength ? 'bg-blue-100' : 'bg-red-200')]"
                 v-model="inputUsername" />
             </div>
+            <!-- <div class="flex gap-4">
+              <Label for="job" class="min-w-[20vh] max-w-[20vh]">Pekerjaan</Label>
+              <Select id="job" v-model="newData.job">
+                <SelectTrigger class="w-full min-w-[20vh]">
+                  <SelectValue placeholder="Pekerjaan" />
+                </SelectTrigger>
+
+                <SelectContent>
+                  <SelectItem value="dosen">Dosen</SelectItem>
+                  <SelectItem value="tendik">Tendik / PLP</SelectItem>
+                </SelectContent>
+              </Select>
+            </div> -->
             <div class="flex gap-4">
               <Label for="password" class="min-w-[20vh] max-w-[20vh]">Password</Label>
               <input type="password" id="password" placeholder="Password"

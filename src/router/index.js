@@ -4,13 +4,14 @@ import Login from "@/views/Login.vue"
 
 import AdminHome from "@/views/admin/Home.vue"
 import AdminMhs from "@/views/admin/Mhs.vue"
-import AdminDosen from "@/views/admin/Dosen.vue"
-import AdminDosenSignup from "@/views/dosen/Signup.vue"
+import AdminDosen from "@/views/admin/dosen/Dosen.vue"
+import AdminCreateDosen from "@/views/admin/dosen/Create.vue"
 import AdminTendik from "@/views/admin/Tendik.vue"
 
 import DosenHome from "@/views/dosen/Home.vue"
-import DosenPermintaanPbb from "@/views/dosen/PermintaanPbb.vue"
-import DosenBimbingan from "@/views/dosen/Bimbingan.vue"
+import DosenTaPengajuan from "@/views/dosen/tugas-akhir/Pengajuan.vue"
+import DosenPermintaanPbb from "@/views/dosen/tugas-akhir/PermintaanPbb.vue"
+import DosenBimbingan from "@/views/dosen/tugas-akhir/Bimbingan.vue"
 import DosenProfilePribadi from "@/views/dosen/profile/Pribadi.vue"
 import DosenProfilePenelitian from "@/views/dosen/profile/Penelitian.vue"
 import DosenProfileKeamanan from "@/views/dosen/profile/Keamanan.vue"
@@ -28,13 +29,14 @@ const router = createRouter({
 
     { path: '/admin', component: AdminHome },
     { path: '/admin/dosen', component: AdminDosen },
-    { path: '/admin/dosen/signup', component: AdminDosenSignup },
+    { path: '/admin/dosen/create', component: AdminCreateDosen },
     { path: '/admin/mhs', component: AdminMhs },
     { path: '/admin/tendik', component: AdminTendik },
 
     { path: '/dosen', component: DosenHome },
-    { path: '/dosen/permintaan-pembimbing', component: DosenPermintaanPbb },
-    { path: '/dosen/bimbingan', component: DosenBimbingan },
+    { path: '/dosen/tugas-akhir/pengajuan', component: DosenTaPengajuan },
+    { path: '/dosen/tugas-akhir/permintaan-pbb', component: DosenPermintaanPbb },
+    { path: '/dosen/tugas-akhir/bimbingan', component: DosenBimbingan },
     { path: '/dosen/profile/pribadi', component: DosenProfilePribadi },
     { path: '/dosen/profile/penelitian', component: DosenProfilePenelitian },
     { path: '/dosen/profile/keamanan', component: DosenProfileKeamanan },

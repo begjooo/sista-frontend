@@ -51,7 +51,7 @@ async function submit() {
       })
 
       const status = await response.json()
-      console.log(status)
+      // console.log(status)
       if (status) {
         console.log(`update data success`)
         router.push('/')
@@ -68,8 +68,6 @@ async function submit() {
 
 onMounted(async () => {
   try {
-    const response = await fetch(`${baseUrl}/dosen/data/${username}`)
-    props.currentData.value = await response.json()
     newData.value.name = props.currentData.name
     newData.value.email = props.currentData.email
     newData.value.kode = props.currentData.kode

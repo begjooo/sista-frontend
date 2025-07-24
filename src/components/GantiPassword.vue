@@ -35,7 +35,7 @@ function setPassword(password, confirmPassword) {
       return ''
     }
   } else {
-    // console.log(`password/confirm password is empty`)
+    console.log(`password/confirm password is empty`)
     return ''
   }
 }

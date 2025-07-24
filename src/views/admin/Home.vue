@@ -21,9 +21,11 @@ onMounted(async () => {
 <template>
   <Header />
 
-  <div v-if="userData">
-    <div>ADMIN!!!!!!!!!!!!!</div>
-    Selamat datang {{ userData.name }}
+  <div class="body-head">
+    <div v-if="userData">
+      <div>ADMIN!!!!!!!!!!!!!</div>
+      Selamat datang {{ userData.name }}
+    </div>
   </div>
 </template>
 

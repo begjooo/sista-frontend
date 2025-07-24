@@ -28,11 +28,8 @@ async function logout() {
         <RouterLink to="/dosen">
           <Button variant="ghost" class="w-[] hover:bg-blue-800 hover:text-white">Home</Button>
         </RouterLink>
-        <RouterLink to="/dosen/permintaan-pembimbing">
-          <Button variant="ghost" class="w-[] hover:bg-blue-800 hover:text-white">Permintaan Pembimbing</Button>
-        </RouterLink>
-        <RouterLink to="/dosen/bimbingan">
-          <Button variant="ghost" class="w-[] hover:bg-blue-800 hover:text-white">Bimbingan</Button>
+        <RouterLink to="/dosen/tugas-akhir/pengajuan">
+          <Button variant="ghost" class="w-[] hover:bg-blue-800 hover:text-white">Tugas Akhir</Button>
         </RouterLink>
         <RouterLink to="/dosen/profile/pribadi">
           <Button variant="ghost" class="w-[] hover:bg-blue-800 hover:text-white">Profile</Button>
@@ -45,13 +42,3 @@ async function logout() {
     </div>
   </div>
 </template>
-
-<style scoped>
-.header-nav {
-  width: 100%;
-  height: 10vh;
-  position: fixed;
-  overflow: auto;
-  background: white;
-}
-</style>

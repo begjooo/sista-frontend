@@ -1,6 +1,5 @@
 <script setup>
 import Button from '@/components/ui/button/Button.vue';
-
 </script>
 
 <template>
@@ -22,14 +21,3 @@ import Button from '@/components/ui/button/Button.vue';
     </div>
   </div>
 </template>
-
-<style scoped>
-.sidebar-nav {
-  width: 200px;
-  height: 100%;
-  margin-top: 10vh;
-  position: fixed;
-  overflow: auto;
-  background-color: lightgray;
-}
-</style>
