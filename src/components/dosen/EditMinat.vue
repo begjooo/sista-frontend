@@ -19,28 +19,35 @@ import { baseUrl } from '@/baseUrl';
 const router = useRouter()
 
 const username = localStorage.getItem('username')
+const props = defineProps(['currentData', 'job'])
 
-const props = defineProps(['currentData', 'dbName'])
+const inputMinat = ref('')
+const newData = ref([])
 
-const newData = ref({
-  minat: [],
-})
+function tambah(minat) {
+  newData.value.push(minat)
+  inputMinat.value = ''
+}
+
+function hapus(index) {
+  newData.value.splice(index, 1)
+}
 
 async function submit() {
-  console.log(`update data penelitian`)
+  console.log(`update minat`)
   console.log(newData.value)
   try {
-    const response = await fetch(`${baseUrl}/${props.dbName}/data/${username}/penelitian/edit`, {
+    const response = await fetch(`${baseUrl}/${props.job}/data/${username}/minat/tambah`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newData.value),
     })
 
-    const status = await response.json()
+    const result = await response.json()
 
-    if (status) {
+    if (result.status) {
       console.log(`update data success`)
-      // router.push('/')
+      router.push('/')
     } else {
       console.log(`update data failed!`)
     }
@@ -50,13 +57,11 @@ async function submit() {
 }
 
 onMounted(async () => {
-  // try {
-  //   const response = await fetch(`${baseUrl}/dosen/data/${username}`)
-  // props.currentData.value = await response.json()
-  newData.value.kbk = props.currentData.kbk
-  // } catch (error) {
-  //   console.log(error)
-  // }
+  if (!props.currentData) {
+    newData.value = []
+  } else {
+    newData.value = props.currentData
+  }
 })
 </script>
 
@@ -64,14 +69,24 @@ onMounted(async () => {
   <Dialog>
     <DialogTrigger as-child>
       <Button variant="">
-        Edit Data
+        Edit Minat
       </Button>
     </DialogTrigger>
     <DialogContent class="min-w-[200px]">
       <DialogHeader>
-        <DialogTitle>Data Penelitian</DialogTitle>
-        <DialogDescription></DialogDescription>
+        <DialogTitle>Data Minat Penelitian</DialogTitle>
+        <DialogDescription>Tambahkan minat penelitian satu per satu</DialogDescription>
       </DialogHeader>
+      <div class="max-h-[200px] flex flex-col overflow-auto text-sm">
+        <div v-for="(minat, index) in newData" class="flex justify-between">
+          <div class="content-center">{{ minat }}</div>
+          <Button variant="link" @click="hapus(index)">Hapus</Button>
+        </div>
+      </div>
+      <input type="text" class="border rounded-md px-2 py-1 text-sm" placeholder="" v-model="inputMinat" />
+      <Button @click="tambah(inputMinat)" class="w-[100px] text-start bg-green-600 hover:bg-green-800">+
+        Minat
+      </Button>
       <DialogFooter>
         <DialogClose as-child>
           <Button variant="secondary" class="cursor-pointer w-[100px]" @click="">Cancel</Button>

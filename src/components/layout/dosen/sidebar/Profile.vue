@@ -10,11 +10,6 @@ import Button from '@/components/ui/button/Button.vue';
       </RouterLink>
     </div>
     <div>
-      <RouterLink to="/dosen/profile/penelitian">
-        <Button variant="link">Penelitian</Button>
-      </RouterLink>
-    </div>
-    <div>
       <RouterLink to="/dosen/profile/keamanan">
         <Button variant="link">Keamanan</Button>
       </RouterLink>

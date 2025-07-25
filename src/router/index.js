@@ -9,11 +9,11 @@ import AdminCreateDosen from "@/views/admin/dosen/Create.vue"
 import AdminTendik from "@/views/admin/Tendik.vue"
 
 import DosenHome from "@/views/dosen/Home.vue"
-import DosenTaPengajuan from "@/views/dosen/tugas-akhir/Pengajuan.vue"
-import DosenPermintaanPbb from "@/views/dosen/tugas-akhir/PermintaanPbb.vue"
-import DosenBimbingan from "@/views/dosen/tugas-akhir/Bimbingan.vue"
+import DosenPenelitianMinat from "@/views/dosen/penelitian/Minat.vue"
+import DosenTaUsulan from "@/views/dosen/tugas-akhir/Usulan.vue"
+import DosenTaPermintaanPbb from "@/views/dosen/tugas-akhir/PermintaanPbb.vue"
+import DosenTaBimbingan from "@/views/dosen/tugas-akhir/Bimbingan.vue"
 import DosenProfilePribadi from "@/views/dosen/profile/Pribadi.vue"
-import DosenProfilePenelitian from "@/views/dosen/profile/Penelitian.vue"
 import DosenProfileKeamanan from "@/views/dosen/profile/Keamanan.vue"
 
 import TendikHome from "@/views/tendik/Home.vue"
@@ -34,11 +34,11 @@ const router = createRouter({
     { path: '/admin/tendik', component: AdminTendik },
 
     { path: '/dosen', component: DosenHome },
-    { path: '/dosen/tugas-akhir/pengajuan', component: DosenTaPengajuan },
-    { path: '/dosen/tugas-akhir/permintaan-pbb', component: DosenPermintaanPbb },
-    { path: '/dosen/tugas-akhir/bimbingan', component: DosenBimbingan },
+    { path: '/dosen/penelitian/minat', component: DosenPenelitianMinat },
+    { path: '/dosen/tugas-akhir/usulan', component: DosenTaUsulan },
+    { path: '/dosen/tugas-akhir/permintaan-pbb', component: DosenTaPermintaanPbb },
+    { path: '/dosen/tugas-akhir/bimbingan', component: DosenTaBimbingan },
     { path: '/dosen/profile/pribadi', component: DosenProfilePribadi },
-    { path: '/dosen/profile/penelitian', component: DosenProfilePenelitian },
     { path: '/dosen/profile/keamanan', component: DosenProfileKeamanan },
 
     { path: '/tendik', component: TendikHome },

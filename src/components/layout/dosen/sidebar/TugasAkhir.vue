@@ -5,8 +5,8 @@ import Button from '@/components/ui/button/Button.vue';
 <template>
   <div class="sidebar-nav">
     <div>
-      <RouterLink to="/dosen/tugas-akhir/pengajuan">
-        <Button variant="link">Pengajuan Judul</Button>
+      <RouterLink to="/dosen/tugas-akhir/usulan">
+        <Button variant="link">Usulan Judul</Button>
       </RouterLink>
     </div>
     <div>
