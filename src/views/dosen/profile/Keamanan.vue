@@ -1,8 +1,8 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { baseUrl } from '@/baseUrl';
-import Header from '@/components/layout/dosen/Header.vue';
-import Profile from '@/components/layout/dosen/sidebar/Profile.vue';
+import Header from '@/components/dosen/layout/Header.vue';
+import Profile from '@/components/dosen/layout/sidebar/Profile.vue';
 import GantiPassword from '@/components/GantiPassword.vue';
 
 const username = localStorage.getItem('username')

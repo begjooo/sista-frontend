@@ -1,9 +1,34 @@
 <script setup>
 import { ref } from 'vue'
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectLabel, SelectItem } from '@/components/ui/select';
+import { useRouter } from 'vue-router';
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import Button from './ui/button/Button.vue';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog'
+import { baseUrl } from '@/baseUrl';
+
+const router = useRouter()
+const username = localStorage.getItem('username')
 
 const props = defineProps(['dosenList'])
 const kbkList = ['Nirkabel', 'Infrastruktur Jaringan', 'Layanan dan Aplikasi']
@@ -11,73 +36,66 @@ const selectedKbk = ref('')
 const dosenPerKbk = ref()
 const selectedDosen = ref()
 const selectedMinat = ref('')
+const judulPerMinat = ref()
+
 const selectedJudul = ref({
-  name: '',
+  judul: '',
   deskripsi: '',
   type: '',
 })
-const minatListDummy = [
-  {
-    name: 'Minat A',
-    judul: [
-      {
-        name: 'Judul A Minat A',
-        deskripsi: 'asd asd asd asd',
-        type: 'dosen',
-      },
-      {
-        name: 'Judul B Minat A',
-        deskripsi: 'asd asd',
-        type: 'dosen',
-      },
-    ],
-  },
-  {
-    name: 'Minat B',
-    judul: [
-      {
-        name: 'Judul A Minat B',
-        deskripsi: 'zxc zxc zxc zxc',
-        type: 'dosen',
-      },
-      {
-        name: 'Judul B Minat B',
-        deskripsi: 'zxc zxc',
-        type: 'dosen',
-      },
-    ],
-  },
-  {
-    name: 'Minat C',
-    judul: [
-      {
-        name: 'Judul A Minat C',
-        deskripsi: 'qwe qwe qwe qwe',
-        type: 'dosen',
-      },
-      {
-        name: 'Judul B Minat C',
-        deskripsi: 'qwe qwe',
-        type: 'dosen',
-      },
-    ],
-  },
-]
-const judulPerMinatDummy = ref()
 
 function handleKbk(kbk) {
   selectedKbk.value = kbk
   dosenPerKbk.value = props.dosenList.filter((item) => item.kbk === kbk)
-  // selectedMinat.value = null
+  selectedJudul.value = {
+    judul: '',
+    deskripsi: '',
+    type: '',
+  }
 }
 
 function handleMinat(minat) {
-  selectedMinat.value = minat.name
-  judulPerMinatDummy.value = minat.judul
+  selectedMinat.value = minat
+  judulPerMinat.value = selectedDosen.value.tugas_akhir.filter((item) => item.minat === minat)
+  selectedJudul.value = {
+    judul: '',
+    deskripsi: '',
+    type: '',
+  }
 }
 
 async function submit() {
   console.log(`submit pengajuan ta`)
+  let type = `dosen`
+  if (selectedJudul.value.type === `mahasiswa`) {
+    type = `mahasiswa`
+  }
+
+  const permintaanPbb = {
+    kbk: selectedKbk.value,
+    calonPbbUtama: selectedDosen.value.username,
+    minat: selectedMinat.value,
+    judul: selectedJudul.value.judul,
+    deskripsi: selectedJudul.value.deskripsi,
+    type,
+  }
+
+  try {
+    const result = await fetch(`${baseUrl}/mhs/${username}/tugas-akhir/usulan/tambah`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(permintaanPbb),
+    })
+
+    if (result) {
+      router.push(`/`)
+    } else {
+      console.log(`failed submit usulan pbb`)
+    }
+  } catch (error) {
+    console.log(error)
+  }
+  console.log(permintaanPbb)
 }
 </script>
 
@@ -102,18 +120,19 @@ async function submit() {
 
       <div v-if="selectedDosen" class="col-span-3 max-h-[60vh] overflow-auto">
         <div class="flex flex-wrap justify-center gap-4 mb-2">
-          <div v-for="minat in minatListDummy" class="cursor-pointer">
-            <Button variant="outline" @click="handleMinat(minat)">{{ minat.name }}</Button>
+          <div v-for="minat in selectedDosen.minat" class="cursor-pointer">
+            <Button variant="outline" @click="handleMinat(minat)">{{ minat }}</Button>
           </div>
         </div>
 
         <div class="flex flex-col gap-2">
+          {{ judulPerMinat }}
           <RadioGroup v-model="selectedJudul">
-            <div v-for="judul in judulPerMinatDummy" class="flex space-x-2 p-2 border rounded-md">
-              <RadioGroupItem :id="judul.name" :value="judul" />
+            <div v-for="item in judulPerMinat" class="flex space-x-2 p-2 border rounded-md">
+              <RadioGroupItem :id="item.judul" :value="{ judul: item.judul, deskripsi: item.deskripsi }" />
               <div class="flex flex-col gap-1">
-                <Label :for="judul.name" class="cursor-pointer">{{ judul.name }}</Label>
-                <label :for="judul.name" class="cursor-pointer">{{ judul.deskripsi }}</label>
+                <Label :for="item.judul" class="cursor-pointer">{{ item.judul }}</Label>
+                <label :for="item.judul" class="cursor-pointer">{{ item.deskripsi }}</label>
               </div>
             </div>
           </RadioGroup>
@@ -130,7 +149,7 @@ async function submit() {
                     <div class="text-gray-800 italic text-base">Judul</div>
                     <input
                       class="border-b border-orange-600 resize-none focus:outline-0 focus:border-blue-800 w-[50vh] pb-2"
-                      placeholder="Judul Tugas Akhir ..." v-model="selectedJudul.name" />
+                      placeholder="Judul Tugas Akhir ..." v-model="selectedJudul.judul" />
                   </div>
                   <div>
                     <div class="text-gray-800 italic text-base mt-2">Deskripsi</div>
@@ -143,7 +162,59 @@ async function submit() {
           </RadioGroup>
         </div>
 
-        <Button class="my-2" @click="submit" :disabled="!selectedJudul.name || !selectedJudul.deskripsi">Submit</Button>
+        <Dialog>
+          <DialogTrigger as-child>
+            <Button class="my-2" :disabled="!selectedJudul.judul || !selectedJudul.deskripsi">
+              Submit
+            </Button>
+          </DialogTrigger>
+          <DialogContent class="min-w-[200px] text-sm">
+            <DialogHeader>
+              <DialogTitle>Rekap Usulan Pembimbing</DialogTitle>
+              <DialogDescription>Pastikan semua data sudah benar!</DialogDescription>
+            </DialogHeader>
+
+            <div class="sm:grid grid-cols-4 gap-1">
+              <div>KBK</div>
+              <div class="col-span-3">{{ selectedKbk }}</div>
+              <div>Dosen</div>
+              <div class="col-span-3">{{ selectedDosen.fullname }}</div>
+              <div>Minat</div>
+              <div class="col-span-3">{{ selectedMinat }}</div>
+              <div>Judul</div>
+              <div class="col-span-3">{{ selectedJudul.judul }}</div>
+              <div>Deskripsi</div>
+              <div class="col-span-3">{{ selectedJudul.deskripsi }}</div>
+            </div>
+
+            <DialogFooter>
+              <DialogClose as-child>
+                <Button variant="secondary" class="cursor-pointer w-[100px]" @click="">Cancel</Button>
+              </DialogClose>
+              <DialogClose as-child>
+                <AlertDialog>
+                  <AlertDialogTrigger>
+                    <Button class="" :disabled="!selectedJudul.judul || !selectedJudul.deskripsi">
+                      Kirim Permintaan
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Rekap Usulan Pembimbing</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Pastikan data sudah benar! Pengiriman tidak dapat dikembalikan!
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction @click="submit">Saya sangat yakin!</AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </DialogClose>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   </div>

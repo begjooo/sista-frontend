@@ -3,7 +3,7 @@ import { onMounted, ref } from 'vue';
 import { useRouter, RouterLink } from 'vue-router';
 import { baseUrl } from '@/baseUrl';
 
-import Header from '../../components/layout/dosen/Header.vue';
+import Header from '../../components/dosen/layout/Header.vue';
 
 const username = localStorage.getItem('username')
 const userData = ref()
@@ -24,7 +24,7 @@ onMounted(async () => {
   <Header />
 
   <div class="body-head">
-    <div v-if="userData">
+    <div v-if="userData" class="">
       Selamat datang {{ userData.fullname }}
     </div>
   </div>

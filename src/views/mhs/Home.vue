@@ -3,8 +3,7 @@ import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { baseUrl } from '@/baseUrl';
 
-import Header from '../../components/layout/mhs/Header.vue';
-import Button from '@/components/ui/button/Button.vue';
+import Header from '../../components/mhs/layout/Header.vue';
 
 const username = localStorage.getItem('username')
 const userData = ref()
@@ -23,8 +22,10 @@ onMounted(async () => {
 <template>
   <Header />
 
-  <div v-if="userData">
-    Selamat datang {{ userData.name }}
+  <div class="body-head">
+    <div v-if="userData">
+      Selamat datang {{ userData.pribadi.name }}
+    </div>
   </div>
 </template>
 

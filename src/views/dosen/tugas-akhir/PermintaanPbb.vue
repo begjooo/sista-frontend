@@ -1,6 +1,7 @@
 <script setup>
-import Header from '@/components/layout/dosen/Header.vue';
-import TugasAkhir from '@/components/layout/dosen/sidebar/TugasAkhir.vue';
+import Header from '@/components/dosen/layout/Header.vue';
+import TugasAkhir from '@/components/dosen/layout/sidebar/TugasAkhir.vue';
+
 
 </script>
 

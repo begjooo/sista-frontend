@@ -1,9 +1,8 @@
 <script setup>
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { Label } from '@/components/ui/label'
+import { baseUrl } from '@/baseUrl';
 import Button from '@/components/ui/button/Button.vue';
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectLabel, SelectItem } from '@/components/ui/select';
 import {
   Dialog,
   DialogClose,
@@ -14,15 +13,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { baseUrl } from '@/baseUrl';
 
 const router = useRouter()
 
 const username = localStorage.getItem('username')
-const props = defineProps(['currentData', 'job'])
+const props = defineProps(['currentData'])
 
 const inputMinat = ref('')
-const newData = ref([])
+const newData = ref(props.currentData)
 
 function tambah(minat) {
   newData.value.push(minat)
@@ -37,7 +35,7 @@ async function submit() {
   console.log(`update minat`)
   console.log(newData.value)
   try {
-    const response = await fetch(`${baseUrl}/${props.job}/data/${username}/minat/tambah`, {
+    const response = await fetch(`${baseUrl}/dosen/${username}/minat/tambah`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newData.value),
@@ -47,7 +45,7 @@ async function submit() {
 
     if (result.status) {
       console.log(`update data success`)
-      router.push('/')
+      // router.push('/')
     } else {
       console.log(`update data failed!`)
     }
@@ -55,14 +53,6 @@ async function submit() {
     console.log(error)
   }
 }
-
-onMounted(async () => {
-  if (!props.currentData) {
-    newData.value = []
-  } else {
-    newData.value = props.currentData
-  }
-})
 </script>
 
 <template>
@@ -77,12 +67,14 @@ onMounted(async () => {
         <DialogTitle>Data Minat Penelitian</DialogTitle>
         <DialogDescription>Tambahkan minat penelitian satu per satu</DialogDescription>
       </DialogHeader>
+
       <div class="max-h-[200px] flex flex-col overflow-auto text-sm">
         <div v-for="(minat, index) in newData" class="flex justify-between">
           <div class="content-center">{{ minat }}</div>
           <Button variant="link" @click="hapus(index)">Hapus</Button>
         </div>
       </div>
+
       <input type="text" class="border rounded-md px-2 py-1 text-sm" placeholder="" v-model="inputMinat" />
       <Button @click="tambah(inputMinat)" class="w-[100px] text-start bg-green-600 hover:bg-green-800">+
         Minat
@@ -91,7 +83,7 @@ onMounted(async () => {
         <DialogClose as-child>
           <Button variant="secondary" class="cursor-pointer w-[100px]" @click="">Cancel</Button>
         </DialogClose>
-        <Button class="cursor-pointer w-[100px]" @click="submit">Submit</Button>
+        <Button class="cursor-pointer w-[150px]" @click="submit">Save Changes</Button>
       </DialogFooter>
     </DialogContent>
   </Dialog>

@@ -1,8 +1,8 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { baseUrl } from '@/baseUrl';
-import Header from '@/components/layout/dosen/Header.vue';
-import Penelitian from '@/components/layout/dosen/sidebar/Penelitian.vue';
+import Header from '@/components/dosen/layout/Header.vue';
+import Penelitian from '@/components/dosen/layout/sidebar/Penelitian.vue';
 import EditMinat from '@/components/dosen/EditMinat.vue';
 
 const username = localStorage.getItem('username')
@@ -13,7 +13,6 @@ onMounted(async () => {
   try {
     const response = await fetch(`${baseUrl}/dosen/data/${username}/minat`)
     userData.value = await response.json()
-    console.log(userData.value)
   } catch (error) {
     console.log(error)
   }
@@ -32,7 +31,7 @@ onMounted(async () => {
         </div>
       </div>
 
-      <EditMinat :currentData="userData.minat" :job="'dosen'" />
+      <EditMinat :currentData="userData.minat" />
     </div>
   </div>
 </template>

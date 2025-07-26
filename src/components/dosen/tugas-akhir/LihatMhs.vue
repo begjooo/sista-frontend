@@ -1,0 +1,88 @@
+<script setup>
+import { baseUrl } from '@/baseUrl';
+import Button from '@/components/ui/button/Button.vue';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
+import { onMounted, ref } from 'vue';
+
+const props = defineProps(['mhsList'])
+const mhsDataPribadi = ref()
+const mhsPortofolio = ref()
+
+async function lihatMhs(username) {
+  console.log(username)
+  try {
+    const response = await fetch(`${baseUrl}/mhs/data/${username}`)
+    const data = await response.json()
+    console.log(data)
+    if (!data) {
+      mhsDataPribadi.value = null
+      mhsPortofolio.value = null
+    } else {
+      mhsDataPribadi.value = data.pribadi
+      mhsPortofolio.value = data.portofolio
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+</script>
+
+<template>
+  <span v-for="(mhs, index) in props.mhsList">
+    <Dialog>
+      <DialogTrigger as-child>
+        <span class="font-semibold cursor-pointer hover:underline" @click="lihatMhs(mhs.username)">
+          {{ mhs.name }}
+        </span>
+      </DialogTrigger>
+      <DialogContent class="min-w-[300px]">
+        <DialogHeader>
+          <DialogTitle>Data Mahasiswa</DialogTitle>
+          <DialogDescription></DialogDescription>
+        </DialogHeader>
+
+        <div v-if="mhsDataPribadi">
+          <div class="border rounded-md text-sm max-h-[400px] overflow-y-auto px-2 py-1">
+            <div class="">
+              <div class="flex flex-col font-semibold text-center">
+                <div>{{ mhsDataPribadi.name }} [{{ mhsDataPribadi.username }}]</div>
+                <div>{{ mhsDataPribadi.kelas }} | {{ mhsDataPribadi.prodi }} | {{ mhsDataPribadi.tahun_ajaran }}</div>
+              </div>
+
+              <div class="mt-2">
+                <div class="font-semibold">Portofolio</div>
+                <div v-if="mhsPortofolio">
+                  <div v-for="portofolio in mhsPortofolio">
+                    <div>{{ portofolio }}</div>
+                  </div>
+                </div>
+                <div v-else>
+                  Tidak ada data
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div v-else class="text-center text-red-600 font-semibold">
+          Data {{ mhs.name }} NIM {{ mhs.username }} tidak ditemukan!
+        </div>
+
+        <DialogFooter>
+          <DialogClose as-child>
+            <Button variant="destructive" class="cursor-pointer w-[100px]">Close</Button>
+          </DialogClose>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+    <span v-if="props.mhsList.length > 1 && (index + 1) !== props.mhsList.length">, </span>
+  </span>
+</template>
