@@ -23,13 +23,13 @@ const username = localStorage.getItem('username')
 const data = ref({})
 const usulanTaList = ref([])
 
-async function hapus(index) {
-  console.log(`hapus! ${index}`)
+async function hapus(index, taId) {
+  console.log(`hapus! ${index} ${taId}`)
   try {
     const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan/hapus`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ index }),
+      body: JSON.stringify({ taId }),
     });
 
     const result = await response.json()
@@ -48,9 +48,9 @@ onMounted(async () => {
   try {
     const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan/list`)
     data.value = await response.json()
-    console.log(data.value)
+    // console.log(data.value)
     usulanTaList.value = data.value.usulanTa
-    console.log(usulanTaList.value)
+    // console.log(usulanTaList.value)
   } catch (error) {
     console.log(error)
     data.value = {}
@@ -74,14 +74,13 @@ onMounted(async () => {
         <div class="font-semibold mb-2 text-center">Daftar Usulan Tugas Akhir</div>
         <div class="flex flex-col gap-2">
           <div v-for="(usulan, index) in usulanTaList" class="rounded-md p-2 bg-blue-50">
-            <div v-if="usulan.mhs_peminta.length !== 0 || usulan.mhs_diskusi.length !== 0">Status</div>
-            <div :class="{ 'border-b mb-1 pb-1': usulan.mhs_peminta.length !== 0 || usulan.mhs_diskusi.length !== 0 }"
+            <div :class="{ 'border-b mb-1 pb-1': usulan.mhs_pengusul.length !== 0 || usulan.mhs_diskusi.length !== 0 }"
               class="flex flex-col">
-              <div v-if="usulan.mhs_peminta.length !== 0">
+              <div v-if="usulan.mhs_pengusul.length !== 0">
                 <span class="font-semibold">Permintaan</span>
                 dari
-                <span v-if="usulan.mhs_peminta.length !== 0">
-                  <LihatMhs :mhsList="usulan.mhs_peminta" />
+                <span v-if="usulan.mhs_pengusul.length !== 0">
+                  <LihatMhs :mhsList="usulan.mhs_pengusul" />
                 </span>
               </div>
               <div v-if="usulan.mhs_diskusi.length !== 0">
@@ -108,8 +107,8 @@ onMounted(async () => {
 
             <AlertDialog>
               <AlertDialogTrigger>
-                <div class="text-red-600 hover:text-red-400 cursor-pointer">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 24 24">
+                <div class="text-red-600 hover:text-red-400 cursor-pointer mt-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24">
                     <path fill="currentColor"
                       d="M7 21q-.825 0-1.412-.587T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.587 1.413T17 21zM17 6H7v13h10zM9 17h2V8H9zm4 0h2V8h-2zM7 6v13z" />
                   </svg>
@@ -124,7 +123,7 @@ onMounted(async () => {
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction @click="hapus(index)">Yes i'am sure</AlertDialogAction>
+                  <AlertDialogAction @click="hapus(index, usulan.id)">Yes i'am sure</AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>

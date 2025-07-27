@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router';
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import Button from './ui/button/Button.vue';
+import Button from '@/components/ui/button/Button.vue';
 import {
   Dialog,
   DialogClose,
@@ -30,7 +30,7 @@ import { baseUrl } from '@/baseUrl';
 const router = useRouter()
 const username = localStorage.getItem('username')
 
-const props = defineProps(['dosenList'])
+const props = defineProps(['dosenList', 'dosenDegree', 'mhsName'])
 const kbkList = ['Nirkabel', 'Infrastruktur Jaringan', 'Layanan dan Aplikasi']
 const selectedKbk = ref('')
 const dosenPerKbk = ref()
@@ -39,6 +39,7 @@ const selectedMinat = ref('')
 const judulPerMinat = ref()
 
 const selectedJudul = ref({
+  ta_id: '',
   judul: '',
   deskripsi: '',
   type: '',
@@ -48,6 +49,7 @@ function handleKbk(kbk) {
   selectedKbk.value = kbk
   dosenPerKbk.value = props.dosenList.filter((item) => item.kbk === kbk)
   selectedJudul.value = {
+    ta_id: '',
     judul: '',
     deskripsi: '',
     type: '',
@@ -56,8 +58,9 @@ function handleKbk(kbk) {
 
 function handleMinat(minat) {
   selectedMinat.value = minat
-  judulPerMinat.value = selectedDosen.value.tugas_akhir.filter((item) => item.minat === minat)
+  judulPerMinat.value = selectedDosen.value.usulan_ta.filter((item) => item.minat === minat)
   selectedJudul.value = {
+    ta_id: '',
     judul: '',
     deskripsi: '',
     type: '',
@@ -71,13 +74,19 @@ async function submit() {
     type = `mahasiswa`
   }
 
+  console.log(selectedJudul.value)
   const permintaanPbb = {
+    id: selectedJudul.value.ta_id,
+    name: props.mhsName,
+    dosen_username: selectedDosen.value.username,
+    dosen_fullname: selectedDosen.value.fullname,
     kbk: selectedKbk.value,
-    calonPbbUtama: selectedDosen.value.username,
     minat: selectedMinat.value,
     judul: selectedJudul.value.judul,
     deskripsi: selectedJudul.value.deskripsi,
+    degree: props.dosenDegree,
     type,
+    tahap: 'Pengusulan',
   }
 
   try {
@@ -126,10 +135,10 @@ async function submit() {
         </div>
 
         <div class="flex flex-col gap-2">
-          {{ judulPerMinat }}
           <RadioGroup v-model="selectedJudul">
             <div v-for="item in judulPerMinat" class="flex space-x-2 p-2 border rounded-md">
-              <RadioGroupItem :id="item.judul" :value="{ judul: item.judul, deskripsi: item.deskripsi }" />
+              <RadioGroupItem :id="item.judul"
+                :value="{ ta_id: item.id, judul: item.judul, deskripsi: item.deskripsi }" />
               <div class="flex flex-col gap-1">
                 <Label :for="item.judul" class="cursor-pointer">{{ item.judul }}</Label>
                 <label :for="item.judul" class="cursor-pointer">{{ item.deskripsi }}</label>
@@ -141,7 +150,7 @@ async function submit() {
         <div class="border rounded-md" :class="{ 'mt-2': selectedMinat }">
           <RadioGroup v-model="selectedJudul">
             <div class="flex space-x-2 p-2">
-              <RadioGroupItem id="mahasiswa" :value="{ judul: '', deskripsi: '', type: 'mahasiswa' }" />
+              <RadioGroupItem id="mahasiswa" :value="{ ta_id: '', judul: '', deskripsi: '', type: 'mahasiswa' }" />
               <div class="flex flex-col gap-2">
                 <Label for="mahasiswa" class="cursor-pointer">Pengajuan Mandiri</Label>
                 <div v-if="selectedJudul.type === 'mahasiswa'">

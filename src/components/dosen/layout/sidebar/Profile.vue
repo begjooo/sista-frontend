@@ -6,12 +6,12 @@ import Button from '@/components/ui/button/Button.vue';
   <div class="sidebar-nav">
     <div>
       <RouterLink to="/dosen/profile/pribadi">
-        <Button variant="link">Pribadi</Button>
+        <Button variant="link" class="text-white">Pribadi</Button>
       </RouterLink>
     </div>
     <div>
       <RouterLink to="/dosen/profile/keamanan">
-        <Button variant="link">Keamanan</Button>
+        <Button variant="link" class="text-white">Keamanan</Button>
       </RouterLink>
     </div>
   </div>

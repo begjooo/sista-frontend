@@ -10,7 +10,7 @@
   align-content: flex-end;
   position: fixed;
   overflow: auto;
-  background: lightgray;
+  background: #FF8000;
 }
 
 .sidebar-nav {
@@ -19,7 +19,8 @@
   margin-top: 10vh;
   position: fixed;
   overflow: auto;
-  background-color: darkgray;
+  background-color: #334D80;
+  color: white;
 }
 
 .body-head {

@@ -28,8 +28,8 @@ async function logout() {
         <RouterLink to="/mhs">
           <Button variant="link">Home</Button>
         </RouterLink>
-        <RouterLink to="/mhs/pengajuan-ta">
-          <Button variant="link">Pemilihan Pembimbing</Button>
+        <RouterLink to="/mhs/tugas-akhir/usulan-pbb">
+          <Button variant="link">Tugas Akhir</Button>
         </RouterLink>
       </div>
 

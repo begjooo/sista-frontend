@@ -6,17 +6,17 @@ import Button from '@/components/ui/button/Button.vue';
   <div class="sidebar-nav">
     <div>
       <RouterLink to="/dosen/tugas-akhir/usulan">
-        <Button variant="link">Usulan Judul</Button>
+        <Button variant="link" class="text-white">Usulan Judul</Button>
       </RouterLink>
     </div>
     <div>
-      <RouterLink to="/dosen/tugas-akhir/permintaan-pbb">
-        <Button variant="link">Permintaan Bimbingan</Button>
+      <RouterLink to="/dosen/tugas-akhir/usulan-mhs">
+        <Button variant="link" class="text-white">Usulan Judul MHS</Button>
       </RouterLink>
     </div>
     <div>
       <RouterLink to="/dosen/tugas-akhir/bimbingan">
-        <Button variant="link">Bimbingan</Button>
+        <Button variant="link" class="text-white">Bimbingan</Button>
       </RouterLink>
     </div>
   </div>

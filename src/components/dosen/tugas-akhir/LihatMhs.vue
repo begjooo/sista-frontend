@@ -20,7 +20,7 @@ const mhsPortofolio = ref()
 async function lihatMhs(username) {
   console.log(username)
   try {
-    const response = await fetch(`${baseUrl}/mhs/data/${username}`)
+    const response = await fetch(`${baseUrl}/mhs/${username}/data`)
     const data = await response.json()
     console.log(data)
     if (!data) {

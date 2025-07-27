@@ -29,9 +29,8 @@ async function submit() {
     minat: inputMinat.value,
     judul: inputJudul.value,
     deskripsi: inputDeskripsi.value,
-    mhs_peminta: [],
+    mhs_pengusul: [],
     mhs_diskusi: [],
-    bimbingan: {},
   }
   console.log(data)
   try {
