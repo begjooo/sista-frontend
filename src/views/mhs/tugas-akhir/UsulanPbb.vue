@@ -44,11 +44,15 @@ onMounted(async () => {
   <div class="body-head-side text-sm">
     <div v-if="mhsData && dosenList">
       <div v-if="jmlCalonPbbUtama.length !== 0">
-        <div v-for="pbb in mhsData.usulan_ta" class="border p-2">
+        <div v-for="pbb in mhsData.usulan_ta" class="border-b p-2">
           <div>Judul {{ pbb.judul }}</div>
           <div>KBK {{ pbb.kbk }} dengan minat {{ pbb.minat }}.</div>
           <div>{{ pbb.dosen_fullname }} sebagai Calon {{ pbb.degree }}.</div>
           <div>Status {{ pbb.tahap }}</div>
+          <div v-if="pbb.tahap === 'Diskusi'" class="border rounded-md my-1 px-2 py-1">
+            <div class="italic font-semibold">Pesan dari dosen</div>
+            <div>{{ pbb.msg }}</div>
+          </div>
         </div>
       </div>
       <div>

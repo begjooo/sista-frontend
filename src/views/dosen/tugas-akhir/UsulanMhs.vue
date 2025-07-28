@@ -6,8 +6,10 @@ import TugasAkhir from '@/components/dosen/layout/sidebar/TugasAkhir.vue';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -17,6 +19,7 @@ const username = localStorage.getItem('username')
 const usulanTaList = ref([])
 const mhsDataPribadi = ref()
 const mhsPortofolio = ref()
+const inputMsg = ref('')
 
 async function lihatMhs(username) {
   console.log(username)
@@ -33,6 +36,22 @@ async function lihatMhs(username) {
     }
   } catch (error) {
     console.log(error)
+  }
+}
+
+async function sendMsg(taId, mhsUsername, mhsName) {
+  console.log(mhsUsername, mhsName)
+  if (inputMsg.value) {
+    try {
+      const response = await fetch(`${baseUrl}/mhs/${mhsUsername}/tugas-akhir/usulan/diskusi`, {
+        method: `POST`,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: taId, dosenUsername: username, mhsUsername, mhsName, message: inputMsg.value })
+      })
+      inputMsg.value = ''
+    } catch (error) {
+      console.log(error)
+    }
   }
 }
 
@@ -65,7 +84,12 @@ onMounted(async () => {
               dengan {{ usulan.name }}
             </span>
             sebagai <span class="font-semibold">{{ usulan.degree }}</span>
+            <div v-if="usulan.tahap === 'Diskusi'" class="border rounded-md mt-1 px-2 py-1">
+              <div>Pesan anda kepada mahasiswa</div>
+              <div class="italic">{{ usulan.msg }}</div>
+            </div>
           </div>
+
 
           <div class="flex flex-wrap border-b mb-1 pb-1">
             <div class="min-w-[150px]">KBK</div>
@@ -123,7 +147,31 @@ onMounted(async () => {
           </DialogContent>
         </Dialog>
 
-        <Button variant="link" class="cursor-pointer">Ajak Diskusi</Button>
+        <Dialog>
+          <DialogTrigger as-child>
+            <Button variant="" class="cursor-pointer">
+              Jadwalkan Diskusi
+            </Button>
+          </DialogTrigger>
+          <DialogContent class="min-w-[200px]">
+            <DialogHeader>
+              <DialogTitle></DialogTitle>
+              <DialogDescription>Kirim pesan kepada mahasiswa untuk waktu dan tempat diskusi</DialogDescription>
+            </DialogHeader>
+
+            <textarea type="text" class="border rounded-md px-2 py-1 text-sm max-h-[200px] min-h-[50px]" placeholder=""
+              v-model="inputMsg" />
+
+            <DialogFooter>
+              <DialogClose as-child>
+                <Button variant="secondary" class="cursor-pointer w-[100px]">Cancel</Button>
+              </DialogClose>
+              <Button class="cursor-pointer w-[100px]"
+                @click="sendMsg(usulan.id, usulan.username, usulan.name)">Send</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
         <Button variant="link" class="cursor-pointer">Tolak</Button>
       </div>
     </div>
