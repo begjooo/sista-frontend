@@ -39,7 +39,7 @@ async function lihatMhs(username) {
   }
 }
 
-async function sendMsg(taId, mhsUsername, mhsName) {
+async function diskusiUsulan(taId, mhsUsername, mhsName) {
   console.log(mhsUsername, mhsName)
   if (inputMsg.value) {
     try {
@@ -52,6 +52,32 @@ async function sendMsg(taId, mhsUsername, mhsName) {
     } catch (error) {
       console.log(error)
     }
+  }
+}
+
+async function terimaUsulan(taId, mhsUsername) {
+  console.log(mhsUsername)
+  try {
+    const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan/terima`, {
+      method: `POST`,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: taId, username: username, mhsUsername })
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+async function tolakUsulan(taId, mhsUsername) {
+  console.log(mhsUsername)
+  try {
+    const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan/tolak`, {
+      method: `POST`,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: taId, username: username, mhsUsername })
+    })
+  } catch (error) {
+    console.log(error)
   }
 }
 
@@ -85,7 +111,7 @@ onMounted(async () => {
             </span>
             sebagai <span class="font-semibold">{{ usulan.degree }}</span>
             <div v-if="usulan.tahap === 'Diskusi'" class="border rounded-md mt-1 px-2 py-1">
-              <div>Pesan anda kepada mahasiswa</div>
+              <div>Pesan anda kepada {{ usulan.name }}</div>
               <div class="italic">{{ usulan.msg }}</div>
             </div>
           </div>
@@ -108,71 +134,81 @@ onMounted(async () => {
             <div class="text-justify flex-auto">{{ usulan.deskripsi }}</div>
           </div>
         </div>
-        <Dialog>
-          <DialogTrigger as-child>
-            <Button variant="link" @click="lihatMhs(usulan.username)" class="cursor-pointer">Profile MHS</Button>
-          </DialogTrigger>
-          <DialogContent class="min-w-[300px]">
-            <DialogHeader>
-              <DialogTitle>Data Mahasiswa</DialogTitle>
-              <DialogDescription></DialogDescription>
-            </DialogHeader>
 
-            <div v-if="mhsDataPribadi">
-              <div class="border rounded-md text-sm max-h-[400px] overflow-y-auto px-2 py-1">
-                <div class="">
-                  <div class="flex flex-col font-semibold text-center">
-                    <div>{{ mhsDataPribadi.name }} [{{ mhsDataPribadi.username }}]</div>
-                    <div>{{ mhsDataPribadi.kelas }} | {{ mhsDataPribadi.prodi }} | {{ mhsDataPribadi.tahun_ajaran }}
-                    </div>
-                  </div>
+        <div class="flex flex-wrap gap-2">
+          <Dialog>
+            <DialogTrigger as-child>
+              <Button variant="" @click="lihatMhs(usulan.username)" class="cursor-pointer">
+                Profile MHS
+              </Button>
+            </DialogTrigger>
+            <DialogContent class="min-w-[300px]">
+              <DialogHeader>
+                <DialogTitle>Data Mahasiswa</DialogTitle>
+                <DialogDescription></DialogDescription>
+              </DialogHeader>
 
-                  <div class="mt-2">
-                    <div class="font-semibold">Portofolio</div>
-                    <div v-if="mhsPortofolio">
-                      <div v-for="portofolio in mhsPortofolio">
-                        <div>{{ portofolio }}</div>
+              <div v-if="mhsDataPribadi">
+                <div class="border rounded-md text-sm max-h-[400px] overflow-y-auto px-2 py-1">
+                  <div class="">
+                    <div class="flex flex-col font-semibold text-center">
+                      <div>{{ mhsDataPribadi.name }} [{{ mhsDataPribadi.username }}]</div>
+                      <div>{{ mhsDataPribadi.kelas }} | {{ mhsDataPribadi.prodi }} | {{ mhsDataPribadi.tahun_ajaran }}
                       </div>
                     </div>
-                    <div v-else>
-                      Tidak ada data
+
+                    <div class="mt-2">
+                      <div class="font-semibold">Portofolio</div>
+                      <div v-if="mhsPortofolio">
+                        <div v-for="portofolio in mhsPortofolio">
+                          <div>{{ portofolio }}</div>
+                        </div>
+                      </div>
+                      <div v-else>
+                        Tidak ada data
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div v-else class="text-center text-red-600 font-semibold">
-              Data {{ usulan.name }} NIM {{ usulan.username }} tidak ditemukan!
-            </div>
-          </DialogContent>
-        </Dialog>
+              <div v-else class="text-center text-red-600 font-semibold">
+                Data {{ usulan.name }} NIM {{ usulan.username }} tidak ditemukan!
+              </div>
+            </DialogContent>
+          </Dialog>
 
-        <Dialog>
-          <DialogTrigger as-child>
-            <Button variant="" class="cursor-pointer">
-              Jadwalkan Diskusi
-            </Button>
-          </DialogTrigger>
-          <DialogContent class="min-w-[200px]">
-            <DialogHeader>
-              <DialogTitle></DialogTitle>
-              <DialogDescription>Kirim pesan kepada mahasiswa untuk waktu dan tempat diskusi</DialogDescription>
-            </DialogHeader>
+          <span v-if="usulan.tahap === 'Diskusi' && usulan.message">
+            <Dialog>
+              <DialogTrigger as-child>
+                <Button variant="" class="cursor-pointer">
+                  Jadwalkan Diskusi
+                </Button>
+              </DialogTrigger>
+              <DialogContent class="min-w-[200px]">
+                <DialogHeader>
+                  <DialogTitle></DialogTitle>
+                  <DialogDescription>Kirim pesan kepada mahasiswa untuk waktu dan tempat diskusi</DialogDescription>
+                </DialogHeader>
 
-            <textarea type="text" class="border rounded-md px-2 py-1 text-sm max-h-[200px] min-h-[50px]" placeholder=""
-              v-model="inputMsg" />
+                <textarea type="text" class="border rounded-md px-2 py-1 text-sm max-h-[200px] min-h-[50px]"
+                  placeholder="" v-model="inputMsg" />
 
-            <DialogFooter>
-              <DialogClose as-child>
-                <Button variant="secondary" class="cursor-pointer w-[100px]">Cancel</Button>
-              </DialogClose>
-              <Button class="cursor-pointer w-[100px]"
-                @click="sendMsg(usulan.id, usulan.username, usulan.name)">Send</Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+                <DialogFooter>
+                  <DialogClose as-child>
+                    <Button variant="secondary" class="cursor-pointer w-[100px]">Cancel</Button>
+                  </DialogClose>
+                  <Button class="cursor-pointer w-[100px]"
+                    @click="diskusiUsulan(usulan.id, usulan.username, usulan.name)">Send</Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+          </span>
+          <span v-else>
+            <Button variant="" class="cursor-pointer bg-green-600" @click="terimaUsulan(usulan.id, usulan.username)">Terima</Button>
+          </span>
 
-        <Button variant="link" class="cursor-pointer">Tolak</Button>
+          <Button variant="destructive" class="cursor-pointer" @click="tolakUsulan(usulan.id, usulan.username)">Tolak</Button>
+        </div>
       </div>
     </div>
   </div>
