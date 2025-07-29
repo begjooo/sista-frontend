@@ -13,14 +13,16 @@ import {
 } from '@/components/ui/dialog'
 import { onMounted, ref } from 'vue';
 
+const username = localStorage.getItem('username')
 const props = defineProps(['mhsList'])
 const mhsDataPribadi = ref()
 const mhsPortofolio = ref()
+const inputMsg = ref('')
 
-async function lihatMhs(username) {
-  console.log(username)
+async function lihatMhs(mhsUsername) {
+  console.log(mhsUsername)
   try {
-    const response = await fetch(`${baseUrl}/mhs/${username}/data`)
+    const response = await fetch(`${baseUrl}/mhs/${mhsUsername}/data`)
     const data = await response.json()
     console.log(data)
     if (!data) {
@@ -32,6 +34,22 @@ async function lihatMhs(username) {
     }
   } catch (error) {
     console.log(error)
+  }
+}
+
+async function diskusiUsulan(taId, mhsUsername, mhsName) {
+  console.log(mhsUsername, mhsName)
+  if (inputMsg.value) {
+    // try {
+    //   const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan/diskusi`, {
+    //     method: `POST`,
+    //     headers: { 'Content-Type': 'application/json' },
+    //     body: JSON.stringify({ id: taId, dosenUsername: username, mhsUsername, mhsName, message: inputMsg.value })
+    //   })
+    //   inputMsg.value = ''
+    // } catch (error) {
+    //   console.log(error)
+    // }
   }
 }
 </script>
@@ -78,8 +96,39 @@ async function lihatMhs(username) {
 
         <DialogFooter>
           <DialogClose as-child>
-            <Button variant="destructive" class="cursor-pointer w-[100px]">Close</Button>
+            <Dialog>
+              <DialogTrigger as-child>
+                <Button variant="" class="cursor-pointer">
+                  Jadwalkan Diskusi
+                </Button>
+              </DialogTrigger>
+              <DialogContent class="min-w-[200px]">
+                <DialogHeader>
+                  <DialogTitle></DialogTitle>
+                  <DialogDescription>Kirim pesan kepada mahasiswa untuk waktu dan tempat diskusi</DialogDescription>
+                </DialogHeader>
+
+                {{ mhs }}
+
+                <textarea type="text" class="border rounded-md px-2 py-1 text-sm max-h-[200px] min-h-[50px]"
+                  placeholder="" v-model="inputMsg" />
+
+                <DialogFooter>
+                  <DialogClose as-child>
+                    <Button variant="secondary" class="cursor-pointer w-[100px]">Cancel</Button>
+                  </DialogClose>
+                  <Button class="cursor-pointer w-[100px]"
+                    @click="diskusiUsulan('usulan.id', 'usulan.username', 'usulan.name')">Send</Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
           </DialogClose>
+          <DialogClose as-child>
+            <Button variant="destructive" class="cursor-pointer w-[100px]">Tolak</Button>
+          </DialogClose>
+          <!-- <DialogClose as-child>
+            <Button variant="destructive" class="cursor-pointer w-[100px]">Close</Button>
+          </DialogClose> -->
         </DialogFooter>
       </DialogContent>
     </Dialog>

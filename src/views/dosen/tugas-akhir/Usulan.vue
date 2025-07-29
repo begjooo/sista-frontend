@@ -74,6 +74,7 @@ onMounted(async () => {
         <div class="font-semibold mb-2 text-center">Daftar Usulan Tugas Akhir</div>
         <div class="flex flex-col gap-2">
           <div v-for="(usulan, index) in usulanTaList" class="rounded-md p-2 bg-blue-50">
+            {{ usulan }}
             <div :class="{ 'border-b mb-1 pb-1': usulan.mhs_pengusul.length !== 0 || usulan.mhs_diskusi.length !== 0 }"
               class="flex flex-col">
               <div v-if="usulan.mhs_pengusul.length !== 0">
@@ -130,6 +131,7 @@ onMounted(async () => {
           </div>
         </div>
       </div>
+
       <div class="flex flex-wrap my-2">
         <BuatUsulan :currentData="data" />
       </div>

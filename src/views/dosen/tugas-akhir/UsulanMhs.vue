@@ -43,7 +43,7 @@ async function diskusiUsulan(taId, mhsUsername, mhsName) {
   console.log(mhsUsername, mhsName)
   if (inputMsg.value) {
     try {
-      const response = await fetch(`${baseUrl}/mhs/${mhsUsername}/tugas-akhir/usulan/diskusi`, {
+      const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan/diskusi`, {
         method: `POST`,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: taId, dosenUsername: username, mhsUsername, mhsName, message: inputMsg.value })
