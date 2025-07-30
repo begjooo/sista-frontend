@@ -22,6 +22,7 @@ import {
 const username = localStorage.getItem('username')
 const data = ref({})
 const usulanTaList = ref([])
+const taData = ref()
 
 async function hapus(index, taId) {
   console.log(`hapus! ${index} ${taId}`)
@@ -81,14 +82,14 @@ onMounted(async () => {
                 <span class="font-semibold">Permintaan</span>
                 dari
                 <span v-if="usulan.mhs_pengusul.length !== 0">
-                  <LihatMhs :mhsList="usulan.mhs_pengusul" />
+                  <LihatMhs :mhsList="usulan.mhs_pengusul" :taId="usulan.id" />
                 </span>
               </div>
               <div v-if="usulan.mhs_diskusi.length !== 0">
                 <span class="font-semibold">Diskusi</span>
                 dengan
                 <span v-if="usulan.mhs_diskusi.length !== 0">
-                  <LihatMhs :mhsList="usulan.mhs_diskusi" />
+                  <LihatMhs :mhsList="usulan.mhs_diskusi" :taId="usulan.id" />
                 </span>
               </div>
             </div>

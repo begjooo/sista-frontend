@@ -14,7 +14,7 @@ import {
 import { onMounted, ref } from 'vue';
 
 const username = localStorage.getItem('username')
-const props = defineProps(['mhsList'])
+const props = defineProps(['mhsList', 'taId'])
 const mhsDataPribadi = ref()
 const mhsPortofolio = ref()
 const inputMsg = ref('')
@@ -37,19 +37,19 @@ async function lihatMhs(mhsUsername) {
   }
 }
 
-async function diskusiUsulan(taId, mhsUsername, mhsName) {
-  console.log(mhsUsername, mhsName)
+async function diskusiUsulan(taId, mhsUsername, mhsName, degree) {
+  console.log(taId, mhsUsername, mhsName)
   if (inputMsg.value) {
-    // try {
-    //   const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan/diskusi`, {
-    //     method: `POST`,
-    //     headers: { 'Content-Type': 'application/json' },
-    //     body: JSON.stringify({ id: taId, dosenUsername: username, mhsUsername, mhsName, message: inputMsg.value })
-    //   })
-    //   inputMsg.value = ''
-    // } catch (error) {
-    //   console.log(error)
-    // }
+    try {
+      const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan/diskusi`, {
+        method: `POST`,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: taId, dosenUsername: username, mhsUsername, mhsName, degree: degree, message: inputMsg.value })
+      })
+      // inputMsg.value = ''
+    } catch (error) {
+      console.log(error)
+    }
   }
 }
 </script>
@@ -69,6 +69,8 @@ async function diskusiUsulan(taId, mhsUsername, mhsName) {
         </DialogHeader>
 
         <div v-if="mhsDataPribadi">
+          {{ mhs.degree }}
+          {{ props.taId }}
           <div class="border rounded-md text-sm max-h-[400px] overflow-y-auto px-2 py-1">
             <div class="">
               <div class="flex flex-col font-semibold text-center">
@@ -108,6 +110,7 @@ async function diskusiUsulan(taId, mhsUsername, mhsName) {
                   <DialogDescription>Kirim pesan kepada mahasiswa untuk waktu dan tempat diskusi</DialogDescription>
                 </DialogHeader>
 
+                {{ props.taId }}
                 {{ mhs }}
 
                 <textarea type="text" class="border rounded-md px-2 py-1 text-sm max-h-[200px] min-h-[50px]"
@@ -118,7 +121,7 @@ async function diskusiUsulan(taId, mhsUsername, mhsName) {
                     <Button variant="secondary" class="cursor-pointer w-[100px]">Cancel</Button>
                   </DialogClose>
                   <Button class="cursor-pointer w-[100px]"
-                    @click="diskusiUsulan('usulan.id', 'usulan.username', 'usulan.name')">Send</Button>
+                    @click="diskusiUsulan(props.taId, mhs.username, mhs.name, mhs.degree)">Send</Button>
                 </DialogFooter>
               </DialogContent>
             </Dialog>
