@@ -6,7 +6,7 @@ import Button from '@/components/ui/button/Button.vue';
   <div class="sidebar-nav">
     <div>
       <RouterLink to="/mhs/tugas-akhir/usulan-pbb">
-        <Button variant="link">Usulan Pembimbing</Button>
+        <Button variant="link" class="text-white">Usulan Pembimbing</Button>
       </RouterLink>
     </div>
   </div>

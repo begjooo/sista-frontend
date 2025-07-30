@@ -43,62 +43,73 @@ onMounted(async () => {
 
   <div class="body-head-side text-sm">
     <div v-if="mhsData && dosenList">
-      <div v-if="jmlCalonPbbUtama.length !== 0">
-        <div v-for="pbb in mhsData.usulan_ta" class="border-b p-2">
-          <div>Judul {{ pbb.judul }}</div>
-          <div>KBK {{ pbb.kbk }} dengan minat {{ pbb.minat }}.</div>
-          <div>{{ pbb.dosen_fullname }} sebagai Calon {{ pbb.degree }}.</div>
-          <div>Status {{ pbb.tahap }}</div>
-          <div v-if="pbb.tahap === 'Diskusi'" class="border rounded-md my-1 px-2 py-1">
-            <div class="italic font-semibold">Pesan dari dosen</div>
-            <div>{{ pbb.msg }}</div>
-          </div>
+      <div v-if="mhsData.tugas_akhir">
+        <div class="px-2 py-1">
+          <div class="text-xl">Sudah memiliki Pembimbing</div>
+          <div>Pembimbing Utama: {{ mhsData.tugas_akhir.dosen_fullname }}</div>
+          <div>Judul: {{ mhsData.tugas_akhir.judul }}</div>
+          <div>Peminatan: {{ mhsData.tugas_akhir.minat }}</div>
+          <div>KBK: {{ mhsData.tugas_akhir.kbk }}</div>
         </div>
       </div>
-      <div>
-        Kesempatan anda mengusulkan calon pembimbing utama adalah {{ 2 - jmlCalonPbbUtama }} kesempatan.
-      </div>
-      <div>
-        Kesempatan anda mengusulkan calon pembimbing pendamping adalah {{ 1 - jmlCalonPbbPendamping }} kesempatan.
-      </div>
+      <div v-else>
+        <div v-if="jmlCalonPbbUtama.length !== 0">
+          <div v-for="pbb in mhsData.usulan_ta" class="border-b p-2">
+            <div>Judul {{ pbb.judul }}</div>
+            <div>KBK {{ pbb.kbk }} dengan minat {{ pbb.minat }}.</div>
+            <div>{{ pbb.dosen_fullname }} sebagai Calon {{ pbb.degree }}.</div>
+            <div>Status {{ pbb.tahap }}</div>
+            <div v-if="pbb.tahap === 'Diskusi'" class="border rounded-md my-1 px-2 py-1">
+              <div class="italic font-semibold">Pesan dari dosen</div>
+              <div>{{ pbb.msg }}</div>
+            </div>
+          </div>
+        </div>
+        <div>
+          Kesempatan anda mengusulkan calon pembimbing utama adalah {{ 2 - jmlCalonPbbUtama }} kesempatan.
+        </div>
+        <div>
+          Kesempatan anda mengusulkan calon pembimbing pendamping adalah {{ 1 - jmlCalonPbbPendamping }} kesempatan.
+        </div>
 
-      <div class="border p-2 flex flex-wrap gap-2 justify-center md:justify-start">
-        <Label for="jenisPbb" class="min-w-[30vh] max-w-[30vh] justify-center md:justify-start">
-          Pilih Jenis Calon Pembimbing
-        </Label>
-        <Select id="jenisPbb" v-model="jenisPbb">
-          <SelectTrigger class="min-w-[20vh]">
-            <SelectValue placeholder="Jenis Pembimbing" />
-          </SelectTrigger>
+        <div class="border p-2 flex flex-wrap gap-2 justify-center md:justify-start">
+          <Label for="jenisPbb" class="min-w-[30vh] max-w-[30vh] justify-center md:justify-start">
+            Pilih Jenis Calon Pembimbing
+          </Label>
+          <Select id="jenisPbb" v-model="jenisPbb">
+            <SelectTrigger class="min-w-[20vh]">
+              <SelectValue placeholder="Jenis Pembimbing" />
+            </SelectTrigger>
 
-          <SelectContent>
-            <SelectItem value="Pembimbing Utama">Pembimbing Utama</SelectItem>
-            <SelectItem value="Pembimbing Pendamping">Pembimbing Pendamping</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
+            <SelectContent>
+              <SelectItem value="Pembimbing Utama">Pembimbing Utama</SelectItem>
+              <SelectItem value="Pembimbing Pendamping">Pembimbing Pendamping</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
 
-      <div v-if="jenisPbb && jenisPbb === 'Pembimbing Utama'">
-        <div v-if="jmlCalonPbbUtama < 2">
-          <!-- <div>
+        <div v-if="jenisPbb && jenisPbb === 'Pembimbing Utama'">
+          <div v-if="jmlCalonPbbUtama < 2">
+            <!-- <div>
           {{ mhsData }}
         </div>
         <div>
           {{ dosenList }}
         </div> -->
 
-          <PilihPbbUtama :dosenList="dosenList" :dosenDegree="jenisPbb" :mhsName="mhsData.pribadi.name" />
+            <PilihPbbUtama :dosenList="dosenList" :dosenDegree="jenisPbb" :mhsName="mhsData.pribadi.name" />
+          </div>
+          <div v-else>
+            Kesempatan anda sudah habis
+          </div>
         </div>
-        <div v-else>
-          Kesempatan anda sudah habis
-        </div>
-      </div>
-      <div v-else-if="jenisPbb && jenisPbb === 'Pembimbing Pendamping'">
-        <div v-if="jmlCalonPbbPendamping < 1">
-          Pilih pbb pendamping
-        </div>
-        <div v-else>
-          Kesempatan pbb pendamping habis!
+        <div v-else-if="jenisPbb && jenisPbb === 'Pembimbing Pendamping'">
+          <div v-if="jmlCalonPbbPendamping < 1">
+            Pilih pbb pendamping
+          </div>
+          <div v-else>
+            Kesempatan pbb pendamping habis!
+          </div>
         </div>
       </div>
     </div>

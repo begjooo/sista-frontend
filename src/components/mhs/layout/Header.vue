@@ -22,14 +22,14 @@ async function logout() {
 </script>
 
 <template>
-  <div class="header-nav border p-2 content-end">
+  <div class="header-nav p-2 content-end">
     <div class="flex flex-wrap gap-2 justify-between">
       <div class="flex flex-wrap gap-2">
         <RouterLink to="/mhs">
-          <Button variant="link">Home</Button>
+          <Button variant="ghost" class="hover:bg-[#334D80] hover:text-white">Home</Button>
         </RouterLink>
         <RouterLink to="/mhs/tugas-akhir/usulan-pbb">
-          <Button variant="link">Tugas Akhir</Button>
+          <Button variant="ghost" class="hover:bg-[#334D80] hover:text-white">Tugas Akhir</Button>
         </RouterLink>
       </div>
 

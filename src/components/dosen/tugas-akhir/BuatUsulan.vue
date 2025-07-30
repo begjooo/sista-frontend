@@ -67,7 +67,7 @@ async function submit() {
         <DialogDescription>Usulkan tugas akhir untuk mahasiswa</DialogDescription>
       </DialogHeader>
 
-      <div class="border flex flex-col gap-2 text-sm">
+      <div class="flex flex-col gap-2 text-sm">
         <div class="flex flex-wrap justify-between">
           <Label for="minat" class="min-w-[20vh] max-w-[20vh]">Minat</Label>
           <Select id="minat" v-model="inputMinat">
@@ -87,7 +87,7 @@ async function submit() {
         </div>
         <div class="flex flex-wrap justify-between">
           <div>Deskripsi</div>
-          <textarea :rows="4" class="border rounded-md min-w-[200px] w-[300px] px-2 py-1" v-model="inputDeskripsi" />
+          <textarea :rows="4" class="border rounded-md min-h-[100px] max-h-[200px] min-w-[200px] w-[300px] px-2 py-1" v-model="inputDeskripsi" />
         </div>
       </div>
 

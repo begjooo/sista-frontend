@@ -1,4 +1,5 @@
 <script setup>
+import { onMounted, ref } from 'vue';
 import { baseUrl } from '@/baseUrl';
 import Button from '@/components/ui/button/Button.vue';
 import {
@@ -11,7 +12,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { onMounted, ref } from 'vue';
 
 const username = localStorage.getItem('username')
 const props = defineProps(['mhsList', 'taId'])
@@ -46,7 +46,8 @@ async function diskusiUsulan(taId, mhsUsername, mhsName, degree) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: taId, dosenUsername: username, mhsUsername, mhsName, degree: degree, message: inputMsg.value })
       })
-      // inputMsg.value = ''
+      inputMsg.value = ''
+      window.location.reload()
     } catch (error) {
       console.log(error)
     }
@@ -69,8 +70,6 @@ async function diskusiUsulan(taId, mhsUsername, mhsName, degree) {
         </DialogHeader>
 
         <div v-if="mhsDataPribadi">
-          {{ mhs.degree }}
-          {{ props.taId }}
           <div class="border rounded-md text-sm max-h-[400px] overflow-y-auto px-2 py-1">
             <div class="">
               <div class="flex flex-col font-semibold text-center">
@@ -110,11 +109,8 @@ async function diskusiUsulan(taId, mhsUsername, mhsName, degree) {
                   <DialogDescription>Kirim pesan kepada mahasiswa untuk waktu dan tempat diskusi</DialogDescription>
                 </DialogHeader>
 
-                {{ props.taId }}
-                {{ mhs }}
-
                 <textarea type="text" class="border rounded-md px-2 py-1 text-sm max-h-[200px] min-h-[50px]"
-                  placeholder="" v-model="inputMsg" />
+                  placeholder="Saya tunggu hari Senin dd-mm-yyyy pukul hh:mm WIB di ..." v-model="inputMsg" />
 
                 <DialogFooter>
                   <DialogClose as-child>
@@ -129,9 +125,6 @@ async function diskusiUsulan(taId, mhsUsername, mhsName, degree) {
           <DialogClose as-child>
             <Button variant="destructive" class="cursor-pointer w-[100px]">Tolak</Button>
           </DialogClose>
-          <!-- <DialogClose as-child>
-            <Button variant="destructive" class="cursor-pointer w-[100px]">Close</Button>
-          </DialogClose> -->
         </DialogFooter>
       </DialogContent>
     </Dialog>
