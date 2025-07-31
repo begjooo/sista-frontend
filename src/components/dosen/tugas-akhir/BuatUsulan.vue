@@ -34,7 +34,7 @@ async function submit() {
   }
   console.log(data)
   try {
-    const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan/tambah`, {
+    const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),

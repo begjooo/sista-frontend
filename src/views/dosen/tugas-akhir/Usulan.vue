@@ -63,7 +63,7 @@ async function hapus(index, taId) {
 onMounted(async () => {
   console.log(`Usulan`)
   try {
-    const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan/list`)
+    const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan`)
     data.value = await response.json()
     // console.log(data.value)
     usulanTaList.value = data.value.usulanTa

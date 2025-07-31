@@ -1,8 +1,8 @@
 <script setup>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { baseUrl } from '@/baseUrl';
-import Button from '@/components/ui/button/Button.vue';
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { baseUrl } from '@/baseUrl'
+import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogClose,
@@ -34,24 +34,24 @@ function hapus(index) {
 async function submit() {
   console.log(`update minat`)
   console.log(newData.value)
-  try {
-    const response = await fetch(`${baseUrl}/dosen/${username}/minat/tambah`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newData.value),
-    })
+  // try {
+  //   const response = await fetch(`${baseUrl}/dosen/${username}/minat`, {
+  //     method: 'POST',
+  //     headers: { 'Content-Type': 'application/json' },
+  //     body: JSON.stringify(newData.value),
+  //   })
 
-    const result = await response.json()
+  //   const result = await response.json()
 
-    if (result.status) {
-      console.log(`update data success`)
-      // router.push('/')
-    } else {
-      console.log(`update data failed!`)
-    }
-  } catch (error) {
-    console.log(error)
-  }
+  //   if (result.status) {
+  //     console.log(`update data success`)
+  //     // router.push('/')
+  //   } else {
+  //     console.log(`update data failed!`)
+  //   }
+  // } catch (error) {
+  //   console.log(error)
+  // }
 }
 </script>
 

@@ -10,9 +10,11 @@ const username = localStorage.getItem('username')
 const userData = ref();
 
 onMounted(async () => {
+  console.log(`onMounted Minat`)
   try {
-    const response = await fetch(`${baseUrl}/dosen/data/${username}/minat`)
+    const response = await fetch(`${baseUrl}/dosen/${username}/minat`)
     userData.value = await response.json()
+    console.log(userData.value)
   } catch (error) {
     console.log(error)
   }
@@ -25,13 +27,17 @@ onMounted(async () => {
 
   <div class="body-head-side">
     <div v-if="userData" class="p-2 text-sm">
+      {{ userData }}
       <div class="flex flex-col gap-4 border rounded-md p-2 mb-2">
         <div v-for="minat in userData.minat">
           <div>{{ minat }}</div>
         </div>
       </div>
 
-      <EditMinat :currentData="userData.minat" />
+      <div>
+        Tambah
+      </div>
+      <!-- <EditMinat :currentData="userData.minat" /> -->
     </div>
   </div>
 </template>

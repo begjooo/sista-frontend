@@ -25,7 +25,7 @@ onMounted(async () => {
   <TugasAkhir />
 
   <div class="body-head-side">
-    <div v-if="bimbinganList">
+    <div v-if="bimbinganList && bimbinganList.length !== 0">
       <div class="text-center font-semibold my-2">Daftar Bimbingan</div>
       <div class="flex flex-col gap-2 text-sm mx-2">
         <div v-for="mhs in bimbinganList" class="rounded-md py-2 px-3 bg-orange-50">

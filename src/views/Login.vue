@@ -1,7 +1,8 @@
 <script setup>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { Input } from '@/components/ui/input'
+import { onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { baseUrl } from '@/baseUrl'
+import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import {
   Card,
@@ -11,10 +12,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-
-import Button from '@/components/ui/button/Button.vue';
-import { baseUrl } from '@/baseUrl';
-import { onMounted } from 'vue';
 
 const router = useRouter()
 const username = ref('')
@@ -47,7 +44,7 @@ function routeToHome(data) {
 }
 
 async function login(user, pass) {
-  // console.log(`login()`)
+  console.log(`login()`)
   if (user && pass) {
     try {
       const response = await fetch(`${baseUrl}/login`, {
@@ -60,23 +57,23 @@ async function login(user, pass) {
       loginStatus.value = await response.json()
 
       if (loginStatus.value) {
-        // console.log(`login success`)
+        console.log(`login success`)
         routeToHome(loginStatus.value)
       } else {
-        // console.log(`login failed!`)
+        console.log(`login failed!`)
         username.value = ''
         password.value = ''
       }
     } catch (error) {
-      console.error(error)
+      console.error(error.message)
     }
   } else {
-    // console.log(`user or pass is empty`)
+    console.log(`user or pass is empty`)
   }
 }
 
 onMounted(async () => {
-  console.log(`/ onMounted()`)
+  console.log(`onMounted Login`)
   try {
     const response = await fetch(`${baseUrl}/user`, {
       method: 'POST',
@@ -85,22 +82,19 @@ onMounted(async () => {
     })
 
     loginStatus.value = await response.json()
-    // console.log('loginStatus.value', loginStatus.value)
+    // console.log(loginStatus.value)
 
     if (loginStatus.value) {
-      // console.log(`user has been stored`)
       routeToHome(loginStatus.value)
-    } else {
-      // console.log(`no cookies! please login`)
     }
   } catch (error) {
-    console.log(error)
+    console.log(error.message)
   }
 })
 </script>
 
 <template>
-  <div v-if="loginStatus === 0">
+  <div v-if="!loginStatus">
     <div class="flex justify-center mt-10">
       <Card class="w-[60vh]">
         <CardHeader>
@@ -131,15 +125,17 @@ onMounted(async () => {
         </CardContent>
 
         <CardFooter class="flex flex-wrap justify-between">
-          <Button class="cursor-pointer w-[100px]" @click="login(username, password)">Login</Button>
+          <Button class="cursor-pointer w-[100px]" @click="login(username, password)">
+            Login
+          </Button>
+
           <RouterLink to="/mhs/signup">
-            <!-- <RouterLink to="/dosen/signup"> -->
-            <Button class="cursor-pointer w-[100px]" variant="link">Sign-Up</Button>
+            <Button class="cursor-pointer w-[100px]" variant="link">
+              Sign-Up
+            </Button>
           </RouterLink>
         </CardFooter>
       </Card>
     </div>
   </div>
 </template>
-
-<style scoped></style>

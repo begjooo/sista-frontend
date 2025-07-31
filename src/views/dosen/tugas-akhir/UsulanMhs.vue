@@ -101,9 +101,9 @@ async function tolakUsulan(taId, mhsUsername) {
 }
 
 onMounted(async () => {
-  console.log(`UsulanMhs`)
+  console.log(`onMounted UsulanMhs`)
   try {
-    const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan-mhs/list`)
+    const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan-mhs`)
     usulanTaList.value = await response.json()
   } catch (error) {
     console.log(error)

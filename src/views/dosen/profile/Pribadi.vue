@@ -11,7 +11,7 @@ const userData = ref();
 
 onMounted(async () => {
   try {
-    const response = await fetch(`${baseUrl}/dosen/data/${username}`)
+    const response = await fetch(`${baseUrl}/dosen/${username}/data`)
     userData.value = await response.json()
     console.log(userData.value)
   } catch (error) {

@@ -41,17 +41,17 @@ function setPassword(password, confirmPassword) {
 }
 
 async function submit() {
-  console.log(`asdasdasd`)
+  console.log(`submit`)
   const newPassword = setPassword(inputPassword.value, inputConfirmPassword.value)
 
   if (!newPassword) {
-    console.log(`Invalid password`)
+    console.log(`invalid password`)
   } else {
     console.log(`submit new password`)
 
     try {
-      const response = await fetch(`${baseUrl}/dosen/data/${username}/profile/edit/password`, {
-        method: 'POST',
+      const response = await fetch(`${baseUrl}/dosen/${username}/profile/password`, {
+        method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password: newPassword }),
       })
