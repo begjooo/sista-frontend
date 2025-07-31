@@ -14,5 +14,10 @@ import Button from '@/components/ui/button/Button.vue';
         <Button variant="link" class="text-white">Keamanan</Button>
       </RouterLink>
     </div>
+    <div>
+      <RouterLink to="/dosen/profile/penelitian">
+        <Button variant="link" class="text-white">Penelitian</Button>
+      </RouterLink>
+    </div>
   </div>
 </template>

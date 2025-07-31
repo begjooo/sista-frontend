@@ -78,8 +78,8 @@ async function submit() {
   const permintaanPbb = {
     id: selectedJudul.value.ta_id,
     name: props.mhsName,
-    dosen_username: selectedDosen.value.username,
-    dosen_fullname: selectedDosen.value.fullname,
+    dosen1_username: selectedDosen.value.username,
+    dosen1_fullname: selectedDosen.value.fullname,
     kbk: selectedKbk.value,
     minat: selectedMinat.value,
     judul: selectedJudul.value.judul,
@@ -90,7 +90,7 @@ async function submit() {
   }
 
   try {
-    const result = await fetch(`${baseUrl}/mhs/${username}/tugas-akhir/usulan/tambah`, {
+    const result = await fetch(`${baseUrl}/mhs/${username}/tugas-akhir/usulan`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(permintaanPbb),

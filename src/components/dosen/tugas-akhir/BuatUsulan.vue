@@ -16,23 +16,23 @@ import {
 import { baseUrl } from '@/baseUrl';
 
 const username = localStorage.getItem('username')
-const props = defineProps(['currentData'])
+const props = defineProps(['currentUsulan'])
 
 const inputMinat = ref('')
 const inputJudul = ref('')
 const inputDeskripsi = ref('')
 
 async function submit() {
-  console.log(`update minat`)
+  console.log(`submit usulan`)
   const data = {
-    kbk: props.currentData.kbk,
+    kbk: props.currentUsulan.kbk,
     minat: inputMinat.value,
     judul: inputJudul.value,
     deskripsi: inputDeskripsi.value,
     mhs_pengusul: [],
     mhs_diskusi: [],
   }
-  console.log(data)
+
   try {
     const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan`, {
       method: 'POST',
@@ -75,7 +75,7 @@ async function submit() {
               <SelectValue placeholder="Minat Penelitian" />
             </SelectTrigger>
             <SelectContent>
-              <div v-for="minat in props.currentData.minat">
+              <div v-for="minat in props.currentUsulan.minat">
                 <SelectItem :value="minat">{{ minat }}</SelectItem>
               </div>
             </SelectContent>
@@ -87,7 +87,8 @@ async function submit() {
         </div>
         <div class="flex flex-wrap justify-between">
           <div>Deskripsi</div>
-          <textarea :rows="4" class="border rounded-md min-h-[100px] max-h-[200px] min-w-[200px] w-[300px] px-2 py-1" v-model="inputDeskripsi" />
+          <textarea :rows="4" class="border rounded-md min-h-[100px] max-h-[200px] min-w-[200px] w-[300px] px-2 py-1"
+            v-model="inputDeskripsi" />
         </div>
       </div>
 

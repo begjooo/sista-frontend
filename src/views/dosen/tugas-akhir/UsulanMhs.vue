@@ -117,7 +117,7 @@ onMounted(async () => {
 
   <div class="body-head-side text-sm">
     <div v-if="usulanTaList">
-      <div v-for="usulan in usulanTaList" class="rounded-md bg-blue-50 m-2 px-2 py-2 ">
+      <div v-for="usulan in usulanTaList" class="rounded-md bg-blue-50 m-2 px-2 py-2">
         <div class="flex flex-col">
           <div class="border-b mb-1 pb-1">
             <span v-if="usulan.tahap === 'Pengusulan'">
@@ -279,6 +279,9 @@ onMounted(async () => {
           </Button>
         </div>
       </div>
+    </div>
+    <div v-else class="p-2 text-center italic">
+      Tidak ada usulan judul dari mahasiswa
     </div>
   </div>
 </template>

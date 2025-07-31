@@ -16,7 +16,7 @@ const dosenList = ref()
 
 onMounted(async () => {
   try {
-    const response = await fetch(`${baseUrl}/mhs/${username}/tugas-akhir/usulan/data`)
+    const response = await fetch(`${baseUrl}/mhs/${username}/tugas-akhir/usulan`)
     mhsData.value = await response.json()
     console.log(mhsData.value)
     if (mhsData.value.usulan_ta) {

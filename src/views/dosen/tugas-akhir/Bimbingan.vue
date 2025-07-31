@@ -12,7 +12,7 @@ const bimbinganList = ref()
 onMounted(async () => {
   console.log(`Bimbingan`)
   try {
-    const response = await fetch(`${baseUrl}/dosen/${username}/bimbingan/list`)
+    const response = await fetch(`${baseUrl}/dosen/${username}/bimbingan`)
     bimbinganList.value = await response.json()
   } catch (error) {
     console.log(error.message)
@@ -28,7 +28,7 @@ onMounted(async () => {
     <div v-if="bimbinganList && bimbinganList.length !== 0">
       <div class="text-center font-semibold my-2">Daftar Bimbingan</div>
       <div class="flex flex-col gap-2 text-sm mx-2">
-        <div v-for="mhs in bimbinganList" class="rounded-md py-2 px-3 bg-orange-50">
+        <div v-for="mhs in bimbinganList" class="rounded-md py-2 px-3 bg-blue-50">
           <div class="flex flex-wrap">
             <div class="min-w-[100px]">Nama</div>
             <div>{{ mhs.name }} {{ mhs.username }}</div>
@@ -45,8 +45,16 @@ onMounted(async () => {
             <div class="min-w-[100px]">Peminatan</div>
             <div>{{ mhs.minat }}</div>
           </div>
-          
-          <div><Button>Data Bimbingan</Button></div>
+          <div class="flex flex-wrap">
+            <div class="min-w-[100px]">Status</div>
+            <div>{{ mhs.degree }}</div>
+          </div>
+
+          <div class="mt-2">
+            <Button>
+              Data Bimbingan
+            </Button>
+          </div>
         </div>
       </div>
     </div>

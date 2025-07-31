@@ -28,9 +28,6 @@ async function logout() {
         <RouterLink to="/dosen">
           <Button variant="ghost" class="w-[] hover:bg-[#334D80] hover:text-white">Home</Button>
         </RouterLink>
-        <RouterLink to="/dosen/penelitian/minat">
-          <Button variant="ghost" class="w-[] hover:bg-[#334D80] hover:text-white">Penelitian</Button>
-        </RouterLink>
         <RouterLink to="/dosen/tugas-akhir/usulan">
           <Button variant="ghost" class="w-[] hover:bg-[#334D80] hover:text-white">Tugas Akhir</Button>
         </RouterLink>
