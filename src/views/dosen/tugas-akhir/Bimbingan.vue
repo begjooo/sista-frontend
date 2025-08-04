@@ -7,13 +7,14 @@ import { onMounted, ref } from 'vue';
 
 const username = localStorage.getItem('username')
 
-const bimbinganList = ref()
+const bimbinganUtamaList = ref()
+const bimbinganPendampingList = ref()
 
 onMounted(async () => {
   console.log(`Bimbingan`)
   try {
     const response = await fetch(`${baseUrl}/dosen/${username}/bimbingan`)
-    bimbinganList.value = await response.json()
+    bimbinganUtamaList.value = await response.json()
   } catch (error) {
     console.log(error.message)
   }
@@ -25,13 +26,18 @@ onMounted(async () => {
   <TugasAkhir />
 
   <div class="body-head-side">
-    <div v-if="bimbinganList && bimbinganList.length !== 0">
-      <div class="text-center font-semibold my-2">Daftar Bimbingan</div>
+    <div v-if="bimbinganUtamaList && bimbinganUtamaList.length !== 0">
+      <div class="text-center font-semibold my-2">Daftar Bimbingan Utama</div>
       <div class="flex flex-col gap-2 text-sm mx-2">
-        <div v-for="mhs in bimbinganList" class="rounded-md py-2 px-3 bg-blue-50">
+        <div v-for="mhs in bimbinganUtamaList" class="rounded-md py-2 px-3 bg-blue-50">
+          <!-- {{ mhs }} -->
           <div class="flex flex-wrap">
             <div class="min-w-[100px]">Nama</div>
-            <div>{{ mhs.name }} {{ mhs.username }}</div>
+            <div>{{ mhs.mhs_name }}</div>
+          </div>
+          <div class="flex flex-wrap">
+            <div class="min-w-[100px]">Tahun TA</div>
+            <div>{{ mhs.tahun }}</div>
           </div>
           <div class="flex flex-wrap">
             <div class="min-w-[100px]">Judul</div>
@@ -46,8 +52,46 @@ onMounted(async () => {
             <div>{{ mhs.minat }}</div>
           </div>
           <div class="flex flex-wrap">
-            <div class="min-w-[100px]">Status</div>
-            <div>{{ mhs.degree }}</div>
+            <div class="min-w-[100px]">Tahap</div>
+            <div>{{ mhs.tahap }}</div>
+          </div>
+
+          <div class="mt-2">
+            <Button>
+              Data Bimbingan
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div v-if="bimbinganPendampingList && bimbinganPendampingList.length !== 0">
+      <div class="text-center font-semibold my-2">Daftar Bimbingan Pendamping</div>
+      <div class="flex flex-col gap-2 text-sm mx-2">
+        <div v-for="mhs in bimbinganPendampingList" class="rounded-md py-2 px-3 bg-blue-50">
+          <div class="flex flex-wrap">
+            <div class="min-w-[100px]">Nama</div>
+            <div>{{ mhs.mhs_name }}</div>
+          </div>
+          <div class="flex flex-wrap">
+            <div class="min-w-[100px]">Tahun TA</div>
+            <div>{{ mhs.tahun }}</div>
+          </div>
+          <div class="flex flex-wrap">
+            <div class="min-w-[100px]">Judul</div>
+            <div>{{ mhs.judul }}</div>
+          </div>
+          <div class="flex flex-wrap">
+            <div class="min-w-[100px]">KBK</div>
+            <div>{{ mhs.kbk }}</div>
+          </div>
+          <div class="flex flex-wrap">
+            <div class="min-w-[100px]">Peminatan</div>
+            <div>{{ mhs.minat }}</div>
+          </div>
+          <div class="flex flex-wrap">
+            <div class="min-w-[100px]">Tahap</div>
+            <div>{{ mhs.tahap }}</div>
           </div>
 
           <div class="mt-2">

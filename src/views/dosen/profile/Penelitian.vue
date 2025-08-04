@@ -18,7 +18,7 @@ import {
 const username = localStorage.getItem('username')
 
 const userData = ref()
-const minatList = ref()
+const minatList = ref([])
 const inputMinat = ref('')
 
 async function tambah(minat) {
@@ -69,7 +69,9 @@ onMounted(async () => {
   try {
     const response = await fetch(`${baseUrl}/dosen/${username}/penelitian`)
     userData.value = await response.json()
-    minatList.value = userData.value.minat
+    if (userData.value) {
+      minatList.value = userData.value.minat
+    }
   } catch (error) {
     console.log(error.message)
   }
@@ -84,15 +86,17 @@ onMounted(async () => {
     <div v-if="userData" class="p-2 text-sm">
       <!-- minat -->
       <div class="text-center sm:text-left">
-        <div class="font-semibold text-center sm:text-left">Minat Penelitian</div>
-        <div class="flex flex-col gap-2 text-center border rounded-md p-2 my-2 sm:w-[40%]">
-          <div v-for="(minat, index) in minatList">
-            <div class="flex flex-wrap justify-center sm:justify-between gap-2">
-              <div class="content-center">{{ minat }}</div>
-              <!-- hapus minat -->
-              <Button variant="" class="w-[100px]" @click="hapus(minat, index)">
-                Hapus
-              </Button>
+        <div class="font-semibold text-center sm:text-left mb-2">Minat Penelitian</div>
+        <div v-if="minatList && minatList.length !== 0">
+          <div class="flex flex-col gap-2 text-center border rounded-md p-2 mb-2 sm:w-[40%]">
+            <div v-for="(minat, index) in minatList">
+              <div class="flex flex-wrap justify-center sm:justify-between gap-2">
+                <div class="content-center">{{ minat }}</div>
+                <!-- hapus minat -->
+                <Button variant="" class="w-[100px]" @click="hapus(minat, index)">
+                  Hapus
+                </Button>
+              </div>
             </div>
           </div>
         </div>

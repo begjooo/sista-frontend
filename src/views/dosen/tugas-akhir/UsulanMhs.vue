@@ -57,13 +57,12 @@ async function lihatMhs(username) {
 }
 
 async function diskusiUsulan(taId, mhsUsername, mhsName) {
-  console.log(mhsUsername, mhsName)
   if (inputMsg.value) {
     try {
       const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan-mhs/diskusi`, {
         method: `POST`,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: taId, dosenUsername: username, mhsUsername, mhsName, message: inputMsg.value })
+        body: JSON.stringify({ taId, dosenUsername: username, mhsUsername, mhsName, message: inputMsg.value })
       })
       inputMsg.value = ''
       window.location.reload()
@@ -73,15 +72,14 @@ async function diskusiUsulan(taId, mhsUsername, mhsName) {
   }
 }
 
-async function terimaUsulan(taId, mhsUsername) {
-  console.log(mhsUsername)
+async function terimaUsulan(taId, mhsUsername, mhsName) {
   try {
     const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan-mhs/terima`, {
       method: `POST`,
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id: taId, username: username, mhsUsername })
+      body: JSON.stringify({ taId, mhsUsername, mhsName })
     })
-    window.location.reload()
+    // window.location.reload()
   } catch (error) {
     console.log(error)
   }
@@ -116,7 +114,7 @@ onMounted(async () => {
   <TugasAkhir />
 
   <div class="body-head-side text-sm">
-    <div v-if="usulanTaList">
+    <div v-if="usulanTaList && usulanTaList.length !== 0">
       <div v-for="usulan in usulanTaList" class="rounded-md bg-blue-50 m-2 px-2 py-2">
         <div class="flex flex-col">
           <div class="border-b mb-1 pb-1">
@@ -266,7 +264,8 @@ onMounted(async () => {
                 </div>
 
                 <AlertDialogFooter>
-                  <AlertDialogAction @click="terimaUsulan(usulan.id, usulan.username)">Yes i'am sure</AlertDialogAction>
+                  <AlertDialogAction @click="terimaUsulan(usulan.id, usulan.username, usulan.name)">Yes i'am sure
+                  </AlertDialogAction>
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
                 </AlertDialogFooter>
               </AlertDialogContent>

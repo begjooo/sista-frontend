@@ -16,6 +16,8 @@ import { baseUrl } from '@/baseUrl';
 const router = useRouter()
 const usernameLength = 3;
 
+const yearPresent = new Date().getFullYear()
+
 const newData = ref({
   username: '',
   password: '',
@@ -144,8 +146,21 @@ async function submit() {
             </div>
             <div class="flex gap-4">
               <Label for="tahunAjaran" class="min-w-[20vh] max-w-[20vh]">Tahun Ajaran</Label>
-              <input id="tahunAjaran" placeholder="Tahun Ajaran" class="w-full border rounded-md py-1 px-2 min-w-[20vh]"
-                :class="[(newData.tahunAjaran === '' ? 'bg-red-200' : 'bg-blue-100')]" v-model="newData.tahunAjaran" />
+              <Select id="tahunAjaran" v-model="newData.tahunAjaran">
+                <SelectTrigger class="w-full min-w-[20vh]"
+                  :class="[(newData.tahunAjaran === '' ? 'bg-red-200' : 'bg-blue-100')]">
+                  <SelectValue placeholder="Tahun Ajaran" />
+                </SelectTrigger>
+
+                <SelectContent>
+                  <SelectItem :value="(yearPresent - 1) + '/' + (yearPresent)">
+                    {{ yearPresent - 1 }}/{{ yearPresent }}
+                  </SelectItem>
+                  <SelectItem :value="(yearPresent) + '/' + (yearPresent + 1)">
+                    {{ yearPresent }}/{{ yearPresent + 1 }}
+                  </SelectItem>
+                </SelectContent>
+              </Select>
             </div>
             <div class="flex gap-4">
               <Label for="prodi" class="min-w-[20vh] max-w-[20vh]">Program Studi</Label>

@@ -2,8 +2,25 @@
 import { RouterLink, useRouter } from 'vue-router';
 import Button from '@/components/ui/button/Button.vue';
 import { baseUrl } from '@/baseUrl';
+import { ref } from 'vue';
 
 const router = useRouter()
+const selectedIndex = Number(localStorage.getItem('headerIndex'))
+const menuList = ref([
+  {
+    name: 'Home',
+    link: '/mhs',
+  },
+  {
+    name: 'Tugas Akhir',
+    link: '/mhs/tugas-akhir/usulan-pbb',
+  }
+])
+
+function changeIndex(index) {
+  localStorage.setItem('headerIndex', index)
+  localStorage.setItem('sidebarIndex', 0)
+}
 
 async function logout() {
   try {
@@ -25,16 +42,19 @@ async function logout() {
   <div class="header-nav p-2 content-end">
     <div class="flex flex-wrap gap-2 justify-between">
       <div class="flex flex-wrap gap-2">
-        <RouterLink to="/mhs">
-          <Button variant="ghost" class="hover:bg-[#334D80] hover:text-white">Home</Button>
-        </RouterLink>
-        <RouterLink to="/mhs/tugas-akhir/usulan-pbb">
-          <Button variant="ghost" class="hover:bg-[#334D80] hover:text-white">Tugas Akhir</Button>
-        </RouterLink>
+        <div v-for="(menu, index) in menuList" :key="index">
+          <RouterLink :to="menu.link">
+            <Button variant="link" class="cursor-pointer" @click="changeIndex(index)"
+              :class="{ 'underline': index === selectedIndex }">
+              {{ menu.name }}
+            </Button>
+          </RouterLink>
+        </div>
       </div>
-
-      <div class="">
-        <Button variant="ghost" class="w-[100px] hover:bg-red-600 hover:text-white" @click="logout">Logout</Button>
+      <div>
+        <Button variant="ghost" class="w-[100px] hover:bg-red-600 hover:text-white" @click="logout">
+          Logout
+        </Button>
       </div>
     </div>
   </div>

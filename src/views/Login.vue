@@ -18,6 +18,9 @@ const username = ref('')
 const password = ref('')
 const loginStatus = ref()
 
+localStorage.setItem('headerIndex', 0)
+localStorage.setItem('sidebarIndex', 0)
+
 function routeToHome(data) {
   console.log(`routeToHome()`)
   console.log(`login success! save username to local storage`)

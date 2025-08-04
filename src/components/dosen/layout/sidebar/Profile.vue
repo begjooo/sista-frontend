@@ -1,22 +1,36 @@
 <script setup>
 import Button from '@/components/ui/button/Button.vue';
+import { ref } from 'vue';
+
+const selectedIndex = Number(localStorage.getItem('sidebarIndex'))
+const menuList = ref([
+  {
+    name: 'Pribadi',
+    link: '/dosen/profile/pribadi',
+  },
+  {
+    name: 'Keamanan',
+    link: '/dosen/profile/keamanan',
+  },
+  {
+    name: 'Penelitian',
+    link: '/dosen/profile/penelitian',
+  }
+])
+
+function changeIndex(index) {
+  localStorage.setItem('sidebarIndex', index)
+}
 </script>
 
 <template>
   <div class="sidebar-nav">
-    <div>
-      <RouterLink to="/dosen/profile/pribadi">
-        <Button variant="link" class="text-white">Pribadi</Button>
-      </RouterLink>
-    </div>
-    <div>
-      <RouterLink to="/dosen/profile/keamanan">
-        <Button variant="link" class="text-white">Keamanan</Button>
-      </RouterLink>
-    </div>
-    <div>
-      <RouterLink to="/dosen/profile/penelitian">
-        <Button variant="link" class="text-white">Penelitian</Button>
+    <div v-for="(menu, index) in menuList" :key="index">
+      <RouterLink :to="menu.link">
+        <Button variant="link" class="text-white cursor-pointer" @click="changeIndex(index)"
+          :class="{ 'underline': index === selectedIndex }">
+          {{ menu.name }}
+        </Button>
       </RouterLink>
     </div>
   </div>
