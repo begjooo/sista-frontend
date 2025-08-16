@@ -39,7 +39,7 @@ const mhsPortofolio = ref()
 const inputMsg = ref('')
 
 async function lihatMhs(username) {
-  console.log(username)
+  console.log(`lihatMhs`)
   try {
     const response = await fetch(`${baseUrl}/mhs/${username}/data`)
     const data = await response.json()
@@ -56,7 +56,8 @@ async function lihatMhs(username) {
   }
 }
 
-async function diskusiUsulan(taId, mhsUsername, mhsName) {
+async function diskusiUsulan(taId, mhsUsername, mhsName, usulanIndex) {
+  console.log(`diskusiUsulan`)
   if (inputMsg.value) {
     try {
       const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan-mhs/diskusi`, {
@@ -64,8 +65,12 @@ async function diskusiUsulan(taId, mhsUsername, mhsName) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ taId, dosenUsername: username, mhsUsername, mhsName, message: inputMsg.value })
       })
-      inputMsg.value = ''
-      window.location.reload()
+
+      const result = await response.json()
+
+      if (result) {
+        window.location.reload()
+      }
     } catch (error) {
       console.log(error)
     }
@@ -73,26 +78,38 @@ async function diskusiUsulan(taId, mhsUsername, mhsName) {
 }
 
 async function terimaUsulan(taId, mhsUsername, mhsName) {
+  console.log(`terimaUsulan`)
   try {
     const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan-mhs/terima`, {
       method: `POST`,
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ taId, mhsUsername, mhsName })
     })
-    // window.location.reload()
+
+    const result = await response.json()
+    if (result) {
+      window.location.reload()
+    }
   } catch (error) {
     console.log(error)
   }
 }
 
-async function tolakUsulan(taId, mhsUsername) {
-  console.log(mhsUsername)
+async function tolakUsulan(taId, mhsUsername, usulanIndex) {
+  console.log(mhsUsername, usulanIndex)
   try {
     const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan-mhs/tolak`, {
       method: `POST`,
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id: taId, username: username, mhsUsername })
     })
+
+    const result = await response.json()
+    if (result.status) {
+      window.location.reload()
+    } else {
+      console.log(result.message)
+    }
   } catch (error) {
     console.log(error)
   }
@@ -115,7 +132,7 @@ onMounted(async () => {
 
   <div class="body-head-side text-sm">
     <div v-if="usulanTaList && usulanTaList.length !== 0">
-      <div v-for="usulan in usulanTaList" class="rounded-md bg-blue-50 m-2 px-2 py-2">
+      <div v-for="(usulan, usulanIndex) in usulanTaList" class="rounded-md bg-blue-50 m-2 px-2 py-2">
         <div class="flex flex-col">
           <div class="border-b mb-1 pb-1">
             <span v-if="usulan.tahap === 'Pengusulan'">
@@ -222,15 +239,14 @@ onMounted(async () => {
                   <DialogClose as-child>
                     <Button variant="secondary" class="cursor-pointer w-[100px]">Cancel</Button>
                   </DialogClose>
-                  <Button class="cursor-pointer w-[100px]"
-                    @click="diskusiUsulan(usulan.id, usulan.username, usulan.name)">Send</Button>
+                  <Button class="cursor-pointer w-[100px]" :disabled="!inputMsg"
+                    @click="diskusiUsulan(usulan.id, usulan.username, usulan.name, usulanIndex)">Send</Button>
                 </DialogFooter>
               </DialogContent>
             </Dialog>
           </span>
 
           <span v-else-if="usulan.tahap === 'Diskusi' && usulan.msg">
-
             <AlertDialog>
               <AlertDialogTrigger>
                 <Button variant="" class="cursor-pointer bg-green-600 w-[100px]">
@@ -260,22 +276,38 @@ onMounted(async () => {
                     <div class="truncate">Judul</div>
                     <div class="col-span-3 font-semibold">{{ usulan.judul }}</div>
                   </div>
-                  {{ usulan.username }} {{ usulan.id }}
                 </div>
 
                 <AlertDialogFooter>
-                  <AlertDialogAction @click="terimaUsulan(usulan.id, usulan.username, usulan.name)">Yes i'am sure
-                  </AlertDialogAction>
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction @click="terimaUsulan(usulan.id, usulan.username, usulan.name)">
+                    Yes i'am sure
+                  </AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
           </span>
 
-          <Button variant="destructive" class="cursor-pointer w-[100px]"
-            @click="tolakUsulan(usulan.id, usulan.username)">
-            Tolak
-          </Button>
+          <AlertDialog>
+            <AlertDialogTrigger>
+              <Button variant="destructive" class="cursor-pointer w-[100px]">Tolak</Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>
+                  Yakin ingin menolak {{ usulan.name }} sebagai {{ usulan.degree }}?
+                </AlertDialogTitle>
+                <AlertDialogDescription></AlertDialogDescription>
+              </AlertDialogHeader>
+
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction @click="tolakUsulan(usulan.id, usulan.username, usulanIndex)">
+                  Yes i'am sure
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
       </div>
     </div>

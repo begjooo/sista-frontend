@@ -85,7 +85,7 @@ async function hapusUsulan(index, taId) {
     const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan`, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ taId }),
+      body: JSON.stringify({ taId, index }),
     });
 
     const result = await response.json()
@@ -104,11 +104,11 @@ const mhsPortofolio = ref()
 const inputMsg = ref('')
 
 async function lihatMhs(mhsUsername) {
-  console.log(`lihatMhs ${mhsUsername}`)
+  console.log(`lihatMhs`)
   try {
     const response = await fetch(`${baseUrl}/mhs/${mhsUsername}/data`)
     const data = await response.json()
-    // console.log(data)
+
     if (!data) {
       mhsDataPribadi.value = null
       mhsPortofolio.value = null
@@ -131,16 +131,7 @@ async function diskusi(taId, mhsUsername, mhsName, degree, usulanIndex, mhsIndex
         body: JSON.stringify({ id: taId, dosenUsername: username, mhsUsername, mhsName, degree: degree, message: inputMsg.value })
       })
 
-      currentUsulan.value.usulanTa[usulanIndex].mhs_diskusi.push({
-        username: mhsUsername,
-        name: mhsName,
-        degree,
-        msg: inputMsg.value,
-      })
-
-      currentUsulan.value.usulanTa[usulanIndex].mhs_pengusul.splice(mhsIndex, 1)
-
-      inputMsg.value = ''
+      window.location.reload()
     } catch (error) {
       console.log(error.message)
     }
@@ -148,17 +139,17 @@ async function diskusi(taId, mhsUsername, mhsName, degree, usulanIndex, mhsIndex
 }
 
 async function tolakUsulan(taId, mhsUsername, usulanIndex, mhsIndex) {
-  console.log(`tolakUsulan ${taId} ${mhsUsername} ${mhsIndex}`)
+  console.log(`tolakUsulan`)
   try {
-    const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan/tolak-mhs`, {
-      method: 'DELETE',
+    const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan/tolak`, {
+      method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ taId, mhsUsername })
     })
 
     const result = await response.json()
     if (result.status) {
-      currentUsulan.value.usulanTa[usulanIndex].mhs_pengusul.splice(mhsIndex, 1)
+      window.location.reload()
     } else {
       console.log(result.message)
     }
@@ -168,7 +159,7 @@ async function tolakUsulan(taId, mhsUsername, usulanIndex, mhsIndex) {
 }
 
 async function tolakDiskusi(taId, mhsUsername, usulanIndex, mhsIndex) {
-  console.log(`tolakDiskusi ${mhsUsername}`)
+  console.log(`tolakDiskusi`)
   try {
     const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan/diskusi`, {
       method: 'DELETE',
@@ -178,8 +169,9 @@ async function tolakDiskusi(taId, mhsUsername, usulanIndex, mhsIndex) {
 
     const result = await response.json()
     if (result) {
-      currentUsulan.value.usulanTa[usulanIndex].mhs_diskusi.splice(mhsIndex, 1)
+      // currentUsulan.value.usulanTa[usulanIndex].mhs_diskusi.splice(mhsIndex, 1)
       console.log(`tolak mhs success`)
+      window.location.reload()
     } else {
       console.log(`tolak mhs failed`)
     }
@@ -189,7 +181,7 @@ async function tolakDiskusi(taId, mhsUsername, usulanIndex, mhsIndex) {
 }
 
 async function terimaBimbingan(taId, mhsUsername, mhsName) {
-  console.log(`terimaBimbingan ${mhsUsername}`)
+  console.log(`terimaBimbingan`)
   try {
     const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan/terima`, {
       method: 'POST',
@@ -314,6 +306,7 @@ onMounted(async () => {
                                         Jadwalkan Diskusi
                                       </Button>
                                     </DialogTrigger>
+
                                     <DialogContent class="min-w-[200px]">
                                       <DialogHeader>
                                         <DialogTitle></DialogTitle>
@@ -330,17 +323,40 @@ onMounted(async () => {
                                         <DialogClose as-child>
                                           <Button variant="secondary" class="cursor-pointer w-[100px]">Cancel</Button>
                                         </DialogClose>
-                                        <DialogClose as-child>
-                                          <Button class="cursor-pointer w-[100px]"
-                                            @click="diskusi(usulan.id, mhs.username, mhs.name, mhs.degree, usulanIndex, mhsIndex)">Send</Button>
-                                        </DialogClose>
+                                        <Button class="cursor-pointer w-[100px]" :disabled="!inputMsg"
+                                          @click="diskusi(usulan.id, mhs.username, mhs.name, mhs.degree, usulanIndex, mhsIndex)">
+                                          Send
+                                        </Button>
                                       </DialogFooter>
                                     </DialogContent>
                                   </Dialog>
                                 </DialogClose>
+
                                 <DialogClose as-child>
-                                  <Button variant="destructive" class="cursor-pointer w-[100px]"
-                                    @click="tolakUsulan(usulan.id, mhs.username, usulanIndex, mhsIndex)">Tolak</Button>
+                                  <Dialog>
+                                    <DialogTrigger as-child>
+                                      <Button variant="destructive" class="cursor-pointer w-[100px]">Tolak</Button>
+                                    </DialogTrigger>
+
+                                    <DialogContent class="min-w-[200px]">
+                                      <DialogHeader>
+                                        <DialogTitle>
+                                          Yakin ingin menolak {{ mhs.name }} sebagai {{ mhs.degree }}?
+                                        </DialogTitle>
+                                        <DialogDescription></DialogDescription>
+                                      </DialogHeader>
+
+                                      <DialogFooter>
+                                        <DialogClose as-child>
+                                          <Button variant="secondary" class="cursor-pointer w-[100px]">Cancel</Button>
+                                        </DialogClose>
+                                        <Button class="cursor-pointer"
+                                          @click="tolakUsulan(usulan.id, mhs.username, usulanIndex, mhsIndex)">
+                                          Yes i'am sure
+                                        </Button>
+                                      </DialogFooter>
+                                    </DialogContent>
+                                  </Dialog>
                                 </DialogClose>
                               </DialogFooter>
                             </DialogContent>
@@ -395,7 +411,6 @@ onMounted(async () => {
                                     <div class="truncate">Judul</div>
                                     <div class="col-span-3 font-semibold">{{ usulan.judul }}</div>
                                   </div>
-                                  {{ mhs.username }} {{ usulan.id }}
                                 </div>
 
                                 <AlertDialogFooter>
