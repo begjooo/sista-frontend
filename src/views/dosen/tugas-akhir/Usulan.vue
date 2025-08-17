@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { baseUrl } from '@/baseUrl';
+import { useRouter } from 'vue-router';
 import Header from '@/components/dosen/layout/Header.vue';
 import TugasAkhir from '@/components/dosen/layout/sidebar/TugasAkhir.vue';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
@@ -35,12 +36,21 @@ import {
 } from '@/components/ui/tooltip'
 
 
+const router = useRouter()
 const username = localStorage.getItem('username')
-const currentUsulan = ref({})
+const headerIndex = Number(localStorage.getItem('headerIndex'))
+const sidebarIndex = Number(localStorage.getItem('sidebarIndex'))
 
+const currentUsulan = ref({})
 const inputMinat = ref('')
 const inputJudul = ref('')
 const inputDeskripsi = ref('')
+
+function goToMinat() {
+  router.push('/dosen/profile/penelitian')
+  localStorage.setItem('headerIndex', 2)
+  localStorage.setItem('sidebarIndex', 2)
+}
 
 async function submitUsulan() {
   console.log(`submitUsulan`)
@@ -67,6 +77,7 @@ async function submitUsulan() {
       if (!currentUsulan.value.usulanTa) {
         currentUsulan.value.usulanTa = []
       }
+
       currentUsulan.value.usulanTa.push(newData)
       inputMinat.value = ''
       inputJudul.value = ''
@@ -80,7 +91,7 @@ async function submitUsulan() {
 }
 
 async function hapusUsulan(index, taId) {
-  console.log(`hapusUsulan ${index} ${taId}`)
+  console.log(`hapusUsulan`)
   try {
     const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan`, {
       method: 'DELETE',
@@ -100,7 +111,7 @@ async function hapusUsulan(index, taId) {
 }
 
 const mhsDataPribadi = ref()
-const mhsPortofolio = ref()
+const mhsCv = ref()
 const inputMsg = ref('')
 
 async function lihatMhs(mhsUsername) {
@@ -111,17 +122,17 @@ async function lihatMhs(mhsUsername) {
 
     if (!data) {
       mhsDataPribadi.value = null
-      mhsPortofolio.value = null
+      mhsCv.value = null
     } else {
       mhsDataPribadi.value = data.pribadi
-      mhsPortofolio.value = data.portofolio
+      mhsCv.value = data.cv
     }
   } catch (error) {
     console.log(error.message)
   }
 }
 
-async function diskusi(taId, mhsUsername, mhsName, degree, usulanIndex, mhsIndex) {
+async function diskusi(taId, mhsUsername, mhsName, degree) {
   console.log(`diskusi`)
   if (inputMsg.value) {
     try {
@@ -138,7 +149,7 @@ async function diskusi(taId, mhsUsername, mhsName, degree, usulanIndex, mhsIndex
   }
 }
 
-async function tolakUsulan(taId, mhsUsername, usulanIndex, mhsIndex) {
+async function tolakUsulan(taId, mhsUsername) {
   console.log(`tolakUsulan`)
   try {
     const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan/tolak`, {
@@ -158,7 +169,7 @@ async function tolakUsulan(taId, mhsUsername, usulanIndex, mhsIndex) {
   }
 }
 
-async function tolakDiskusi(taId, mhsUsername, usulanIndex, mhsIndex) {
+async function tolakDiskusi(taId, mhsUsername) {
   console.log(`tolakDiskusi`)
   try {
     const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan/diskusi`, {
@@ -169,7 +180,6 @@ async function tolakDiskusi(taId, mhsUsername, usulanIndex, mhsIndex) {
 
     const result = await response.json()
     if (result) {
-      // currentUsulan.value.usulanTa[usulanIndex].mhs_diskusi.splice(mhsIndex, 1)
       console.log(`tolak mhs success`)
       window.location.reload()
     } else {
@@ -244,7 +254,8 @@ onMounted(async () => {
 
             <div class="border rounded-md p-2">
               <div v-if="currentUsulan.usulanTa.length === 0">
-                <div class="font-semibold text-center">Anda belum mengusulkan judul TA untuk mahasiswa<br>Silahkan buat
+                <div class="font-semibold text-center">Anda belum mengusulkan Judul Tugas Akhir untuk
+                  mahasiswa<br>Silahkan buat
                   Usulan Tugas Akhir</div>
               </div>
               <div v-else>
@@ -281,10 +292,10 @@ onMounted(async () => {
                                     </div>
 
                                     <div class="mt-2">
-                                      <div class="font-semibold">Portofolio</div>
-                                      <div v-if="mhsPortofolio">
-                                        <div v-for="portofolio in mhsPortofolio">
-                                          <div>{{ portofolio }}</div>
+                                      <div class="font-semibold">Curriculum Vitae</div>
+                                      <div v-if="mhsCv">
+                                        <div v-for="cv in mhsCv">
+                                          <div>{{ cv }}</div>
                                         </div>
                                       </div>
                                       <div v-else>
@@ -310,7 +321,8 @@ onMounted(async () => {
                                     <DialogContent class="min-w-[200px]">
                                       <DialogHeader>
                                         <DialogTitle></DialogTitle>
-                                        <DialogDescription>Kirim pesan kepada mahasiswa untuk waktu dan tempat diskusi
+                                        <DialogDescription>
+                                          Kirim pesan kepada mahasiswa untuk waktu dan tempat diskusi
                                         </DialogDescription>
                                       </DialogHeader>
 
@@ -324,7 +336,7 @@ onMounted(async () => {
                                           <Button variant="secondary" class="cursor-pointer w-[100px]">Cancel</Button>
                                         </DialogClose>
                                         <Button class="cursor-pointer w-[100px]" :disabled="!inputMsg"
-                                          @click="diskusi(usulan.id, mhs.username, mhs.name, mhs.degree, usulanIndex, mhsIndex)">
+                                          @click="diskusi(usulan.id, mhs.username, mhs.name, mhs.degree)">
                                           Send
                                         </Button>
                                       </DialogFooter>
@@ -350,8 +362,7 @@ onMounted(async () => {
                                         <DialogClose as-child>
                                           <Button variant="secondary" class="cursor-pointer w-[100px]">Cancel</Button>
                                         </DialogClose>
-                                        <Button class="cursor-pointer"
-                                          @click="tolakUsulan(usulan.id, mhs.username, usulanIndex, mhsIndex)">
+                                        <Button class="cursor-pointer" @click="tolakUsulan(usulan.id, mhs.username)">
                                           Yes i'am sure
                                         </Button>
                                       </DialogFooter>
@@ -427,6 +438,7 @@ onMounted(async () => {
                               <AlertDialogTrigger>
                                 <Button variant="destructive" class="cursor-pointer w-[100px]">Tolak</Button>
                               </AlertDialogTrigger>
+
                               <AlertDialogContent>
                                 <AlertDialogHeader>
                                   <AlertDialogTitle>
@@ -437,8 +449,7 @@ onMounted(async () => {
 
                                 <AlertDialogFooter>
                                   <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                  <AlertDialogAction
-                                    @click="tolakDiskusi(usulan.id, mhs.username, usulanIndex, mhsIndex)">
+                                  <AlertDialogAction @click="tolakDiskusi(usulan.id, mhs.username)">
                                     Yes i'am sure
                                   </AlertDialogAction>
                                 </AlertDialogFooter>
@@ -450,11 +461,11 @@ onMounted(async () => {
                     </div>
                   </div>
 
-                  <div class="flex flex-wrap border-b border-[#334D80] mb-1 pb-1">
+                  <div class="flex flex-wrap">
                     <div class="min-w-[150px]">Bidang Peminatan</div>
                     <div class="font-semibold">{{ usulan.minat }}</div>
                   </div>
-                  <div class="flex flex-wrap border-b border-[#334D80] mb-1 pb-1">
+                  <div class="flex flex-wrap">
                     <div class="min-w-[150px]">Judul</div>
                     <div class="font-semibold">{{ usulan.judul }}</div>
                   </div>
@@ -473,6 +484,7 @@ onMounted(async () => {
                           </svg>
                         </div>
                       </AlertDialogTrigger>
+
                       <AlertDialogContent>
                         <AlertDialogHeader>
                           <AlertDialogTitle>Yakin ingin menghapus judul?</AlertDialogTitle>
@@ -480,6 +492,7 @@ onMounted(async () => {
                             {{ usulan.judul }} akan dihapus secara permanen dan tidak dapat dipulihkan!
                           </AlertDialogDescription>
                         </AlertDialogHeader>
+
                         <AlertDialogFooter>
                           <AlertDialogCancel>Cancel</AlertDialogCancel>
                           <AlertDialogAction @click="hapusUsulan(usulanIndex, usulan.id)">Yes i'am sure
@@ -501,33 +514,51 @@ onMounted(async () => {
                 </DialogTrigger>
                 <DialogContent class="min-w-[300px]">
                   <DialogHeader>
-                    <DialogTitle>Usulan Tugas Akhir</DialogTitle>
-                    <DialogDescription>Usulkan judul tugas akhir untuk mahasiswa</DialogDescription>
+                    <DialogTitle>Usulkan Tugas Akhir</DialogTitle>
+                    <DialogDescription>Mahasiswa dapat melihat dan mengajukan diri terhadap Judul TA yang anda usulkan
+                    </DialogDescription>
                   </DialogHeader>
 
-                  <div class="flex flex-col gap-2 text-sm">
-                    <div class="flex flex-wrap justify-between">
-                      <Label for="minat" class="min-w-[20vh] max-w-[20vh]">Minat</Label>
-                      <Select id="minat" v-model="inputMinat">
-                        <SelectTrigger class="min-w-[200px] w-[300px]">
-                          <SelectValue placeholder="Minat Penelitian" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <div v-for="minat in currentUsulan.minat">
-                            <SelectItem :value="minat">{{ minat }}</SelectItem>
-                          </div>
-                        </SelectContent>
-                      </Select>
+                  <div v-if="currentUsulan.minat && currentUsulan.minat.length !== 0">
+                    <div class="flex flex-col gap-2 text-sm">
+                      <div class="flex flex-wrap justify-between">
+                        <Label for="minat" class="min-w-[20vh] max-w-[20vh]">Minat</Label>
+                        <Select id="minat" v-model="inputMinat">
+                          <SelectTrigger class="min-w-[200px] w-[300px]">
+                            <SelectValue placeholder="Minat Penelitian" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <div v-for="minat in currentUsulan.minat">
+                              <SelectItem :value="minat">{{ minat }}</SelectItem>
+                            </div>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div class="flex flex-wrap justify-between">
+                        <div>Judul</div>
+                        <input class="border rounded-md min-w-[200px] w-[300px] px-2 py-1" v-model="inputJudul" />
+                      </div>
+                      <div class="flex flex-wrap justify-between">
+                        <div>Deskripsi</div>
+                        <textarea :rows="4"
+                          class="border rounded-md min-h-[100px] max-h-[200px] min-w-[200px] w-[300px] px-2 py-1"
+                          v-model="inputDeskripsi" />
+                      </div>
                     </div>
-                    <div class="flex flex-wrap justify-between">
-                      <div>Judul</div>
-                      <input class="border rounded-md min-w-[200px] w-[300px] px-2 py-1" v-model="inputJudul" />
+                  </div>
+                  <div v-else class="text-center text-sm">
+                    <div>
+                      Anda harus menambahkan "Minat Penelitian" anda untuk mengusulkan Judul Tugas Akhir kepada para
+                      mahasiswa
                     </div>
-                    <div class="flex flex-wrap justify-between">
-                      <div>Deskripsi</div>
-                      <textarea :rows="4"
-                        class="border rounded-md min-h-[100px] max-h-[200px] min-w-[200px] w-[300px] px-2 py-1"
-                        v-model="inputDeskripsi" />
+                    <br>
+                    <div class="font-semibold font-mono">
+                      Profile > Penelitian > Tambah Minat
+                    </div>
+                    <div>
+                      <Button variant="link" class="font-mono cursor-pointer" @click="goToMinat">
+                        Go to Tambah Minat
+                      </Button>
                     </div>
                   </div>
 
@@ -536,7 +567,10 @@ onMounted(async () => {
                       <Button variant="secondary" class="cursor-pointer w-[100px]" @click="">Cancel</Button>
                     </DialogClose>
                     <DialogClose as-child>
-                      <Button class="cursor-pointer w-[100px]" @click="submitUsulan">Submit</Button>
+                      <Button class="cursor-pointer w-[100px]" :disabled="!inputMinat || !inputJudul || !inputDeskripsi"
+                        @click="submitUsulan">
+                        Submit
+                      </Button>
                     </DialogClose>
                   </DialogFooter>
                 </DialogContent>

@@ -7,6 +7,7 @@ const username = localStorage.getItem('username')
 const mhsList = ref([])
 
 onMounted(async () => {
+  console.log(`/dosen onMounted`)
   try {
     const response = await fetch(`${baseUrl}/dosen/data/${username}`)
     const dosenData = await response.json()

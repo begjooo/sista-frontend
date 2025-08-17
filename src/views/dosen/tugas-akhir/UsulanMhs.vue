@@ -35,7 +35,7 @@ import {
 const username = localStorage.getItem('username')
 const usulanTaList = ref([])
 const mhsDataPribadi = ref()
-const mhsPortofolio = ref()
+const mhsCv = ref()
 const inputMsg = ref('')
 
 async function lihatMhs(username) {
@@ -46,17 +46,17 @@ async function lihatMhs(username) {
     console.log(data)
     if (!data) {
       mhsDataPribadi.value = null
-      mhsPortofolio.value = null
+      mhsCv.value = null
     } else {
       mhsDataPribadi.value = data.pribadi
-      mhsPortofolio.value = data.portofolio
+      mhsCv.value = data.cv
     }
   } catch (error) {
     console.log(error)
   }
 }
 
-async function diskusiUsulan(taId, mhsUsername, mhsName, usulanIndex) {
+async function diskusiUsulan(taId, mhsUsername, mhsName) {
   console.log(`diskusiUsulan`)
   if (inputMsg.value) {
     try {
@@ -95,8 +95,8 @@ async function terimaUsulan(taId, mhsUsername, mhsName) {
   }
 }
 
-async function tolakUsulan(taId, mhsUsername, usulanIndex) {
-  console.log(mhsUsername, usulanIndex)
+async function tolakUsulan(taId, mhsUsername) {
+  console.log(`tolakUsulan`)
   try {
     const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan-mhs/tolak`, {
       method: `POST`,
@@ -145,7 +145,7 @@ onMounted(async () => {
             </span>
             sebagai <span class="font-semibold">{{ usulan.degree }}</span>
             <div v-if="usulan.tahap === 'Diskusi'">
-              <div>
+              <div class="rounded-md py-1 px-2 bg-white">
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger class="italic">{{ usulan.msg }}</TooltipTrigger>
@@ -200,10 +200,10 @@ onMounted(async () => {
                     </div>
 
                     <div class="mt-2">
-                      <div class="font-semibold">Portofolio</div>
-                      <div v-if="mhsPortofolio">
-                        <div v-for="portofolio in mhsPortofolio">
-                          <div>{{ portofolio }}</div>
+                      <div class="font-semibold">Curriculum Vitae</div>
+                      <div v-if="mhsCv">
+                        <div v-for="cv in mhsCv">
+                          <div>{{ cv }}</div>
                         </div>
                       </div>
                       <div v-else>
@@ -240,7 +240,7 @@ onMounted(async () => {
                     <Button variant="secondary" class="cursor-pointer w-[100px]">Cancel</Button>
                   </DialogClose>
                   <Button class="cursor-pointer w-[100px]" :disabled="!inputMsg"
-                    @click="diskusiUsulan(usulan.id, usulan.username, usulan.name, usulanIndex)">Send</Button>
+                    @click="diskusiUsulan(usulan.id, usulan.username, usulan.name)">Send</Button>
                 </DialogFooter>
               </DialogContent>
             </Dialog>
@@ -302,7 +302,7 @@ onMounted(async () => {
 
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction @click="tolakUsulan(usulan.id, usulan.username, usulanIndex)">
+                <AlertDialogAction @click="tolakUsulan(usulan.id, usulan.username)">
                   Yes i'am sure
                 </AlertDialogAction>
               </AlertDialogFooter>

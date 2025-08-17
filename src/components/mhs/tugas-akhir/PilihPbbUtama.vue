@@ -1,9 +1,9 @@
 <script setup>
 import { ref } from 'vue'
-import { useRouter } from 'vue-router';
+import { useRouter } from 'vue-router'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import Button from '@/components/ui/button/Button.vue';
+import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogClose,
@@ -30,7 +30,7 @@ import { baseUrl } from '@/baseUrl';
 const router = useRouter()
 const username = localStorage.getItem('username')
 
-const props = defineProps(['dosenList', 'dosenDegree', 'mhsName', 'mhsTahun'])
+const props = defineProps(['dosenList', 'mhsName', 'mhsTahun', 'mhsSelectedTa'])
 const kbkList = ['Nirkabel', 'Infrastruktur Jaringan', 'Layanan dan Aplikasi']
 const selectedKbk = ref('')
 const dosenPerKbk = ref()
@@ -73,7 +73,22 @@ function handleDosen(dosen) {
 function handleMinat(minat) {
   selectedMinat.value = minat
   if (selectedDosen.value.usulan_ta) {
-    judulPerMinat.value = selectedDosen.value.usulan_ta.filter((item) => item.minat === minat)
+    const taList = selectedDosen.value.usulan_ta.filter((item) => item.minat === minat)
+
+    if (props.mhsSelectedTa && props.mhsSelectedTa.length > 0) {
+      let availableTa = []
+      taList.forEach((taItem) => {
+        props.mhsSelectedTa.forEach((selectedTa) => {
+          if (taItem.id !== selectedTa.id) {
+            availableTa.push(taItem)
+          }
+        })
+      })
+
+      judulPerMinat.value = availableTa
+    } else if (!props.mhsSelectedTa) {
+      judulPerMinat.value = taList
+    }
   }
 
   selectedJudul.value = {
@@ -101,7 +116,7 @@ async function submit() {
     minat: selectedMinat.value,
     judul: selectedJudul.value.judul,
     deskripsi: selectedJudul.value.deskripsi,
-    degree: props.dosenDegree,
+    degree: 'Pembimbing Utama',
     type,
     tahap: 'Pengusulan',
   }
@@ -148,7 +163,7 @@ async function submit() {
               <div>
                 {{ dosen.fullname }}
               </div>
-              <div class="text-xs italic">Bimbingan tersisa
+              <div class="text-xs italic">Kuota Bimbingan tersisa
                 <span class="font-semibold">
                   {{ 6 - dosen.bimbingan_utama.length }}
                 </span>
@@ -196,7 +211,7 @@ async function submit() {
                 <RadioGroupItem id="mahasiswa" :value="{ ta_id: '', judul: '', deskripsi: '', type: 'mahasiswa' }" />
                 <div class="flex flex-col gap-2">
                   <Label for="mahasiswa" class="cursor-pointer">Pengajuan Mandiri pada bidang peminatan {{ selectedMinat
-                    }}
+                  }}
                   </Label>
                   <div v-if="selectedJudul.type === 'mahasiswa'">
                     <div class="">
@@ -221,7 +236,7 @@ async function submit() {
                     </div>
                     <div>
                       <div class="text-gray-800 italic mt-2">Deskripsi</div>
-                      <textarea rows="4" placeholder="Deskrisi Tugas Akhir ..." v-model="selectedJudul.deskripsi"
+                      <textarea rows="4" placeholder="Deskripsi Tugas Akhir mencakup Abstrak dan Referensi Utama, " v-model="selectedJudul.deskripsi"
                         class="border-b border-orange-600 resize-none focus:outline-0 focus:border-blue-800 w-[50vh] pb-2" />
                     </div>
                   </div>
@@ -237,6 +252,7 @@ async function submit() {
                   Submit
                 </Button>
               </DialogTrigger>
+
               <DialogContent class="min-w-[200px] text-sm">
                 <DialogHeader>
                   <DialogTitle>Rekap Usulan Pembimbing</DialogTitle>
@@ -267,9 +283,10 @@ async function submit() {
                           Kirim Permintaan
                         </Button>
                       </AlertDialogTrigger>
+
                       <AlertDialogContent>
                         <AlertDialogHeader>
-                          <AlertDialogTitle>Rekap Usulan Pembimbing</AlertDialogTitle>
+                          <AlertDialogTitle>Rekapitulasi Usulan Pembimbing</AlertDialogTitle>
                           <AlertDialogDescription>
                             Pastikan data sudah benar! Pengiriman tidak dapat dikembalikan!
                           </AlertDialogDescription>

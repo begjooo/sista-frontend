@@ -14,7 +14,11 @@ const menuList = ref([
   {
     name: 'Tugas Akhir',
     link: '/mhs/tugas-akhir/usulan-pbb',
-  }
+  },
+  {
+    name: 'Profile',
+    link: '/mhs/profile/cv',
+  },
 ])
 
 function changeIndex(index) {

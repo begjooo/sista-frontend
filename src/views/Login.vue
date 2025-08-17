@@ -85,7 +85,6 @@ onMounted(async () => {
     })
 
     loginStatus.value = await response.json()
-    // console.log(loginStatus.value)
 
     if (loginStatus.value) {
       routeToHome(loginStatus.value)
@@ -133,8 +132,8 @@ onMounted(async () => {
           </Button>
 
           <RouterLink to="/mhs/signup">
-            <Button class="cursor-pointer w-[100px]" variant="link">
-              Sign-Up
+            <Button class="cursor-pointer" variant="link">
+              Sign-Up Mahasiswa
             </Button>
           </RouterLink>
         </CardFooter>

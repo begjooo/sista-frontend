@@ -17,7 +17,6 @@ import {
 import { baseUrl } from '@/baseUrl';
 
 const router = useRouter()
-
 const username = localStorage.getItem('username')
 
 const props = defineProps(['currentData', 'dbName'])

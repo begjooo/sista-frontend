@@ -13,6 +13,10 @@ const menuList = ref([
     link: '/dosen/tugas-akhir/usulan-mhs',
   },
   {
+    name: 'Usulan PBB Pendamping',
+    link: '/dosen/tugas-akhir/usulan-pdp',
+  },
+  {
     name: 'Bimbingan',
     link: '/dosen/tugas-akhir/bimbingan',
   }

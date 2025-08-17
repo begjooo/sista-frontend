@@ -5,8 +5,16 @@ import { ref } from 'vue';
 const selectedIndex = Number(localStorage.getItem('sidebarIndex'))
 const menuList = ref([
   {
-    name: 'Usulan Pembimbing',
-    link: '/mhs/tugas-akhir/usulan-pbb',
+    name: 'Curriculum Vitae',
+    link: '/mhs/profile/cv',
+  },
+  {
+    name: 'Pribadi',
+    link: '/mhs/profile/cv',
+  },
+  {
+    name: 'Keamanan',
+    link: '/mhs/profile/cv',
   },
 ])
 
