@@ -28,12 +28,12 @@ onMounted(async () => {
     <div v-if="userData" class="p-2 text-sm">
       <div class="border flex flex-col gap-2 p-2 mb-2">
         <div class="flex gap-2">
-          <div class="min-w-[20vh]">NIP</div>
-          <div>{{ userData.username }}</div>
-        </div>
-        <div class="flex gap-2">
           <div class="min-w-[20vh]">Nama</div>
           <div>{{ userData.fullname }}</div>
+        </div>
+        <div class="flex gap-2">
+          <div class="min-w-[20vh]">NIP</div>
+          <div>{{ userData.nip }}</div>
         </div>
         <div class="flex gap-2">
           <div class="min-w-[20vh]">Email</div>

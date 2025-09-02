@@ -14,7 +14,7 @@ import {
 import { baseUrl } from '@/baseUrl';
 
 const router = useRouter()
-const usernameLength = 6;
+const maxUsernameLength = 6;
 
 const newData = ref({
   username: '',
@@ -31,7 +31,7 @@ const registrationStatus = ref({
 })
 
 function checkUsername(username) {
-  const regex = /^[0-9]+$/
+  const regex = /^[a-zA-Z0-9]+$/
   return regex.test(username)
 }
 
@@ -49,7 +49,7 @@ function setPassword(password, confirmPassword) {
 
 async function submit() {
   const isUsernameValid = checkUsername(inputUsername.value)
-  if (isUsernameValid && inputUsername.value.length === usernameLength) {
+  if (isUsernameValid && inputUsername.value.length === maxUsernameLength) {
     newData.value.username = inputUsername.value
   } else {
     newData.value.username = ''
@@ -58,7 +58,7 @@ async function submit() {
   newData.value.password = setPassword(inputPassword.value, inputConfirmPassword.value)
 
   if (!newData.value.username) {
-    return `Invalid 'NIP'`
+    return `Invalid 'Kode'`
   } else if (!newData.value.password) {
     return `Invalid 'Password'`
   } else {
@@ -97,9 +97,9 @@ async function submit() {
         <form class="text-sm">
           <div class="grid items-center gap-2">
             <div class="flex gap-4">
-              <Label for="username" class="min-w-[20vh] max-w-[20vh]">NIP</Label>
-              <input id="username" placeholder="NIP" class="w-full border rounded-md py-1 px-2 min-w-[20vh]"
-                :class="[(checkUsername(inputUsername) === false ? 'bg-red-200' : 'bg-blue-100'), (inputUsername.length === usernameLength ? 'bg-blue-100' : 'bg-red-200')]"
+              <Label for="username" class="min-w-[20vh] max-w-[20vh]">Kode</Label>
+              <input id="username" placeholder="Kode" class="w-full border rounded-md py-1 px-2 min-w-[20vh]"
+                :class="[(checkUsername(inputUsername) === false ? 'bg-red-200' : 'bg-blue-100'), (inputUsername.length === maxUsernameLength ? 'bg-blue-100' : 'bg-red-200')]"
                 v-model="inputUsername" />
             </div>
             <!-- <div class="flex gap-4">

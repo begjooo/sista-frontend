@@ -160,10 +160,16 @@ onMounted(async () => {
           <div class="p-1 cursor-pointer hover:underline hover:bg-gray-200" @click="handleList(1)"
             :class="{ 'font-semibold': selectedIndex === 1 }">
             Pendamping Pertama
+            <span v-if="usulanPdp1List">
+              [{{ usulanPdp1List.length }}]
+            </span>
           </div>
           <div class="p-1 cursor-pointer hover:underline hover:bg-gray-200" @click="handleList(2)"
             :class="{ 'font-semibold': selectedIndex === 2 }">
             Pendamping Kedua
+            <span v-if="usulanPdp2List">
+              [{{ usulanPdp2List.length }}]
+            </span>
           </div>
         </div>
         <div class="border rounded-md flex-1 w-full min-h-[80vh] max-h-[80vh] overflow-y-auto">
@@ -189,6 +195,10 @@ onMounted(async () => {
                     <div class="flex flex-wrap">
                       <div class="w-[200px] truncate">Peminatan</div>
                       <div class="flex-1 w-full truncate">{{ usulan.minat }}</div>
+                    </div>
+                    <div class="flex flex-wrap">
+                      <div class="w-[200px] truncate">Skema</div>
+                      <div class="flex-1 w-full truncate">{{ usulan.skema }}</div>
                     </div>
                     <div class="flex flex-wrap">
                       <div class="w-[200px] truncate">Judul</div>
@@ -240,7 +250,7 @@ onMounted(async () => {
 
                               <div class="mt-2">
                                 <div class="font-semibold">Curriculum Vitae</div>
-                                <div v-if="mhsCv">
+                                <div v-if="mhsCv && mhsCv.length !== 0">
                                   <div v-for="cv in mhsCv">
                                     <div>{{ cv }}</div>
                                   </div>
@@ -373,9 +383,26 @@ onMounted(async () => {
 
             </div>
           </div>
-          <div v-else>
+          <div
+            v-else-if="(usulanPdp1List && usulanPdp1List.length === 0) && (usulanPdp2List && usulanPdp2List.length === 0)">
             <div class="text-center p-2 italic">
               Anda tidak memiliki permintaan sebagai pembimbing pendamping
+            </div>
+          </div>
+          <div
+            v-else-if="(usulanPdp1List && usulanPdp1List.length !== 0) && (usulanPdp2List && usulanPdp2List.length !== 0)">
+            <div class="text-center p-2 italic">
+              Anda tidak memiliki permintaan sebagai pembimbing pendamping pertama dan kedua
+            </div>
+          </div>
+          <div v-else-if="usulanPdp1List && usulanPdp1List.length !== 0">
+            <div class="text-center p-2 italic">
+              Anda memiliki permintaan sebagai pembimbing pendamping pertama
+            </div>
+          </div>
+          <div v-else-if="usulanPdp2List && usulanPdp2List.length !== 0">
+            <div class="text-center p-2 italic">
+              Anda memiliki permintaan sebagai pembimbing pendamping kedua
             </div>
           </div>
         </div>

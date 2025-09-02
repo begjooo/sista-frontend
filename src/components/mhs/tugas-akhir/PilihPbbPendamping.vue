@@ -88,7 +88,7 @@ async function submit(dosen) {
           <div v-for="(dosen, dosenIndex) in availableDosen">
             <div v-if="dosen.fullname" class="text-center rounded-md py-1 px-2 cursor-pointer hover:bg-gray-200"
               @click="selectedDosen = dosen">
-              <div class="font-semibold underline">{{ dosen.fullname }} [{{ dosen.jabatan_fungsional }}]</div>
+              <div class="font-semibold underline">{{ dosen.fullname }}</div>
               <div class="mt-1">
                 <Badge class="bg-blue-800">KBK {{ dosen.kbk }}</Badge>
               </div>

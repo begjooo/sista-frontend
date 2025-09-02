@@ -2,7 +2,8 @@
 import { onMounted, ref } from 'vue';
 import { baseUrl } from '@/baseUrl';
 
-import Header from '../../components/layout/admin/Header.vue';
+import Header from '@/components/admin/layout/Header.vue';
+
 
 const username = localStorage.getItem('username')
 const userData = ref()

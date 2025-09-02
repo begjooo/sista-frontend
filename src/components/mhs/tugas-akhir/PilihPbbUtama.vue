@@ -25,6 +25,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { baseUrl } from '@/baseUrl';
 
 const router = useRouter()
@@ -40,6 +41,7 @@ const judulPerMinat = ref()
 
 const selectedJudul = ref({
   ta_id: '',
+  skema: '',
   judul: '',
   deskripsi: '',
   type: '',
@@ -52,6 +54,7 @@ function handleKbk(kbk) {
   judulPerMinat.value = null
   selectedJudul.value = {
     ta_id: '',
+    skema: '',
     judul: '',
     deskripsi: '',
     type: '',
@@ -64,6 +67,7 @@ function handleDosen(dosen) {
   judulPerMinat.value = null
   selectedJudul.value = {
     ta_id: '',
+    skema: '',
     judul: '',
     deskripsi: '',
     type: '',
@@ -86,13 +90,14 @@ function handleMinat(minat) {
       })
 
       judulPerMinat.value = availableTa
-    } else if (!props.mhsSelectedTa) {
+    } else {
       judulPerMinat.value = taList
     }
   }
 
   selectedJudul.value = {
     ta_id: '',
+    skema: '',
     judul: '',
     deskripsi: '',
     type: '',
@@ -114,6 +119,7 @@ async function submit() {
     dosen1_fullname: selectedDosen.value.fullname,
     kbk: selectedKbk.value,
     minat: selectedMinat.value,
+    skema: selectedJudul.value.skema,
     judul: selectedJudul.value.judul,
     deskripsi: selectedJudul.value.deskripsi,
     degree: 'Pembimbing Utama',
@@ -160,16 +166,13 @@ async function submit() {
           <div v-if="dosen.bimbingan_utama.length < 6">
             <div @click="handleDosen(dosen)" class="border-b py-2 px-2 cursor-pointer hover:underline"
               :class="{ 'bg-gray-300 font-semibold': selectedDosen && selectedDosen.fullname && dosen.fullname === selectedDosen.fullname }">
-              <div>
-                {{ dosen.fullname }}
-              </div>
+              <div>{{ dosen.fullname }}</div>
               <div class="text-xs italic">Kuota Bimbingan tersisa
                 <span class="font-semibold">
                   {{ 6 - dosen.bimbingan_utama.length }}
                 </span>
               </div>
             </div>
-
           </div>
         </div>
       </div>
@@ -196,10 +199,17 @@ async function submit() {
             <RadioGroup v-model="selectedJudul">
               <div v-for="item in judulPerMinat" class="flex space-x-2 p-2 border-b">
                 <RadioGroupItem :id="item.judul"
-                  :value="{ ta_id: item.id, judul: item.judul, deskripsi: item.deskripsi }" />
-                <div class="flex flex-col gap-1">
-                  <Label :for="item.judul" class="cursor-pointer">{{ item.judul }}</Label>
-                  <label :for="item.judul" class="cursor-pointer">{{ item.deskripsi }}</label>
+                  :value="{ ta_id: item.id, skema: item.skema, judul: item.judul, deskripsi: item.deskripsi }" />
+                <div class="flex flex-col">
+                  <Label :for="item.judul" class="cursor-pointer pb-1">{{ item.judul }}</Label>
+                  <div class="flex flex-wrap">
+                    <label :for="item.judul" class="cursor-pointer w-[10vh]">Skema</label>
+                    <label :for="item.judul" class="flex-1 cursor-pointer">{{ item.skema }}</label>
+                  </div>
+                  <div class="flex flex-wrap">
+                    <label :for="item.judul" class="cursor-pointer w-[10vh]">Deskripsi</label>
+                    <label :for="item.judul" class="flex-1 cursor-pointer">{{ item.deskripsi }}</label>
+                  </div>
                 </div>
               </div>
             </RadioGroup>
@@ -208,7 +218,8 @@ async function submit() {
           <div v-if="selectedKbk && selectedDosen && selectedMinat">
             <RadioGroup v-model="selectedJudul">
               <div class="flex space-x-2 p-2">
-                <RadioGroupItem id="mahasiswa" :value="{ ta_id: '', judul: '', deskripsi: '', type: 'mahasiswa' }" />
+                <RadioGroupItem id="mahasiswa"
+                  :value="{ ta_id: '', skema: '', judul: '', deskripsi: '', type: 'mahasiswa' }" />
                 <div class="flex flex-col gap-2">
                   <Label for="mahasiswa" class="cursor-pointer">Pengajuan Mandiri pada bidang peminatan {{ selectedMinat
                   }}
@@ -228,6 +239,19 @@ async function submit() {
                         <div>{{ selectedMinat }}</div>
                       </div>
                     </div>
+                    <div class="flex flex-wrap border-t border-blue-200 mt-1 pt-1">
+                      <label for="skema" class="content-center text-gray-800 italic w-[100px]">Skema</label>
+                      <RadioGroup v-model="selectedJudul.skema" class="flex flex-wrap">
+                        <div class="flex items-center space-x-2 hover:font-semibold">
+                          <RadioGroupItem id="skemaPenelitian" value="Penelitian" />
+                          <label for="skemaPenelitian">Penelitian</label>
+                        </div>
+                        <div class="flex items-center space-x-2 hover:font-semibold">
+                          <RadioGroupItem id="skemaPengabdian" value="Pengabdian" />
+                          <label for="skemaPengabdian">Pengabdian</label>
+                        </div>
+                      </RadioGroup>
+                    </div>
                     <div>
                       <div class="text-gray-800 italic">Judul</div>
                       <input
@@ -236,7 +260,8 @@ async function submit() {
                     </div>
                     <div>
                       <div class="text-gray-800 italic mt-2">Deskripsi</div>
-                      <textarea rows="4" placeholder="Deskripsi Tugas Akhir mencakup Abstrak dan Referensi Utama, " v-model="selectedJudul.deskripsi"
+                      <textarea rows="4" placeholder="Deskripsi Tugas Akhir mencakup Abstrak dan Referensi Utama, "
+                        v-model="selectedJudul.deskripsi"
                         class="border-b border-orange-600 resize-none focus:outline-0 focus:border-blue-800 w-[50vh] pb-2" />
                     </div>
                   </div>
@@ -248,7 +273,8 @@ async function submit() {
           <div v-if="selectedMinat">
             <Dialog>
               <DialogTrigger as-child>
-                <Button class="m-2" :disabled="!selectedJudul.judul || !selectedJudul.deskripsi">
+                <Button class="m-2"
+                  :disabled="!selectedJudul.judul || !selectedJudul.deskripsi || !selectedJudul.skema">
                   Submit
                 </Button>
               </DialogTrigger>
@@ -266,6 +292,8 @@ async function submit() {
                   <div class="col-span-3">{{ selectedDosen.fullname }}</div>
                   <div>Minat</div>
                   <div class="col-span-3">{{ selectedMinat }}</div>
+                  <div>Skema</div>
+                  <div class="col-span-3">{{ selectedJudul.skema }}</div>
                   <div>Judul</div>
                   <div class="col-span-3">{{ selectedJudul.judul }}</div>
                   <div>Deskripsi</div>

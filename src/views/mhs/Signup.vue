@@ -171,15 +171,35 @@ async function submit() {
                 </SelectTrigger>
 
                 <SelectContent>
-                  <SelectItem value="D3 Teknik Telekomunikasi">D3 Teknik Telekomunikasi</SelectItem>
-                  <SelectItem value="D4 Teknik Telekomunikasi">D4 Teknik Telekomunikasi</SelectItem>
+                  <SelectItem value="D3 Teknik Telekomunikasi" @click="newData.kelas = ''">
+                    D3 Teknik Telekomunikasi
+                  </SelectItem>
+                  <SelectItem value="D4 Teknik Telekomunikasi" @click="newData.kelas = ''">
+                    D4 Teknik Telekomunikasi
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <div class="flex gap-4">
               <Label for="kelas" class="min-w-[20vh] max-w-[20vh]">Kelas</Label>
-              <input id="kelas" placeholder="Kelas" class="w-full border rounded-md py-1 px-2 min-w-[20vh]"
-                :class="[(newData.kelas === '' ? 'bg-red-200' : 'bg-blue-100')]" v-model="newData.kelas" />
+              <Select id="kelas" v-model="newData.kelas" class="">
+                <SelectTrigger class="w-full min-w-[20vh]"
+                  :class="[(newData.kelas === '' ? 'bg-red-200' : 'bg-blue-100')]">
+                  <SelectValue placeholder="Kelas" />
+                </SelectTrigger>
+                <SelectContent>
+                  <div v-if="newData.prodi === 'D3 Teknik Telekomunikasi'">
+                    <SelectItem value="3A-TTE">3A-TTE</SelectItem>
+                    <SelectItem value="3B-TTE">3B-TTE</SelectItem>
+                    <SelectItem value="3C-TTE">3C-TTE</SelectItem>
+                  </div>
+                  <div v-else-if="newData.prodi === 'D4 Teknik Telekomunikasi'">
+                    <SelectItem value="4A-TNK">4A-TNK</SelectItem>
+                    <SelectItem value="4B-TNK">4B-TNK</SelectItem>
+                    <SelectItem value="4C-TNK">4C-TNK</SelectItem>
+                  </div>
+                </SelectContent>
+              </Select>
             </div>
             <div class="flex gap-4">
               <Label for="password" class="min-w-[20vh] max-w-[20vh]">Password</Label>

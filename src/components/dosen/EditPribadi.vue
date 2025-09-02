@@ -3,7 +3,7 @@ import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { Label } from '@/components/ui/label'
 import Button from '@/components/ui/button/Button.vue';
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectLabel, SelectItem } from '@/components/ui/select';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import {
   Dialog,
   DialogClose,
@@ -24,8 +24,8 @@ const props = defineProps(['currentData', 'dbName'])
 // const currentData = ref({})
 const newData = ref({
   name: '',
+  nip: '',
   email: '',
-  kode: '',
   kbk: '',
   jabatan_fungsional: '',
   gelar_depan: '',
@@ -69,7 +69,7 @@ onMounted(async () => {
   try {
     newData.value.name = props.currentData.name
     newData.value.email = props.currentData.email
-    newData.value.kode = props.currentData.kode
+    newData.value.nip = props.currentData.nip
     newData.value.kbk = props.currentData.kbk
     newData.value.jabatan_fungsional = props.currentData.jabatan_fungsional
     newData.value.gelar_depan = props.currentData.gelar_depan
@@ -99,14 +99,14 @@ onMounted(async () => {
             v-model="newData.name" />
         </div>
         <div class="flex gap-4">
+          <Label for="nip" class="min-w-[20vh] max-w-[20vh]">NIP</Label>
+          <input id="nip" placeholder="Nomor Induk Pegawai" class="w-full border rounded-md py-1 px-2 min-w-[20vh]"
+            v-model="newData.nip" />
+        </div>
+        <div class="flex gap-4">
           <Label for="email" class="min-w-[20vh] max-w-[20vh]">Email</Label>
           <input type="email" id="email" placeholder="xxx@yyy.zzz"
             class="w-full border rounded-md py-1 px-2 min-w-[20vh]" v-model="newData.email" />
-        </div>
-        <div class="flex gap-4">
-          <Label for="kode" class="min-w-[20vh] max-w-[20vh]">Kode</Label>
-          <input id="kode" placeholder="Kode" class="w-full border rounded-md py-1 px-2 min-w-[20vh]"
-            v-model="newData.kode" />
         </div>
         <div class="flex gap-4">
           <Label for="jafung" class="min-w-[20vh] max-w-[20vh]">KBK</Label>

@@ -1,7 +1,8 @@
 <script setup>
 import { onMounted, ref } from 'vue';
-import Header from '../../components/layout/admin/Header.vue';
 import { baseUrl } from '@/baseUrl';
+
+import Header from '@/components/admin/layout/Header.vue';
 
 const entityList = ref([])
 

@@ -105,7 +105,7 @@ onMounted(async () => {
         <Dialog>
           <DialogTrigger as-child>
             <Button variant="" class="bg-green-600">
-              Tambah CV
+              Tambah Informasi
             </Button>
           </DialogTrigger>
           <DialogContent class="min-w-[200px]">

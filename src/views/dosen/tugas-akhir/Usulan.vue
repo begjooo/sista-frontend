@@ -34,15 +34,14 @@ import {
   TooltipProvider,
   TooltipTrigger
 } from '@/components/ui/tooltip'
-
+import LihatMhs from '@/components/mhs/Lihat.vue';
 
 const router = useRouter()
 const username = localStorage.getItem('username')
-const headerIndex = Number(localStorage.getItem('headerIndex'))
-const sidebarIndex = Number(localStorage.getItem('sidebarIndex'))
 
 const currentUsulan = ref({})
 const inputMinat = ref('')
+const inputSkema = ref('')
 const inputJudul = ref('')
 const inputDeskripsi = ref('')
 
@@ -57,6 +56,7 @@ async function submitUsulan() {
   const newData = {
     kbk: currentUsulan.value.kbk,
     minat: inputMinat.value,
+    skema: inputSkema.value,
     judul: inputJudul.value,
     deskripsi: inputDeskripsi.value,
     mhs_pengusul: [],
@@ -80,6 +80,7 @@ async function submitUsulan() {
 
       currentUsulan.value.usulanTa.push(newData)
       inputMinat.value = ''
+      inputSkema.value = ''
       inputJudul.value = ''
       inputDeskripsi.value = ''
     } else {
@@ -244,15 +245,16 @@ onMounted(async () => {
               Kuota anda sebagai pembimbing utama sudah penuh ({{ currentUsulan.jmlBimbinganUtama }})
             </div>
           </div>
-          <div v-else>
-            <div class="">
-              Jumlah mahasiswa sebagai pembimbing utama: {{ currentUsulan.jmlBimbinganUtama }}
+          <div v-else class="">
+            <div class="font-semibold font-mono">
+              Jumlah mahasiswa sebagai pembimbing utama: <span class="text-blue-600">
+                {{ currentUsulan.jmlBimbinganUtama }}</span>
             </div>
-            <div class="">
-              Kuota tersisa: {{ 6 - currentUsulan.jmlBimbinganUtama }}
+            <div class="font-semibold font-mono">
+              Kuota tersisa: <span class="text-red-500">{{ 6 - currentUsulan.jmlBimbinganUtama }}</span>
             </div>
 
-            <div class="border rounded-md p-2">
+            <div class="rounded-md">
               <div v-if="currentUsulan.usulanTa.length === 0">
                 <div class="font-semibold text-center">Anda belum mengusulkan Judul Tugas Akhir untuk
                   mahasiswa<br>Silahkan buat
@@ -262,208 +264,14 @@ onMounted(async () => {
                 <div class="font-semibold mb-2 text-center">Daftar Usulan Tugas Akhir</div>
               </div>
               <div class="flex flex-col gap-2">
-                <div v-for="(usulan, usulanIndex) in currentUsulan.usulanTa" class="rounded-md p-2 bg-blue-50">
-                  <div class="flex flex-col">
-                    <div v-if="usulan.mhs_pengusul.length !== 0" class="border-b border-[#334D80] mb-1 pb-1">
-                      <span class="font-semibold ">Permintaan</span>
-                      dari
-                      <span v-if="usulan.mhs_pengusul.length !== 0">
-                        <span v-for="(mhs, mhsIndex) in usulan.mhs_pengusul">
-                          <Dialog>
-                            <DialogTrigger as-child>
-                              <span class="font-semibold cursor-pointer hover:underline"
-                                @click="lihatMhs(mhs.username)">
-                                {{ mhs.name }}
-                              </span>
-                            </DialogTrigger>
-                            <DialogContent class="min-w-[300px]">
-                              <DialogHeader>
-                                <DialogTitle>Data Mahasiswa</DialogTitle>
-                                <DialogDescription></DialogDescription>
-                              </DialogHeader>
-
-                              <div v-if="mhsDataPribadi">
-                                <div class="border rounded-md text-sm max-h-[400px] overflow-y-auto px-2 py-1">
-                                  <div class="">
-                                    <div class="flex flex-col font-semibold text-center">
-                                      <div>{{ mhsDataPribadi.name }} [{{ mhsDataPribadi.username }}]</div>
-                                      <div>{{ mhsDataPribadi.kelas }} | {{ mhsDataPribadi.prodi }} | {{
-                                        mhsDataPribadi.tahun_ajaran }}</div>
-                                    </div>
-
-                                    <div class="mt-2">
-                                      <div class="font-semibold">Curriculum Vitae</div>
-                                      <div v-if="mhsCv">
-                                        <div v-for="cv in mhsCv">
-                                          <div>{{ cv }}</div>
-                                        </div>
-                                      </div>
-                                      <div v-else>
-                                        Tidak ada data
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                              <div v-else class="text-center text-red-600 font-semibold">
-                                Data {{ mhs.name }} NIM {{ mhs.username }} tidak ditemukan!
-                              </div>
-
-                              <DialogFooter>
-                                <DialogClose as-child>
-                                  <Dialog>
-                                    <DialogTrigger as-child>
-                                      <Button variant="" class="cursor-pointer">
-                                        Jadwalkan Diskusi
-                                      </Button>
-                                    </DialogTrigger>
-
-                                    <DialogContent class="min-w-[200px]">
-                                      <DialogHeader>
-                                        <DialogTitle></DialogTitle>
-                                        <DialogDescription>
-                                          Kirim pesan kepada mahasiswa untuk waktu dan tempat diskusi
-                                        </DialogDescription>
-                                      </DialogHeader>
-
-                                      <textarea type="text"
-                                        class="border rounded-md px-2 py-1 text-sm max-h-[200px] min-h-[50px]"
-                                        placeholder="Saya tunggu hari Senin dd-mm-yyyy pukul hh:mm WIB di ..."
-                                        v-model="inputMsg" />
-
-                                      <DialogFooter>
-                                        <DialogClose as-child>
-                                          <Button variant="secondary" class="cursor-pointer w-[100px]">Cancel</Button>
-                                        </DialogClose>
-                                        <Button class="cursor-pointer w-[100px]" :disabled="!inputMsg"
-                                          @click="diskusi(usulan.id, mhs.username, mhs.name, mhs.degree)">
-                                          Send
-                                        </Button>
-                                      </DialogFooter>
-                                    </DialogContent>
-                                  </Dialog>
-                                </DialogClose>
-
-                                <DialogClose as-child>
-                                  <Dialog>
-                                    <DialogTrigger as-child>
-                                      <Button variant="destructive" class="cursor-pointer w-[100px]">Tolak</Button>
-                                    </DialogTrigger>
-
-                                    <DialogContent class="min-w-[200px]">
-                                      <DialogHeader>
-                                        <DialogTitle>
-                                          Yakin ingin menolak {{ mhs.name }} sebagai {{ mhs.degree }}?
-                                        </DialogTitle>
-                                        <DialogDescription></DialogDescription>
-                                      </DialogHeader>
-
-                                      <DialogFooter>
-                                        <DialogClose as-child>
-                                          <Button variant="secondary" class="cursor-pointer w-[100px]">Cancel</Button>
-                                        </DialogClose>
-                                        <Button class="cursor-pointer" @click="tolakUsulan(usulan.id, mhs.username)">
-                                          Yes i'am sure
-                                        </Button>
-                                      </DialogFooter>
-                                    </DialogContent>
-                                  </Dialog>
-                                </DialogClose>
-                              </DialogFooter>
-                            </DialogContent>
-                          </Dialog>
-
-                          <span v-if="usulan.mhs_pengusul.length > 1 && (mhsIndex + 1) !== usulan.mhs_pengusul.length">,
-                          </span>
-                        </span>
-                      </span>
-                    </div>
-                    <div v-if="usulan.mhs_diskusi.length !== 0" class="border-b border-[#334D80] mb-1 pb-1">
-                      <div class="font-semibold">Diskusi</div>
-                      <div class="flex flex-col gap-1">
-                        <div v-for="(mhs, mhsIndex) in usulan.mhs_diskusi" class="rounded-md py-1 px-2 bg-white">
-                          <div class="font-semibold">{{ mhs.name }}</div>
-                          <div>
-                            <TooltipProvider>
-                              <Tooltip>
-                                <TooltipTrigger class="italic">{{ mhs.msg }}</TooltipTrigger>
-                                <TooltipContent>
-                                  <p>Janji Diskusi</p>
-                                </TooltipContent>
-                              </Tooltip>
-                            </TooltipProvider>
-                          </div>
-
-                          <div class="flex flex-wrap gap-2 mt-1">
-                            <AlertDialog>
-                              <AlertDialogTrigger>
-                                <Button variant="" class="bg-green-600 cursor-pointer w-[100px]">Terima</Button>
-                              </AlertDialogTrigger>
-                              <AlertDialogContent>
-                                <AlertDialogHeader>
-                                  <AlertDialogTitle>
-                                    Yakin ingin menerima {{ mhs.name }} sebagai {{ mhs.degree }}?
-                                  </AlertDialogTitle>
-                                  <AlertDialogDescription>
-                                    Anda tidak dapat membatalkannya jika anda menerimanya!
-                                  </AlertDialogDescription>
-                                </AlertDialogHeader>
-
-                                <div class="text-sm max-h-[200px] overflow-auto">
-                                  <div class="grid grid-cols-4 gap-x-2">
-                                    <div class="truncate">Nama</div>
-                                    <div class="col-span-3 truncate font-semibold">{{ mhs.name }}</div>
-                                    <div class="truncate">Posisi</div>
-                                    <div class="col-span-3 truncate font-semibold">{{ mhs.degree }}</div>
-                                    <div class="truncate">KBK</div>
-                                    <div class="col-span-3 truncate font-semibold">{{ usulan.kbk }}</div>
-                                    <div class="truncate">Peminatan</div>
-                                    <div class="col-span-3 truncate font-semibold">{{ usulan.minat }}</div>
-                                    <div class="truncate">Judul</div>
-                                    <div class="col-span-3 font-semibold">{{ usulan.judul }}</div>
-                                  </div>
-                                </div>
-
-                                <AlertDialogFooter>
-                                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                  <AlertDialogAction
-                                    @click="terimaBimbingan(usulan.id, mhs.username, mhs.name, usulanIndex)">
-                                    Yes i'am sure
-                                  </AlertDialogAction>
-                                </AlertDialogFooter>
-                              </AlertDialogContent>
-                            </AlertDialog>
-
-                            <AlertDialog>
-                              <AlertDialogTrigger>
-                                <Button variant="destructive" class="cursor-pointer w-[100px]">Tolak</Button>
-                              </AlertDialogTrigger>
-
-                              <AlertDialogContent>
-                                <AlertDialogHeader>
-                                  <AlertDialogTitle>
-                                    Yakin ingin menolak {{ mhs.name }} sebagai {{ mhs.degree }}?
-                                  </AlertDialogTitle>
-                                  <AlertDialogDescription></AlertDialogDescription>
-                                </AlertDialogHeader>
-
-                                <AlertDialogFooter>
-                                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                  <AlertDialogAction @click="tolakDiskusi(usulan.id, mhs.username)">
-                                    Yes i'am sure
-                                  </AlertDialogAction>
-                                </AlertDialogFooter>
-                              </AlertDialogContent>
-                            </AlertDialog>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
+                <div v-for="(usulan, usulanIndex) in currentUsulan.usulanTa" class="rounded-md p-2 bg-blue-100">
                   <div class="flex flex-wrap">
                     <div class="min-w-[150px]">Bidang Peminatan</div>
                     <div class="font-semibold">{{ usulan.minat }}</div>
+                  </div>
+                  <div class="flex flex-wrap">
+                    <div class="min-w-[150px]">Skema</div>
+                    <div class="font-semibold">{{ usulan.skema }}</div>
                   </div>
                   <div class="flex flex-wrap">
                     <div class="min-w-[150px]">Judul</div>
@@ -472,6 +280,191 @@ onMounted(async () => {
                   <div class="md:flex border-b border-[#334D80] mb-1 pb-1">
                     <div class="min-w-[150px]">Deskripsi</div>
                     <div class="text-justify flex-auto">{{ usulan.deskripsi }}</div>
+                  </div>
+                  <div class="">
+                    <div v-if="usulan.mhs_pengusul.length !== 0" class="border-b border-[#334D80] mb-1 pb-1">
+                      <div>
+                        <span class="font-semibold">Permintaan</span> dari mahasiswa
+                      </div>
+                      <div v-for="(mhs, mhsIndex) in usulan.mhs_pengusul">
+                        <div class="flex flex-wrap gap-1">
+                          <div class="content-center pr-4">
+                            {{ mhsIndex + 1 }}. {{ mhs.name }}
+                          </div>
+                          <LihatMhs :mhsUsername="mhs.username" />
+                          <div>
+                            <Dialog>
+                              <DialogTrigger as-child>
+                                <svg class="text-blue-600 hover:text-blue-700 cursor-pointer"
+                                  xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 20">
+                                  <path fill="currentColor"
+                                    d="m6 18l-2.3 2.3q-.475.475-1.088.213T2 19.575V4q0-.825.588-1.412T4 2h16q.825 0 1.413.588T22 4v12q0 .825-.587 1.413T20 18zm-.85-2H20V4H4v13.125zM4 16V4zm3-2h6q.425 0 .713-.288T14 13t-.288-.712T13 12H7q-.425 0-.712.288T6 13t.288.713T7 14m0-3h10q.425 0 .713-.288T18 10t-.288-.712T17 9H7q-.425 0-.712.288T6 10t.288.713T7 11m0-3h10q.425 0 .713-.288T18 7t-.288-.712T17 6H7q-.425 0-.712.288T6 7t.288.713T7 8" />
+                                </svg>
+                              </DialogTrigger>
+
+                              <DialogContent class="min-w-[200px]">
+                                <DialogHeader>
+                                  <DialogTitle></DialogTitle>
+                                  <DialogDescription>
+                                    Kirim pesan kepada <span class="font-semibold">{{ mhs.name }}</span> untuk waktu dan
+                                    tempat diskusi
+                                  </DialogDescription>
+                                </DialogHeader>
+
+                                <textarea type="text"
+                                  class="border rounded-md px-2 py-1 text-sm max-h-[200px] min-h-[50px]"
+                                  placeholder="Hari Senin dd-mm-yyyy pukul hh:mm WIB di ..." v-model="inputMsg" />
+
+                                <DialogFooter>
+                                  <DialogClose as-child>
+                                    <Button variant="secondary" class="cursor-pointer w-[100px]">Cancel</Button>
+                                  </DialogClose>
+                                  <Button class="cursor-pointer w-[100px]" :disabled="!inputMsg"
+                                    @click="diskusi(usulan.id, mhs.username, mhs.name, mhs.degree)">
+                                    Send
+                                  </Button>
+                                </DialogFooter>
+                              </DialogContent>
+                            </Dialog>
+                          </div>
+                          <div>
+                            <Dialog>
+                              <DialogTrigger as-child>
+                                <svg class="text-red-600 hover:text-red-700 cursor-pointer"
+                                  xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24">
+                                  <path fill="currentColor"
+                                    d="M17.4 13L16 11.6l2.075-2.1L16 7.425L17.4 6l2.1 2.1L21.575 6L23 7.425L20.9 9.5l2.1 2.1l-1.425 1.4l-2.075-2.075zM9 12q-1.65 0-2.825-1.175T5 8t1.175-2.825T9 4t2.825 1.175T13 8t-1.175 2.825T9 12m-8 8v-2.8q0-.85.438-1.562T2.6 14.55q1.55-.775 3.15-1.162T9 13t3.25.388t3.15 1.162q.725.375 1.163 1.088T17 17.2V20z" />
+                                </svg>
+                              </DialogTrigger>
+
+                              <DialogContent class="min-w-[200px]">
+                                <DialogHeader>
+                                  <DialogTitle>
+                                    Yakin ingin menolak {{ mhs.name }} sebagai {{ mhs.degree }}?
+                                  </DialogTitle>
+                                  <DialogDescription></DialogDescription>
+                                </DialogHeader>
+
+                                <DialogFooter>
+                                  <DialogClose as-child>
+                                    <Button variant="secondary" class="cursor-pointer w-[100px]">Cancel</Button>
+                                  </DialogClose>
+                                  <Button class="cursor-pointer" @click="tolakUsulan(usulan.id, mhs.username)">
+                                    Yes i'am sure
+                                  </Button>
+                                </DialogFooter>
+                              </DialogContent>
+                            </Dialog>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div v-if="usulan.mhs_diskusi.length !== 0" class="border-b border-[#334D80] mb-1 pb-1">
+                      <div>
+                        <span class="font-semibold">Diskusi</span> dengan mahasiswa
+                      </div>
+                      <div>
+                        <div v-for="(mhs, mhsIndex) in usulan.mhs_diskusi">
+                          <div class="flex flex-wrap gap-1">
+                            <div class="content-center pr-4">
+                              {{ mhsIndex + 1 }}. {{ mhs.name }}
+                            </div>
+                            <LihatMhs :mhsUsername="mhs.username" />
+                            <div>
+                              <AlertDialog>
+                                <AlertDialogTrigger>
+                                  <svg class="text-green-600 hover:text-green-700 cursor-pointer"
+                                    xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24">
+                                    <path fill="currentColor"
+                                      d="M17.55 12L14 8.45l1.425-1.4l2.125 2.125l4.25-4.25l1.4 1.425zM9 12q-1.65 0-2.825-1.175T5 8t1.175-2.825T9 4t2.825 1.175T13 8t-1.175 2.825T9 12m-8 8v-2.8q0-.85.438-1.562T2.6 14.55q1.55-.775 3.15-1.162T9 13t3.25.388t3.15 1.162q.725.375 1.163 1.088T17 17.2V20z" />
+                                  </svg>
+                                </AlertDialogTrigger>
+                                <AlertDialogContent>
+                                  <AlertDialogHeader>
+                                    <AlertDialogTitle>
+                                      Yakin ingin menerima {{ mhs.name }} sebagai {{ mhs.degree }}?
+                                    </AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                      Anda tidak dapat membatalkannya jika anda menerimanya!
+                                    </AlertDialogDescription>
+                                  </AlertDialogHeader>
+
+                                  <div class="text-sm max-h-[200px] overflow-auto">
+                                    <div class="grid grid-cols-4 gap-x-2">
+                                      <div class="truncate">Nama</div>
+                                      <div class="col-span-3 truncate font-semibold">{{ mhs.name }}</div>
+                                      <div class="truncate">Posisi</div>
+                                      <div class="col-span-3 truncate font-semibold">{{ mhs.degree }}</div>
+                                      <div class="truncate">KBK</div>
+                                      <div class="col-span-3 truncate font-semibold">{{ usulan.kbk }}</div>
+                                      <div class="truncate">Peminatan</div>
+                                      <div class="col-span-3 truncate font-semibold">{{ usulan.minat }}</div>
+                                      <div class="truncate">Skema</div>
+                                      <div class="col-span-3 truncate font-semibold">{{ usulan.skema }}</div>
+                                      <div class="truncate">Judul</div>
+                                      <div class="col-span-3 font-semibold">{{ usulan.judul }}</div>
+                                    </div>
+                                  </div>
+
+                                  <AlertDialogFooter>
+                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                    <AlertDialogAction
+                                      @click="terimaBimbingan(usulan.id, mhs.username, mhs.name, usulanIndex)">
+                                      Yes i'am sure
+                                    </AlertDialogAction>
+                                  </AlertDialogFooter>
+                                </AlertDialogContent>
+                              </AlertDialog>
+                            </div>
+                            <div>
+                              <AlertDialog>
+                                <AlertDialogTrigger>
+                                  <svg class="text-red-600 hover:text-red-700 cursor-pointer"
+                                    xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24">
+                                    <path fill="currentColor"
+                                      d="M17.4 13L16 11.6l2.075-2.1L16 7.425L17.4 6l2.1 2.1L21.575 6L23 7.425L20.9 9.5l2.1 2.1l-1.425 1.4l-2.075-2.075zM9 12q-1.65 0-2.825-1.175T5 8t1.175-2.825T9 4t2.825 1.175T13 8t-1.175 2.825T9 12m-8 8v-2.8q0-.85.438-1.562T2.6 14.55q1.55-.775 3.15-1.162T9 13t3.25.388t3.15 1.162q.725.375 1.163 1.088T17 17.2V20z" />
+                                  </svg>
+                                </AlertDialogTrigger>
+
+                                <AlertDialogContent>
+                                  <AlertDialogHeader>
+                                    <AlertDialogTitle>
+                                      Yakin ingin menolak {{ mhs.name }} sebagai {{ mhs.degree }}?
+                                    </AlertDialogTitle>
+                                    <AlertDialogDescription></AlertDialogDescription>
+                                  </AlertDialogHeader>
+
+                                  <AlertDialogFooter>
+                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                    <AlertDialogAction @click="tolakDiskusi(usulan.id, mhs.username)">
+                                      Yes i'am sure
+                                    </AlertDialogAction>
+                                  </AlertDialogFooter>
+                                </AlertDialogContent>
+                              </AlertDialog>
+                            </div>
+                            <div class="">
+                              <TooltipProvider>
+                                <Tooltip>
+                                  <TooltipTrigger class="flex flex-wrap">
+                                    <div class="content-center border-l-4 ml-4 mr-2">
+                                      {{ mhs.msg }}
+                                    </div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24">
+                                      <path fill="currentColor"
+                                        d="M12 3C6.5 3 2 6.58 2 11a7.22 7.22 0 0 0 2.75 5.5c0 .6-.42 2.17-2.75 4.5c2.37-.11 4.64-1 6.47-2.5c1.14.33 2.34.5 3.53.5c5.5 0 10-3.58 10-8s-4.5-8-10-8m0 14c-4.42 0-8-2.69-8-6s3.58-6 8-6s8 2.69 8 6s-3.58 6-8 6m5-5v-2h-2v2zm-4 0v-2h-2v2zm-4 0v-2H7v2z" />
+                                    </svg>
+                                  </TooltipTrigger>
+                                  <TooltipContent>
+                                    <p>Janji diskusi dengan mahasiswa</p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
                   <div class="text-right">
@@ -535,7 +528,19 @@ onMounted(async () => {
                         </Select>
                       </div>
                       <div class="flex flex-wrap justify-between">
-                        <div>Judul</div>
+                        <label for="skema" class=" content-center min-w-[20vh] max-w-[20vh]">Skema</label>
+                        <Select id="skema" v-model="inputSkema">
+                          <SelectTrigger class="min-w-[200px] w-[300px]">
+                            <SelectValue placeholder="Skema Tugas Akhir" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="Penelitian">Penelitian</SelectItem>
+                            <SelectItem value="Pengabdian">Pengabdian</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div class="flex flex-wrap justify-between">
+                        <div class="content-center">Judul</div>
                         <input class="border rounded-md min-w-[200px] w-[300px] px-2 py-1" v-model="inputJudul" />
                       </div>
                       <div class="flex flex-wrap justify-between">
@@ -567,8 +572,8 @@ onMounted(async () => {
                       <Button variant="secondary" class="cursor-pointer w-[100px]" @click="">Cancel</Button>
                     </DialogClose>
                     <DialogClose as-child>
-                      <Button class="cursor-pointer w-[100px]" :disabled="!inputMinat || !inputJudul || !inputDeskripsi"
-                        @click="submitUsulan">
+                      <Button class="cursor-pointer w-[100px]"
+                        :disabled="!inputMinat || !inputJudul || !inputDeskripsi || !inputSkema" @click="submitUsulan">
                         Submit
                       </Button>
                     </DialogClose>

@@ -141,8 +141,12 @@ onMounted(async () => {
               <div v-for="pbb in mhsData.usulan_ta" class="px-2 py-2"
                 :class="{ 'bg-orange-100': pbb.tahap === 'Pengusulan', 'bg-blue-100': pbb.tahap === 'Diskusi' }">
                 <div class="flex flex-wrap">
-                  <div class="w-[250px]">Usulan Judul Tugas Akhir</div>
+                  <div class="w-[250px]">Usulan Judul</div>
                   <div>{{ pbb.judul }}</div>
+                </div>
+                <div class="flex flex-wrap">
+                  <div class="w-[250px]">Skema</div>
+                  <div>{{ pbb.skema }}</div>
                 </div>
                 <div class="flex flex-wrap">
                   <div class="w-[250px]">KBK</div>

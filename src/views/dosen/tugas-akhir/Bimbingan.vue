@@ -2,6 +2,7 @@
 import { baseUrl } from '@/baseUrl';
 import Header from '@/components/dosen/layout/Header.vue';
 import TugasAkhir from '@/components/dosen/layout/sidebar/TugasAkhir.vue';
+import LihatMhs from '@/components/mhs/Lihat.vue';
 import { Button } from '@/components/ui/button';
 import { onMounted, ref } from 'vue';
 
@@ -31,11 +32,11 @@ onMounted(async () => {
   <Header />
   <TugasAkhir />
 
-  <div class="body-head-side text-sm">
+  <div class="body-head-side text-sm pb-2">
     <div v-if="bimbinganUtamaList && bimbinganUtamaList.length !== 0">
       <div class="text-center font-semibold my-2">Daftar Bimbingan Utama</div>
       <div class="flex flex-col gap-2 text-sm mx-2">
-        <div v-for="mhs in bimbinganUtamaList" class="rounded-md py-2 px-3 bg-blue-50">
+        <div v-for="mhs in bimbinganUtamaList" class="rounded-md py-2 px-3 bg-blue-100">
           <div class="flex flex-wrap">
             <div class="min-w-[100px]">Nama</div>
             <div>{{ mhs.mhs_name }}</div>
@@ -47,6 +48,10 @@ onMounted(async () => {
           <div class="flex flex-wrap">
             <div class="min-w-[100px]">Judul</div>
             <div>{{ mhs.judul }}</div>
+          </div>
+          <div class="flex flex-wrap">
+            <div class="min-w-[100px]">Skema</div>
+            <div>{{ mhs.skema }}</div>
           </div>
           <div class="flex flex-wrap">
             <div class="min-w-[100px]">KBK</div>
@@ -61,10 +66,12 @@ onMounted(async () => {
             <div>{{ mhs.tahap }}</div>
           </div>
 
-          <div class="mt-2">
-            <Button>
+          <div class="">
+            <LihatMhs :mhsUsername="mhs.mhs_username" />
+
+            <!-- <Button>
               Data Bimbingan
-            </Button>
+            </Button> -->
           </div>
         </div>
       </div>
@@ -73,7 +80,7 @@ onMounted(async () => {
     <div v-if="bimbinganPdp1List && bimbinganPdp1List.length !== 0">
       <div class="text-center font-semibold my-2">Daftar Bimbingan Pendamping Pertama</div>
       <div class="flex flex-col gap-2 text-sm mx-2">
-        <div v-for="mhs in bimbinganPdp1List" class="rounded-md py-2 px-3 bg-blue-50">
+        <div v-for="mhs in bimbinganPdp1List" class="rounded-md py-2 px-3 bg-blue-100">
           <div class="flex flex-wrap">
             <div class="min-w-[100px]">Nama</div>
             <div>{{ mhs.mhs_name }}</div>
@@ -85,6 +92,10 @@ onMounted(async () => {
           <div class="flex flex-wrap">
             <div class="min-w-[100px]">Judul</div>
             <div>{{ mhs.judul }}</div>
+          </div>
+          <div class="flex flex-wrap">
+            <div class="min-w-[100px]">Skema</div>
+            <div>{{ mhs.skema }}</div>
           </div>
           <div class="flex flex-wrap">
             <div class="min-w-[100px]">KBK</div>
@@ -99,10 +110,12 @@ onMounted(async () => {
             <div>{{ mhs.tahap }}</div>
           </div>
 
-          <div class="mt-2">
-            <Button>
+          <div class="">
+            <LihatMhs :mhsUsername="mhs.mhs_username" />
+
+            <!-- <Button>
               Data Bimbingan
-            </Button>
+            </Button> -->
           </div>
         </div>
       </div>
@@ -111,7 +124,7 @@ onMounted(async () => {
     <div v-if="bimbinganPdp2List && bimbinganPdp2List.length !== 0">
       <div class="text-center font-semibold my-2">Daftar Bimbingan Pendamping Kedua</div>
       <div class="flex flex-col gap-2 text-sm mx-2">
-        <div v-for="mhs in bimbinganPdp2List" class="rounded-md py-2 px-3 bg-blue-50">
+        <div v-for="mhs in bimbinganPdp2List" class="rounded-md py-2 px-3 bg-blue-100">
           <div class="flex flex-wrap">
             <div class="min-w-[100px]">Nama</div>
             <div>{{ mhs.mhs_name }}</div>
@@ -123,6 +136,10 @@ onMounted(async () => {
           <div class="flex flex-wrap">
             <div class="min-w-[100px]">Judul</div>
             <div>{{ mhs.judul }}</div>
+          </div>
+          <div class="flex flex-wrap">
+            <div class="min-w-[100px]">Skema</div>
+            <div>{{ mhs.skema }}</div>
           </div>
           <div class="flex flex-wrap">
             <div class="min-w-[100px]">KBK</div>
@@ -137,10 +154,12 @@ onMounted(async () => {
             <div>{{ mhs.tahap }}</div>
           </div>
 
-          <div class="mt-2">
-            <Button>
+          <div class="">
+            <LihatMhs :mhsUsername="mhs.mhs_username" />
+
+            <!-- <Button>
               Data Bimbingan
-            </Button>
+            </Button> -->
           </div>
         </div>
       </div>
