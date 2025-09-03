@@ -5,19 +5,19 @@ import { ref } from 'vue';
 const selectedIndex = Number(localStorage.getItem('sidebarIndex'))
 const menuList = ref([
   {
-    name: 'Usulan Judul',
+    name: 'Usulan Judul dari Dosen',
     link: '/dosen/tugas-akhir/usulan',
   },
   {
-    name: 'Usulan Judul MHS',
+    name: 'Usulan Judul dari Mhs',
     link: '/dosen/tugas-akhir/usulan-mhs',
   },
   {
-    name: 'Usulan PBB Pendamping',
+    name: 'Usulan Pemb. Pndmping dari MHS',
     link: '/dosen/tugas-akhir/usulan-pdp',
   },
   {
-    name: 'Bimbingan',
+    name: 'Mhs Bimbingan yang diterima',
     link: '/dosen/tugas-akhir/bimbingan',
   }
 ])
