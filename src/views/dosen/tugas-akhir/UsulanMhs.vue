@@ -1,8 +1,8 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { baseUrl } from '@/baseUrl';
-import Header from '@/components/dosen/layout/Header.vue';
-import TugasAkhir from '@/components/dosen/layout/sidebar/TugasAkhir.vue';
+import Header from '@/components/header/Dosen.vue';
+import TugasAkhir from '@/components/sidebar/dosen/TugasAkhir.vue';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -31,7 +31,7 @@ import {
   TooltipProvider,
   TooltipTrigger
 } from '@/components/ui/tooltip'
-import LihatMhs from '@/components/mhs/Lihat.vue';
+import LihatMhs from '@/components/lihat/Mhs.vue';
 
 const username = localStorage.getItem('username')
 const usulanTaList = ref([])
@@ -133,7 +133,7 @@ onMounted(async () => {
 
   <div class="body-head-side text-sm">
     <div v-if="usulanTaList && usulanTaList.length !== 0">
-      <div v-for="(usulan, usulanIndex) in usulanTaList" class="rounded-md bg-blue-100 m-2 px-2 py-2">
+      <div v-for="(usulan, usulanIndex) in usulanTaList" class="rounded-sm bg-blue-100 m-2 px-2 py-2">
         <div class="flex flex-col">
           <div class="">
             <span v-if="usulan.tahap === 'Pengusulan'">
@@ -145,20 +145,7 @@ onMounted(async () => {
               dengan {{ usulan.name }}
             </span>
             sebagai <span class="font-semibold">{{ usulan.degree }}</span>
-            <div v-if="usulan.tahap === 'Diskusi'">
-              <div class="rounded-md py-1 px-2 my-1 bg-white">
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger class="italic">{{ usulan.msg }}</TooltipTrigger>
-                    <TooltipContent>
-                      <p>Janji Diskusi</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              </div>
-            </div>
           </div>
-
 
           <div class="flex flex-wrap">
             <div class="min-w-[150px]">KBK</div>
@@ -176,14 +163,14 @@ onMounted(async () => {
             <div class="min-w-[150px]">Judul</div>
             <div class="font-semibold">{{ usulan.judul }}</div>
           </div>
-          <div class="md:flex">
-            <div class="min-w-[150px] text-center md:text-left">Deskripsi</div>
-            <div class="text-justify flex-auto">{{ usulan.deskripsi }}</div>
+          <div class="flex flex-wrap">
+            <div class="min-w-[150px]">Deskripsi</div>
+            <div class="text-justify flex-1">{{ usulan.deskripsi }}</div>
           </div>
         </div>
 
         <div class="flex flex-wrap gap-2 mt-1">
-          <LihatMhs :mhsUsername="usulan.username" />
+          <LihatMhs :username="usulan.username" />
 
           <span v-if="usulan.tahap === 'Pengusulan'">
             <Dialog>
@@ -200,7 +187,7 @@ onMounted(async () => {
                   <DialogDescription>Kirim pesan kepada mahasiswa untuk waktu dan tempat diskusi</DialogDescription>
                 </DialogHeader>
 
-                <textarea type="text" class="border rounded-md px-2 py-1 text-sm max-h-[200px] min-h-[50px]"
+                <textarea type="text" class="border rounded-sm px-2 py-1 text-sm max-h-[200px] min-h-[50px]"
                   placeholder="Saya tunggu hari Senin dd-mm-yyyy pukul hh:mm WIB di ..." v-model="inputMsg" />
 
                 <DialogFooter>
@@ -284,10 +271,29 @@ onMounted(async () => {
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
+
+          <div v-if="usulan.tahap === 'Diskusi'">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger class="flex flex-wrap">
+                  <div class="content-center ml-2 mr-2">
+                    {{ usulan.msg }}
+                  </div>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24">
+                    <path fill="currentColor"
+                      d="M12 3C6.5 3 2 6.58 2 11a7.22 7.22 0 0 0 2.75 5.5c0 .6-.42 2.17-2.75 4.5c2.37-.11 4.64-1 6.47-2.5c1.14.33 2.34.5 3.53.5c5.5 0 10-3.58 10-8s-4.5-8-10-8m0 14c-4.42 0-8-2.69-8-6s3.58-6 8-6s8 2.69 8 6s-3.58 6-8 6m5-5v-2h-2v2zm-4 0v-2h-2v2zm-4 0v-2H7v2z" />
+                  </svg>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Janji diskusi dengan mahasiswa</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
         </div>
       </div>
     </div>
-    <div v-else class="p-2 text-center italic">
+    <div v-else class="p-2 text-center">
       Tidak ada usulan judul dari mahasiswa
     </div>
   </div>

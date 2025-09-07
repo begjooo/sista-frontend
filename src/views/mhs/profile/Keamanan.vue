@@ -1,8 +1,8 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { baseUrl } from '@/baseUrl';
-import Header from '@/components/header/Dosen.vue';
-import Profile from '@/components/sidebar/dosen/Profile.vue';
+import Header from '@/components/header/Mhs.vue';
+import Profile from '@/components/sidebar/mhs/Profile.vue';
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import {
@@ -47,7 +47,7 @@ async function submit() {
     console.log(`submit new password`)
 
     try {
-      const response = await fetch(`${baseUrl}/dosen/${username}/profile/password`, {
+      const response = await fetch(`${baseUrl}/mhs/${username}/profile/password`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password: newPassword }),
@@ -65,7 +65,7 @@ async function submit() {
 
 onMounted(async () => {
   try {
-    const response = await fetch(`${baseUrl}/dosen/${username}/data-full`)
+    const response = await fetch(`${baseUrl}/mhs/${username}/data-full`)
     userData.value = await response.json()
   } catch (error) {
     console.log(error)

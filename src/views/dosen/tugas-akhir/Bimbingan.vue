@@ -1,10 +1,9 @@
 <script setup>
-import { baseUrl } from '@/baseUrl';
-import Header from '@/components/dosen/layout/Header.vue';
-import TugasAkhir from '@/components/dosen/layout/sidebar/TugasAkhir.vue';
-import LihatMhs from '@/components/mhs/Lihat.vue';
-import { Button } from '@/components/ui/button';
 import { onMounted, ref } from 'vue';
+import { baseUrl } from '@/baseUrl';
+import Header from '@/components/header/Dosen.vue';
+import TugasAkhir from '@/components/sidebar/dosen/TugasAkhir.vue';
+import LihatMhs from '@/components/lihat/Mhs.vue';
 
 const username = localStorage.getItem('username')
 
@@ -36,7 +35,7 @@ onMounted(async () => {
     <div v-if="bimbinganUtamaList && bimbinganUtamaList.length !== 0">
       <div class="text-center font-semibold my-2">Daftar Bimbingan Utama</div>
       <div class="flex flex-col gap-2 text-sm mx-2">
-        <div v-for="mhs in bimbinganUtamaList" class="rounded-md py-2 px-3 bg-blue-100">
+        <div v-for="mhs in bimbinganUtamaList" class="rounded-sm py-2 px-3 bg-blue-100">
           <div class="flex flex-wrap">
             <div class="min-w-[100px]">Nama</div>
             <div>{{ mhs.mhs_name }}</div>
@@ -67,7 +66,7 @@ onMounted(async () => {
           </div>
 
           <div class="">
-            <LihatMhs :mhsUsername="mhs.mhs_username" />
+            <LihatMhs :username="mhs.mhs_username" />
 
             <!-- <Button>
               Data Bimbingan
@@ -80,7 +79,7 @@ onMounted(async () => {
     <div v-if="bimbinganPdp1List && bimbinganPdp1List.length !== 0">
       <div class="text-center font-semibold my-2">Daftar Bimbingan Pendamping Pertama</div>
       <div class="flex flex-col gap-2 text-sm mx-2">
-        <div v-for="mhs in bimbinganPdp1List" class="rounded-md py-2 px-3 bg-blue-100">
+        <div v-for="mhs in bimbinganPdp1List" class="rounded-sm py-2 px-3 bg-blue-100">
           <div class="flex flex-wrap">
             <div class="min-w-[100px]">Nama</div>
             <div>{{ mhs.mhs_name }}</div>
@@ -111,7 +110,7 @@ onMounted(async () => {
           </div>
 
           <div class="">
-            <LihatMhs :mhsUsername="mhs.mhs_username" />
+            <LihatMhs :username="mhs.mhs_username" />
 
             <!-- <Button>
               Data Bimbingan
@@ -124,7 +123,7 @@ onMounted(async () => {
     <div v-if="bimbinganPdp2List && bimbinganPdp2List.length !== 0">
       <div class="text-center font-semibold my-2">Daftar Bimbingan Pendamping Kedua</div>
       <div class="flex flex-col gap-2 text-sm mx-2">
-        <div v-for="mhs in bimbinganPdp2List" class="rounded-md py-2 px-3 bg-blue-100">
+        <div v-for="mhs in bimbinganPdp2List" class="rounded-sm py-2 px-3 bg-blue-100">
           <div class="flex flex-wrap">
             <div class="min-w-[100px]">Nama</div>
             <div>{{ mhs.mhs_name }}</div>
@@ -155,7 +154,7 @@ onMounted(async () => {
           </div>
 
           <div class="">
-            <LihatMhs :mhsUsername="mhs.mhs_username" />
+            <LihatMhs :username="mhs.mhs_username" />
 
             <!-- <Button>
               Data Bimbingan

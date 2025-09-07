@@ -101,7 +101,8 @@ onMounted(async () => {
       <Card class="w-[60vh]">
         <CardHeader>
           <CardTitle class="truncate">Welcome to SISTA</CardTitle>
-          <CardDescription class="truncate">Sistem Tugas Akhir<br>Prodi Teknik Telekomunikasi<br>POLBAN
+          <CardDescription class="truncate">Sistem Tugas Akhir<br>Prodi Teknik Telekomunikasi<br>
+            Politeknik Negeri Bandung
           </CardDescription>
         </CardHeader>
 
@@ -110,7 +111,7 @@ onMounted(async () => {
             <div class="grid items-center gap-4">
               <div class="flex flex-col space-y-1.5">
                 <Label for="username">Username</Label>
-                <input id="username" placeholder="username" class="w-full border rounded-md py-1 px-2"
+                <input id="username" placeholder="username" class="w-full border rounded-sm py-1 px-2"
                   v-model="username" />
               </div>
 
@@ -119,7 +120,7 @@ onMounted(async () => {
                   <Label for="password">Password</Label>
                   <a class="cursor-pointer text-xs italic hover:underline" variant="">Forget Password</a>
                 </div>
-                <input id="password" type="password" placeholder="password" class="w-full border rounded-md py-1 px-2"
+                <input id="password" type="password" placeholder="password" class="w-full border rounded-sm py-1 px-2"
                   v-model="password" />
               </div>
             </div>

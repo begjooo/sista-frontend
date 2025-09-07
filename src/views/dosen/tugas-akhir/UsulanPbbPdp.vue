@@ -25,8 +25,8 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 
-import Header from '@/components/dosen/layout/Header.vue';
-import TugasAkhir from '@/components/dosen/layout/sidebar/TugasAkhir.vue';
+import Header from '@/components/header/Dosen.vue';
+import TugasAkhir from '@/components/sidebar/dosen/TugasAkhir.vue';
 
 const username = localStorage.getItem('username')
 const router = useRouter()
@@ -155,31 +155,33 @@ onMounted(async () => {
       </div>
 
       <div class="flex flex-wrap gap-2 p-2">
-        <div class="border rounded-md w-[250px]">
+        <div class="border rounded-sm w-[250px]">
           <div class="bg-blue-100 text-center font-semibold p-1">Pilihan PBB</div>
           <div class="p-1 cursor-pointer hover:underline hover:bg-gray-200" @click="handleList(1)"
             :class="{ 'font-semibold': selectedIndex === 1 }">
             Pendamping Pertama
-            <span v-if="usulanPdp1List">
-              [{{ usulanPdp1List.length }}]
+            <span v-if="usulanPdp1List" class="font-semibold">
+              [{{ usulanPdp1List.length }} Mhs]
             </span>
           </div>
           <div class="p-1 cursor-pointer hover:underline hover:bg-gray-200" @click="handleList(2)"
             :class="{ 'font-semibold': selectedIndex === 2 }">
             Pendamping Kedua
-            <span v-if="usulanPdp2List">
-              [{{ usulanPdp2List.length }}]
+            <span v-if="usulanPdp2List"class="font-semibold">
+              [{{ usulanPdp2List.length }} Mhs]
             </span>
           </div>
         </div>
-        <div class="border rounded-md flex-1 w-full min-h-[80vh] max-h-[80vh] overflow-y-auto">
-          <div class="text-center font-semibold pt-2">
-            Daftar Mahasiswa
+        <div class="border rounded-sm flex-1 w-full min-h-[80vh] max-h-[80vh] overflow-y-auto">
+          <div v-if="selectedIndex">
+            <div class="text-center font-semibold pt-2">
+              Daftar Mahasiswa
+            </div>
           </div>
           <div v-if="selectedUsulanPdpList && selectedUsulanPdpList.length !== 0">
             <div class="p-2 flex flex-col gap-2 border-b">
-              <div v-for="usulan in selectedUsulanPdpList" class="rounded-md p-2" :class="{
-                'bg-orange-100': usulan.tahap_usulan === 'Pengusulan',
+              <div v-for="usulan in selectedUsulanPdpList" class="rounded-sm p-2" :class="{
+                'bg-red-100': usulan.tahap_usulan === 'Pengusulan',
                 'bg-blue-100': usulan.tahap_usulan === 'Diskusi'
               }">
                 <div class="flex flex-wrap gap-2 justify-between">
@@ -202,7 +204,7 @@ onMounted(async () => {
                     </div>
                     <div class="flex flex-wrap">
                       <div class="w-[200px] truncate">Judul</div>
-                      <div class="flex-1 w-full truncate">{{ usulan.judul }}</div>
+                      <div class="flex-1 w-full">{{ usulan.judul }}</div>
                     </div>
                     <div class="flex flex-wrap">
                       <div class="w-[200px] truncate">Dosen PBB Utama</div>
@@ -240,7 +242,7 @@ onMounted(async () => {
                         </DialogHeader>
 
                         <div v-if="mhsDataPribadi">
-                          <div class="border rounded-md text-sm max-h-[400px] overflow-y-auto px-2 py-1">
+                          <div class="border rounded-sm text-sm max-h-[400px] overflow-y-auto px-2 py-1">
                             <div class="">
                               <div class="flex flex-col font-semibold text-center">
                                 <div>{{ mhsDataPribadi.name }} [{{ mhsDataPribadi.username }}]</div>
@@ -292,7 +294,7 @@ onMounted(async () => {
                             </DialogDescription>
                           </DialogHeader>
 
-                          <textarea type="text" class="border rounded-md px-2 py-1 text-sm max-h-[200px] min-h-[50px]"
+                          <textarea type="text" class="border rounded-sm px-2 py-1 text-sm max-h-[200px] min-h-[50px]"
                             placeholder="Saya tunggu hari Senin dd-mm-yyyy pukul hh:mm WIB di ..." v-model="inputMsg" />
 
                           <DialogFooter>

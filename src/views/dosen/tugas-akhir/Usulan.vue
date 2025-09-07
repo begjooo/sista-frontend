@@ -2,8 +2,8 @@
 import { onMounted, ref } from 'vue';
 import { baseUrl } from '@/baseUrl';
 import { useRouter } from 'vue-router';
-import Header from '@/components/dosen/layout/Header.vue';
-import TugasAkhir from '@/components/dosen/layout/sidebar/TugasAkhir.vue';
+import Header from '@/components/header/Dosen.vue';
+import TugasAkhir from '@/components/sidebar/dosen/TugasAkhir.vue';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
@@ -34,7 +34,7 @@ import {
   TooltipProvider,
   TooltipTrigger
 } from '@/components/ui/tooltip'
-import LihatMhs from '@/components/mhs/Lihat.vue';
+import LihatMhs from '@/components/lihat/Mhs.vue';
 
 const router = useRouter()
 const username = localStorage.getItem('username')
@@ -64,7 +64,7 @@ async function submitUsulan() {
   }
 
   try {
-    const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan`, {
+    const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan-dosen`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newData),
@@ -94,7 +94,7 @@ async function submitUsulan() {
 async function hapusUsulan(index, taId) {
   console.log(`hapusUsulan`)
   try {
-    const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan`, {
+    const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan-dosen`, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ taId, index }),
@@ -137,7 +137,7 @@ async function diskusi(taId, mhsUsername, mhsName, degree) {
   console.log(`diskusi`)
   if (inputMsg.value) {
     try {
-      await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan/diskusi`, {
+      await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan-dosen/diskusi`, {
         method: `POST`,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: taId, dosenUsername: username, mhsUsername, mhsName, degree: degree, message: inputMsg.value })
@@ -153,8 +153,8 @@ async function diskusi(taId, mhsUsername, mhsName, degree) {
 async function tolakUsulan(taId, mhsUsername) {
   console.log(`tolakUsulan`)
   try {
-    const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan/tolak`, {
-      method: 'POST',
+    const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan-dosen/tolak`, {
+      method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ taId, mhsUsername })
     })
@@ -173,7 +173,7 @@ async function tolakUsulan(taId, mhsUsername) {
 async function tolakDiskusi(taId, mhsUsername) {
   console.log(`tolakDiskusi`)
   try {
-    const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan/diskusi`, {
+    const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan-dosen/diskusi`, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ taId, mhsUsername })
@@ -194,7 +194,7 @@ async function tolakDiskusi(taId, mhsUsername) {
 async function terimaBimbingan(taId, mhsUsername, mhsName) {
   console.log(`terimaBimbingan`)
   try {
-    const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan/terima`, {
+    const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan-dosen/terima`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ taId, mhsUsername, mhsName })
@@ -215,7 +215,7 @@ async function terimaBimbingan(taId, mhsUsername, mhsName) {
 onMounted(async () => {
   console.log(`Usulan`)
   try {
-    const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan`)
+    const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan-dosen`)
     currentUsulan.value = await response.json()
   } catch (error) {
     console.log(error.message)
@@ -254,7 +254,91 @@ onMounted(async () => {
               Kuota tersisa: <span class="text-red-500">{{ 6 - currentUsulan.jmlBimbinganUtama }}</span>
             </div>
 
-            <div class="rounded-md">
+            <div class="flex flex-wrap my-2">
+              <Dialog>
+                <DialogTrigger as-child>
+                  <Button variant="">
+                    Buat Usulan
+                  </Button>
+                </DialogTrigger>
+                <DialogContent class="min-w-[300px]">
+                  <DialogHeader>
+                    <DialogTitle>Usulkan Tugas Akhir</DialogTitle>
+                    <DialogDescription>Mahasiswa dapat melihat dan mengajukan diri terhadap Judul TA yang anda usulkan
+                    </DialogDescription>
+                  </DialogHeader>
+
+                  <div v-if="currentUsulan.minat && currentUsulan.minat.length !== 0">
+                    <div class="flex flex-col gap-2 text-sm">
+                      <div class="flex flex-wrap justify-between">
+                        <Label for="minat" class="min-w-[20vh] max-w-[20vh]">Minat</Label>
+                        <Select id="minat" v-model="inputMinat">
+                          <SelectTrigger class="min-w-[200px] w-[300px]">
+                            <SelectValue placeholder="Minat Penelitian" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <div v-for="minat in currentUsulan.minat">
+                              <SelectItem :value="minat">{{ minat }}</SelectItem>
+                            </div>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div class="flex flex-wrap justify-between">
+                        <label for="skema" class=" content-center min-w-[20vh] max-w-[20vh]">Skema</label>
+                        <Select id="skema" v-model="inputSkema">
+                          <SelectTrigger class="min-w-[200px] w-[300px]">
+                            <SelectValue placeholder="Skema Tugas Akhir" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="Penelitian">Penelitian</SelectItem>
+                            <SelectItem value="Pengabdian">Pengabdian</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div class="flex flex-wrap justify-between">
+                        <div class="content-center">Judul</div>
+                        <input class="border rounded-sm min-w-[200px] w-[300px] px-2 py-1" v-model="inputJudul" />
+                      </div>
+                      <div class="flex flex-wrap justify-between">
+                        <div>Deskripsi</div>
+                        <textarea :rows="4"
+                          class="border rounded-sm min-h-[100px] max-h-[200px] min-w-[200px] w-[300px] px-2 py-1"
+                          v-model="inputDeskripsi" />
+                      </div>
+                    </div>
+                  </div>
+                  <div v-else class="text-center text-sm">
+                    <div>
+                      Anda harus menambahkan "Minat Penelitian" anda untuk mengusulkan Judul Tugas Akhir kepada para
+                      mahasiswa
+                    </div>
+                    <br>
+                    <div class="font-semibold font-mono">
+                      Profile > Penelitian > Tambah Minat
+                    </div>
+                    <div>
+                      <Button variant="link" class="font-mono cursor-pointer" @click="goToMinat">
+                        Go to Tambah Minat
+                      </Button>
+                    </div>
+                  </div>
+
+                  <DialogFooter>
+                    <DialogClose as-child>
+                      <Button variant="secondary" class="cursor-pointer w-[100px]" @click="">Cancel</Button>
+                    </DialogClose>
+                    <DialogClose as-child>
+                      <Button class="cursor-pointer w-[100px]"
+                        :disabled="!inputMinat || !inputJudul || !inputDeskripsi || !inputSkema" @click="submitUsulan">
+                        Submit
+                      </Button>
+                    </DialogClose>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            </div>
+
+            <div class="rounded-sm">
               <div v-if="currentUsulan.usulanTa.length === 0">
                 <div class="font-semibold text-center">Anda belum mengusulkan Judul Tugas Akhir untuk
                   mahasiswa<br>Silahkan buat
@@ -264,7 +348,7 @@ onMounted(async () => {
                 <div class="font-semibold mb-2 text-center">Daftar Usulan Tugas Akhir</div>
               </div>
               <div class="flex flex-col gap-2">
-                <div v-for="(usulan, usulanIndex) in currentUsulan.usulanTa" class="rounded-md p-2 bg-blue-100">
+                <div v-for="(usulan, usulanIndex) in currentUsulan.usulanTa" class="rounded-sm p-2 bg-blue-100">
                   <div class="flex flex-wrap">
                     <div class="min-w-[150px]">Bidang Peminatan</div>
                     <div class="font-semibold">{{ usulan.minat }}</div>
@@ -277,9 +361,9 @@ onMounted(async () => {
                     <div class="min-w-[150px]">Judul</div>
                     <div class="font-semibold">{{ usulan.judul }}</div>
                   </div>
-                  <div class="md:flex border-b border-[#334D80] mb-1 pb-1">
+                  <div class="flex flex-wrap border-b border-[#334D80] mb-1 pb-1">
                     <div class="min-w-[150px]">Deskripsi</div>
-                    <div class="text-justify flex-auto">{{ usulan.deskripsi }}</div>
+                    <div class="text-justify flex-1">{{ usulan.deskripsi }}</div>
                   </div>
                   <div class="">
                     <div v-if="usulan.mhs_pengusul.length !== 0" class="border-b border-[#334D80] mb-1 pb-1">
@@ -291,7 +375,7 @@ onMounted(async () => {
                           <div class="content-center pr-4">
                             {{ mhsIndex + 1 }}. {{ mhs.name }}
                           </div>
-                          <LihatMhs :mhsUsername="mhs.username" />
+                          <LihatMhs :username="mhs.username" />
                           <div>
                             <Dialog>
                               <DialogTrigger as-child>
@@ -312,7 +396,7 @@ onMounted(async () => {
                                 </DialogHeader>
 
                                 <textarea type="text"
-                                  class="border rounded-md px-2 py-1 text-sm max-h-[200px] min-h-[50px]"
+                                  class="border rounded-sm px-2 py-1 text-sm max-h-[200px] min-h-[50px]"
                                   placeholder="Hari Senin dd-mm-yyyy pukul hh:mm WIB di ..." v-model="inputMsg" />
 
                                 <DialogFooter>
@@ -369,7 +453,7 @@ onMounted(async () => {
                             <div class="content-center pr-4">
                               {{ mhsIndex + 1 }}. {{ mhs.name }}
                             </div>
-                            <LihatMhs :mhsUsername="mhs.username" />
+                            <LihatMhs :username="mhs.username" />
                             <div>
                               <AlertDialog>
                                 <AlertDialogTrigger>
@@ -447,7 +531,7 @@ onMounted(async () => {
                               <TooltipProvider>
                                 <Tooltip>
                                   <TooltipTrigger class="flex flex-wrap">
-                                    <div class="content-center border-l-4 ml-4 mr-2">
+                                    <div class="content-center ml-4 mr-2">
                                       {{ mhs.msg }}
                                     </div>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24">
@@ -470,8 +554,8 @@ onMounted(async () => {
                   <div class="text-right">
                     <AlertDialog>
                       <AlertDialogTrigger>
-                        <div class="text-red-600 hover:text-red-400 cursor-pointer mt-2">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 24 24">
+                        <div id="icon-delete" class="mt-2">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
                             <path fill="currentColor"
                               d="M7 21q-.825 0-1.412-.587T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.587 1.413T17 21zM17 6H7v13h10zM9 17h2V8H9zm4 0h2V8h-2zM7 6v13z" />
                           </svg>
@@ -496,90 +580,6 @@ onMounted(async () => {
                   </div>
                 </div>
               </div>
-            </div>
-
-            <div class="flex flex-wrap my-2">
-              <Dialog>
-                <DialogTrigger as-child>
-                  <Button variant="">
-                    Buat Usulan
-                  </Button>
-                </DialogTrigger>
-                <DialogContent class="min-w-[300px]">
-                  <DialogHeader>
-                    <DialogTitle>Usulkan Tugas Akhir</DialogTitle>
-                    <DialogDescription>Mahasiswa dapat melihat dan mengajukan diri terhadap Judul TA yang anda usulkan
-                    </DialogDescription>
-                  </DialogHeader>
-
-                  <div v-if="currentUsulan.minat && currentUsulan.minat.length !== 0">
-                    <div class="flex flex-col gap-2 text-sm">
-                      <div class="flex flex-wrap justify-between">
-                        <Label for="minat" class="min-w-[20vh] max-w-[20vh]">Minat</Label>
-                        <Select id="minat" v-model="inputMinat">
-                          <SelectTrigger class="min-w-[200px] w-[300px]">
-                            <SelectValue placeholder="Minat Penelitian" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <div v-for="minat in currentUsulan.minat">
-                              <SelectItem :value="minat">{{ minat }}</SelectItem>
-                            </div>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      <div class="flex flex-wrap justify-between">
-                        <label for="skema" class=" content-center min-w-[20vh] max-w-[20vh]">Skema</label>
-                        <Select id="skema" v-model="inputSkema">
-                          <SelectTrigger class="min-w-[200px] w-[300px]">
-                            <SelectValue placeholder="Skema Tugas Akhir" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="Penelitian">Penelitian</SelectItem>
-                            <SelectItem value="Pengabdian">Pengabdian</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      <div class="flex flex-wrap justify-between">
-                        <div class="content-center">Judul</div>
-                        <input class="border rounded-md min-w-[200px] w-[300px] px-2 py-1" v-model="inputJudul" />
-                      </div>
-                      <div class="flex flex-wrap justify-between">
-                        <div>Deskripsi</div>
-                        <textarea :rows="4"
-                          class="border rounded-md min-h-[100px] max-h-[200px] min-w-[200px] w-[300px] px-2 py-1"
-                          v-model="inputDeskripsi" />
-                      </div>
-                    </div>
-                  </div>
-                  <div v-else class="text-center text-sm">
-                    <div>
-                      Anda harus menambahkan "Minat Penelitian" anda untuk mengusulkan Judul Tugas Akhir kepada para
-                      mahasiswa
-                    </div>
-                    <br>
-                    <div class="font-semibold font-mono">
-                      Profile > Penelitian > Tambah Minat
-                    </div>
-                    <div>
-                      <Button variant="link" class="font-mono cursor-pointer" @click="goToMinat">
-                        Go to Tambah Minat
-                      </Button>
-                    </div>
-                  </div>
-
-                  <DialogFooter>
-                    <DialogClose as-child>
-                      <Button variant="secondary" class="cursor-pointer w-[100px]" @click="">Cancel</Button>
-                    </DialogClose>
-                    <DialogClose as-child>
-                      <Button class="cursor-pointer w-[100px]"
-                        :disabled="!inputMinat || !inputJudul || !inputDeskripsi || !inputSkema" @click="submitUsulan">
-                        Submit
-                      </Button>
-                    </DialogClose>
-                  </DialogFooter>
-                </DialogContent>
-              </Dialog>
             </div>
           </div>
         </div>

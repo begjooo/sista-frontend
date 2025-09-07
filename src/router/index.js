@@ -3,10 +3,13 @@ import { createMemoryHistory, createRouter } from "vue-router"
 import Login from "@/views/Login.vue"
 
 import AdminHome from "@/views/admin/Home.vue"
-import AdminMhs from "@/views/admin/Mhs.vue"
-import AdminDosen from "@/views/admin/dosen/Dosen.vue"
-import AdminCreateDosen from "@/views/admin/dosen/Create.vue"
-import AdminTendik from "@/views/admin/Tendik.vue"
+import AdminMhs from "@/views/admin/civitas/Mhs.vue"
+import AdminDosen from "@/views/admin/civitas/Dosen.vue"
+import AdminTendik from "@/views/admin/civitas/Tendik.vue"
+import AdminTaDaftar from "@/views/admin/tugas-akhir/Daftar.vue"
+import AdminTaUsulan from "@/views/admin/tugas-akhir/Usulan.vue"
+import AdminTaPeraturan from "@/views/admin/tugas-akhir/Peraturan.vue"
+import AdminTaPengumuman from "@/views/admin/tugas-akhir/Pengumuman.vue"
 
 import DosenHome from "@/views/dosen/Home.vue"
 import DosenTaUsulan from "@/views/dosen/tugas-akhir/Usulan.vue"
@@ -23,6 +26,8 @@ import MhsSignup from "@/views/mhs/Signup.vue"
 import MhsHome from "@/views/mhs/Home.vue"
 import MhsTaUsulanPbb from "@/views/mhs/tugas-akhir/UsulanPbb.vue"
 import MhsProfileCv from "@/views/mhs/profile/Cv.vue"
+import MhsProfilePribadi from "@/views/mhs/profile/Pribadi.vue"
+import MhsProfileKeamanan from "@/views/mhs/profile/Keamanan.vue"
 
 const router = createRouter({
   history: createMemoryHistory(),
@@ -30,10 +35,13 @@ const router = createRouter({
     { path: '/', component: Login },
 
     { path: '/admin', component: AdminHome },
-    { path: '/admin/dosen', component: AdminDosen },
-    { path: '/admin/dosen/create', component: AdminCreateDosen },
-    { path: '/admin/mhs', component: AdminMhs },
-    { path: '/admin/tendik', component: AdminTendik },
+    { path: '/admin/tugas-akhir/daftar', component: AdminTaDaftar },
+    { path: '/admin/tugas-akhir/usulan', component: AdminTaUsulan },
+    { path: '/admin/tugas-akhir/peraturan', component: AdminTaPeraturan },
+    { path: '/admin/tugas-akhir/pengumuman', component: AdminTaPengumuman },
+    { path: '/admin/civitas/dosen', component: AdminDosen },
+    { path: '/admin/civitas/mhs', component: AdminMhs },
+    { path: '/admin/civitas/tendik', component: AdminTendik },
 
     { path: '/dosen', component: DosenHome },
     { path: '/dosen/tugas-akhir/usulan', component: DosenTaUsulan },
@@ -50,6 +58,8 @@ const router = createRouter({
     { path: '/mhs', component: MhsHome },
     { path: '/mhs/tugas-akhir/usulan-pbb', component: MhsTaUsulanPbb },
     { path: '/mhs/profile/cv', component: MhsProfileCv },
+    { path: '/mhs/profile/pribadi', component: MhsProfilePribadi },
+    { path: '/mhs/profile/keamanan', component: MhsProfileKeamanan },
   ],
 })
 

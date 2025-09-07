@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { baseUrl } from '@/baseUrl';
-import Header from '@/components/dosen/layout/Header.vue';
+import Header from '@/components/header/Dosen.vue';
 
 const username = localStorage.getItem('username')
 const mhsList = ref([])

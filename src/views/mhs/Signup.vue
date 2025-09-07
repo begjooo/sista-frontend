@@ -129,19 +129,19 @@ async function submit() {
           <div class="grid items-center gap-2">
             <div class="flex gap-4">
               <Label for="name" class="min-w-[20vh] max-w-[20vh]">Nama</Label>
-              <input id="name" placeholder="Nama" class="w-full border rounded-md py-1 px-2 min-w-[20vh]"
+              <input id="name" placeholder="Nama" class="w-full border rounded-sm py-1 px-2 min-w-[20vh]"
                 :class="[(newData.name === '' ? 'bg-red-200' : 'bg-blue-100')]" v-model="newData.name" />
             </div>
             <div class="flex gap-4">
               <Label for="username" class="min-w-[20vh] max-w-[20vh]">NIM</Label>
-              <input id="username" placeholder="NIM" class="w-full border rounded-md py-1 px-2 min-w-[20vh]"
+              <input id="username" placeholder="NIM" class="w-full border rounded-sm py-1 px-2 min-w-[20vh]"
                 :class="[(checkUsername(inputUsername) === false ? 'bg-red-200' : 'bg-blue-100'), (inputUsername.length === usernameLength ? 'bg-blue-100' : 'bg-red-200')]"
                 v-model="inputUsername" />
             </div>
             <div class="flex gap-4">
               <Label for="email" class="min-w-[20vh] max-w-[20vh]">Email</Label>
               <input type="email" id="email" placeholder="xxx@yyy.zzz"
-                class="w-full border rounded-md py-1 px-2 min-w-[20vh]"
+                class="w-full border rounded-sm py-1 px-2 min-w-[20vh]"
                 :class="[(checkEmail(inputEmail) === false ? 'bg-red-200' : 'bg-blue-100')]" v-model="inputEmail" />
             </div>
             <div class="flex gap-4">
@@ -204,13 +204,13 @@ async function submit() {
             <div class="flex gap-4">
               <Label for="password" class="min-w-[20vh] max-w-[20vh]">Password</Label>
               <input type="password" id="password" placeholder="Password"
-                class="w-full border rounded-md py-1 px-2 min-w-[20vh]"
+                class="w-full border rounded-sm py-1 px-2 min-w-[20vh]"
                 :class="[(inputPassword === '' ? 'bg-red-200' : 'bg-blue-100')]" v-model="inputPassword" />
             </div>
             <div class="flex gap-4">
               <Label for="confirmPassword" class="min-w-[20vh] max-w-[20vh]">Confirm Password</Label>
               <input type="password" id="confirmPassword" placeholder="Confirm Password"
-                class="w-full border rounded-md py-1 px-2 min-w-[20vh]"
+                class="w-full border rounded-sm py-1 px-2 min-w-[20vh]"
                 :class="[(inputConfirmPassword === '' ? 'bg-red-200' : 'bg-blue-100'), (inputConfirmPassword !== inputPassword ? 'bg-red-200' : 'bg-blue-100')]"
                 v-model="inputConfirmPassword" />
             </div>

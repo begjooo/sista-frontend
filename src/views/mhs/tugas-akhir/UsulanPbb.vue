@@ -1,10 +1,10 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { baseUrl } from '@/baseUrl';
-import Header from '@/components/mhs/layout/Header.vue';
-import TugasAkhir from '@/components/mhs/layout/sidebar/TugasAkhir.vue';
-import PilihPbbUtama from '@/components/mhs/tugas-akhir/PilihPbbUtama.vue';
-import PilihPbbPendamping from '@/components/mhs/tugas-akhir/PilihPbbPendamping.vue';
+import Header from '@/components/header/Mhs.vue';
+import TugasAkhir from '@/components/sidebar/mhs/TugasAkhir.vue';
+import PilihPbbUtama from '@/components/mhs/PilihPbbUtama.vue';
+import PilihPbbPendamping from '@/components/mhs/PilihPbbPendamping.vue';
 
 const username = localStorage.getItem('username')
 const mhsData = ref()
@@ -35,7 +35,7 @@ onMounted(async () => {
   try {
     const response = await fetch(`${baseUrl}/dosen/list`)
     dosenList.value = await response.json()
-    dosenUtamaList.value = dosenList.value.filter((item) => item.jabatan_fungsional !== 'CPNS')
+    dosenUtamaList.value = dosenList.value.filter((item) => item.jabatan_fungsional !== 'CPNS' && item.jabatan_fungsional !== 'Purnabakti')
   } catch (error) {
     console.log(error)
   }
@@ -65,17 +65,13 @@ onMounted(async () => {
               <div>{{ mhsData.tugas_akhir.dosen3_fullname }}</div>
             </div>
           </div>
-
-          <div class="text-center font-semibold italic p-2">
-            Jangan lupa selalu bimbingan ya
-          </div>
         </div>
 
         <div class="text-center">
           <div v-if="!mhsData.tugas_akhir.dosen2_username" class="mb-2">
             <div v-if="calonPbbPendamping1">
               <div class="text-left px-2 py-2" :class="{
-                'bg-orange-100': calonPbbPendamping1.tahap === 'Pengusulan',
+                'bg-red-100': calonPbbPendamping1.tahap === 'Pengusulan',
                 'bg-blue-100': calonPbbPendamping1.tahap === 'Diskusi'
               }">
                 <div class="flex flex-wrap">
@@ -86,8 +82,8 @@ onMounted(async () => {
                   <div class="w-[300px]">Tahap Pengusulan</div>
                   <div>{{ calonPbbPendamping1.tahap }}</div>
                 </div>
-                <div v-if="calonPbbPendamping1.tahap === 'Diskusi'" class="rounded-md mt-2 px-2 py-1 bg-white">
-                  <div class="italic font-semibold">Pesan dari dosen</div>
+                <div v-if="calonPbbPendamping1.tahap === 'Diskusi'" class="rounded-sm mt-2 px-2 py-1 bg-white">
+                  <div class="font-semibold">Pesan dari dosen</div>
                   <div>{{ calonPbbPendamping1.msg }}</div>
                 </div>
               </div>
@@ -102,7 +98,7 @@ onMounted(async () => {
           <div v-if="mhsData.tugas_akhir.dosen2_username && !mhsData.tugas_akhir.dosen3_username">
             <div v-if="calonPbbPendamping2">
               <div class="text-left px-2 py-2" :class="{
-                'bg-orange-100': calonPbbPendamping2.tahap === 'Pengusulan',
+                'bg-red-100': calonPbbPendamping2.tahap === 'Pengusulan',
                 'bg-blue-100': calonPbbPendamping2.tahap === 'Diskusi'
               }">
                 <div class="flex flex-wrap">
@@ -113,8 +109,8 @@ onMounted(async () => {
                   <div class="w-[300px]">Tahap Pengusulan</div>
                   <div>{{ calonPbbPendamping2.tahap }}</div>
                 </div>
-                <div v-if="calonPbbPendamping2.tahap === 'Diskusi'" class="rounded-md mt-2 px-2 py-1 bg-white">
-                  <div class="italic font-semibold">Pesan dari dosen</div>
+                <div v-if="calonPbbPendamping2.tahap === 'Diskusi'" class="rounded-sm mt-2 px-2 py-1 bg-white">
+                  <div class="font-semibold">Pesan dari dosen</div>
                   <div>{{ calonPbbPendamping2.msg }}</div>
                 </div>
               </div>
@@ -139,7 +135,7 @@ onMounted(async () => {
             <div class="text-center font-semibold text-base my-2">Daftar Usulan Judul</div>
             <div class="mb-2">
               <div v-for="pbb in mhsData.usulan_ta" class="px-2 py-2"
-                :class="{ 'bg-orange-100': pbb.tahap === 'Pengusulan', 'bg-blue-100': pbb.tahap === 'Diskusi' }">
+                :class="{ 'bg-red-100': pbb.tahap === 'Pengusulan', 'bg-blue-100': pbb.tahap === 'Diskusi' }">
                 <div class="flex flex-wrap">
                   <div class="w-[250px]">Usulan Judul</div>
                   <div>{{ pbb.judul }}</div>
@@ -164,7 +160,7 @@ onMounted(async () => {
                   <div class="w-[250px]">Tahap Pengusulan</div>
                   <div>{{ pbb.tahap }}</div>
                 </div>
-                <div v-if="pbb.tahap === 'Diskusi'" class="rounded-md mt-2 px-2 py-1 bg-white">
+                <div v-if="pbb.tahap === 'Diskusi'" class="rounded-sm mt-2 px-2 py-1 bg-white">
                   <div class="italic font-semibold">Pesan dari dosen</div>
                   <div>{{ pbb.msg }}</div>
                 </div>
