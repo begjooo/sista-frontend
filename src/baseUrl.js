@@ -1,2 +1,2 @@
 export const baseUrl = 'http://localhost:3000';
-// export const baseUrl = 'http://server-ip:backend-port';
+// export const baseUrl = 'http://server-ip:3000';

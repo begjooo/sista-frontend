@@ -25,11 +25,15 @@
 }
 
 .body-head {
+  width: 100%;
+  min-width: 1280px;
   padding-top: 10vh;
   padding-bottom: 10vh;
 }
 
 .body-head-side {
+  width: 100%;
+  min-width: 1280px;
   padding-top: 10vh;
   padding-bottom: 10vh;
   padding-left: 300px;
