@@ -37,7 +37,7 @@ onMounted(async () => {
 
   <div class="body-head-side">
     <div v-if="usulanDosen && usulanMhs">
-      <div class="border text-center">
+      <div class="">
         <Button variant="link" class="cursor-pointer" @click="taIndex = 1" :class="{ 'underline': taIndex === 1 }">
           TA dari Dosen
         </Button>
@@ -47,7 +47,7 @@ onMounted(async () => {
       </div>
       <div v-if="taIndex === 1">
         <div>
-          <Table>
+          <table class="w-full text-sm">
             <TableHeader>
               <TableRow>
                 <TableHead class=""></TableHead>
@@ -108,13 +108,13 @@ onMounted(async () => {
                 </TableCell>
               </TableRow>
             </TableBody>
-          </Table>
+          </table>
         </div>
       </div>
 
       <div v-else-if="taIndex === 2">
         <div>
-          <Table>
+          <table class="w-full text-sm">
             <TableHeader>
               <TableRow>
                 <TableHead class=""></TableHead>
@@ -165,7 +165,7 @@ onMounted(async () => {
                 <TableCell class="">{{ usulan.tahap }}</TableCell>
               </TableRow>
             </TableBody>
-          </Table>
+          </table>
         </div>
       </div>
     </div>

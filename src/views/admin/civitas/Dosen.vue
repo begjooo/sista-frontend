@@ -26,6 +26,7 @@ import Header from '@/components/header/Admin.vue';
 import Civitas from '@/components/sidebar/admin/Civitas.vue';
 import LihatDosen from '@/components/lihat/Dosen.vue';
 import EditDosen from '@/components/edit/Dosen.vue';
+import RemoveAccount from '@/components/delete/Account.vue';
 
 const entityList = ref([])
 const router = useRouter()
@@ -118,7 +119,7 @@ onMounted(async () => {
   <div class="body-head-side">
     <div v-if="entityList">
       <div>
-        <Table>
+        <table class="w-full text-sm">
           <TableHeader>
             <TableRow>
               <TableHead class="">Kode</TableHead>
@@ -199,12 +200,14 @@ onMounted(async () => {
               <TableCell class="flex gap-1 justify-end">
                 <LihatDosen :username="entity.username" :w="20" :h="20" />
                 <EditDosen :username="entity.username" :currentData="entity" :w="20" :h="20" />
+                <RemoveAccount :job="'dosen'" :username="entity.username" :w="20" :h="20" />
               </TableCell>
             </TableRow>
           </TableBody>
-        </Table>
+        </table>
       </div>
     </div>
   </div>
+
 
 </template>

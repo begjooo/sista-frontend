@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/table'
 import LihatMhs from '@/components/lihat/Mhs.vue';
 import EditMhs from '@/components/edit/Mhs.vue';
+import RemoveAccount from '@/components/delete/Account.vue';
 
 const entityList = ref([])
 
@@ -34,7 +35,7 @@ onMounted(async () => {
   <div class="body-head-side">
     <div v-if="entityList">
       <div>
-        <Table>
+        <table class="w-full text-sm">
           <TableHeader>
             <TableRow>
               <TableHead class="">NIM</TableHead>
@@ -57,10 +58,11 @@ onMounted(async () => {
               <TableCell class="flex gap-1 justify-end">
                 <LihatMhs :username="entity.username" :w="20" :h="20" />
                 <EditMhs :username="entity.username" :currentData="entity" :w="20" :h="20" />
+                <RemoveAccount :job="'mahasiswa'" :username="entity.username" :w="20" :h="20" />
               </TableCell>
             </TableRow>
           </TableBody>
-        </Table>
+        </table>
       </div>
     </div>
   </div>

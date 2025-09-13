@@ -32,12 +32,12 @@ onMounted(async () => {
 
   <div class="body-head-side">
     <div v-if="taList">
-      <div class="text-center pt-2 font-semibold text-blue-800 text-xl">
+      <div class="pl-2 pt-2 font-semibold text-blue-800 text-xl">
         Daftar Tugas Akhir
       </div>
 
       <div>
-        <Table>
+        <table class="w-full text-sm">
           <TableHeader>
             <TableRow>
               <TableHead class=""></TableHead>
@@ -90,7 +90,7 @@ onMounted(async () => {
               </TableCell>
             </TableRow>
           </TableBody>
-        </Table>
+        </table>
       </div>
     </div>
   </div>

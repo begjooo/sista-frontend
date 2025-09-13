@@ -14,7 +14,7 @@ import {
 import { baseUrl } from '@/baseUrl';
 
 const router = useRouter()
-const usernameLength = 3;
+const usernameLength = 9;
 
 const yearPresent = new Date().getFullYear()
 

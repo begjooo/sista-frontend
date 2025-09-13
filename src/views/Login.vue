@@ -118,7 +118,7 @@ onMounted(async () => {
               <div class="flex flex-col space-y-1.5">
                 <div class="flex flex-wrap justify-between">
                   <Label for="password">Password</Label>
-                  <a class="cursor-pointer text-xs italic hover:underline" variant="">Forget Password</a>
+                  <!-- <a class="cursor-pointer text-xs italic hover:underline" variant="">Forget Password</a> -->
                 </div>
                 <input id="password" type="password" placeholder="password" class="w-full border rounded-sm py-1 px-2"
                   v-model="password" />
@@ -127,7 +127,7 @@ onMounted(async () => {
           </form>
         </CardContent>
 
-        <CardFooter class="flex flex-wrap justify-between">
+        <CardFooter class="flex flex-wrap justify-center gap-2 sm:justify-between">
           <Button class="cursor-pointer w-[100px]" @click="login(username, password)">
             Login
           </Button>
