@@ -13,7 +13,6 @@ import {
 } from '@/components/ui/card'
 import { baseUrl } from '@/baseUrl';
 
-const router = useRouter()
 const usernameLength = 9;
 
 const yearPresent = new Date().getFullYear()
@@ -106,7 +105,7 @@ async function submit() {
       const result = await response.json()
 
       if (result.status === true) {
-        router.push('/')
+        window.location.reload()
       } else {
         registrationStatus.value = result
       }
