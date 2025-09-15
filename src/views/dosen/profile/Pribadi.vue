@@ -11,7 +11,13 @@ const userData = ref();
 
 onMounted(async () => {
   try {
-    const response = await fetch(`${baseUrl}/dosen/${username}/data`)
+    const response = await fetch(`${baseUrl}/dosen/${username}/data`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true',
+      },
+    })
     userData.value = await response.json()
     // console.log(userData.value)
   } catch (error) {

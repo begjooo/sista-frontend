@@ -49,7 +49,10 @@ async function submit() {
     try {
       const response = await fetch(`${baseUrl}/mhs/${username}/profile/password`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': 'true',
+        },
         body: JSON.stringify({ password: newPassword }),
       })
       const result = await response.json()
@@ -65,7 +68,13 @@ async function submit() {
 
 onMounted(async () => {
   try {
-    const response = await fetch(`${baseUrl}/mhs/${username}/data-full`)
+    const response = await fetch(`${baseUrl}/mhs/${username}/data-full`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true',
+      },
+    })
     userData.value = await response.json()
   } catch (error) {
     console.log(error)

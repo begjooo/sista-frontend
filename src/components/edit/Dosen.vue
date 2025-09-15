@@ -59,7 +59,10 @@ async function submit() {
     try {
       const response = await fetch(`${baseUrl}/dosen/${props.username}/profile`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': 'true',
+        },
         body: JSON.stringify(newData.value),
       })
 

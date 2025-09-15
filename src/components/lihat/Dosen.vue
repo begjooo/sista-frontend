@@ -34,7 +34,13 @@ const dataPribadi = ref();
 async function lihat() {
   console.log(`lihat`)
   try {
-    const response = await fetch(`${baseUrl}/dosen/${props.username}/data-full`)
+    const response = await fetch(`${baseUrl}/dosen/${props.username}/data-full`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true',
+      },
+    })
     const data = await response.json()
 
     if (!data) {

@@ -42,7 +42,13 @@ const inputMsg = ref('')
 async function lihatMhs(username) {
   console.log(`lihatMhs`)
   try {
-    const response = await fetch(`${baseUrl}/mhs/${username}/data`)
+    const response = await fetch(`${baseUrl}/mhs/${username}/data`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true',
+      },
+    })
     const data = await response.json()
     console.log(data)
     if (!data) {
@@ -63,7 +69,10 @@ async function diskusiUsulan(taId, mhsUsername, mhsName) {
     try {
       const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan-mhs/diskusi`, {
         method: `POST`,
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': 'true',
+        },
         body: JSON.stringify({ taId, dosenUsername: username, mhsUsername, mhsName, message: inputMsg.value })
       })
 
@@ -83,7 +92,10 @@ async function terimaUsulan(taId, mhsUsername, mhsName) {
   try {
     const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan-mhs/terima`, {
       method: `POST`,
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true',
+      },
       body: JSON.stringify({ taId, mhsUsername, mhsName })
     })
 
@@ -101,7 +113,10 @@ async function tolakUsulan(taId, mhsUsername) {
   try {
     const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan-mhs/tolak`, {
       method: `POST`,
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true',
+      },
       body: JSON.stringify({ id: taId, username: username, mhsUsername })
     })
 
@@ -119,7 +134,13 @@ async function tolakUsulan(taId, mhsUsername) {
 onMounted(async () => {
   console.log(`onMounted UsulanMhs`)
   try {
-    const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan-mhs`)
+    const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan-mhs`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true',
+      },
+    })
     usulanTaList.value = await response.json()
   } catch (error) {
     console.log(error)

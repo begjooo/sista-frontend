@@ -98,7 +98,10 @@ async function submit() {
     try {
       const response = await fetch(`${baseUrl}/register/mhs`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': 'true',
+        },
         body: JSON.stringify(newData.value),
       });
 

@@ -12,14 +12,26 @@ const aturan = ref()
 onMounted(async () => {
   console.log(`onMounted Home`)
   try {
-    const response = await fetch(`${baseUrl}/dosen/${username}/data`)
+    const response = await fetch(`${baseUrl}/dosen/${username}/data`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true',
+      },
+    })
     userData.value = await response.json()
   } catch (error) {
     console.log(error.message)
   }
 
   try {
-    const response = await fetch(`${baseUrl}/ta/aturan`)
+    const response = await fetch(`${baseUrl}/ta/aturan`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true',
+      },
+    })
     aturan.value = await response.json()
   } catch (error) {
     console.log(error)

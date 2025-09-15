@@ -130,7 +130,10 @@ async function submit() {
   try {
     const result = await fetch(`${baseUrl}/mhs/${username}/tugas-akhir/usulan`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true',
+      },
       body: JSON.stringify(permintaanPbb),
     })
 

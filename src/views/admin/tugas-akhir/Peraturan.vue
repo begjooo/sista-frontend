@@ -45,7 +45,10 @@ async function submitChange() {
   try {
     const response = await fetch(`${baseUrl}/ta/aturan`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true',
+      },
       body: JSON.stringify(aturan.value),
     })
 
@@ -59,7 +62,13 @@ async function submitChange() {
 onMounted(async () => {
   console.log(`onMounted Daftar`)
   try {
-    const response = await fetch(`${baseUrl}/ta/aturan`)
+    const response = await fetch(`${baseUrl}/ta/aturan`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true',
+      },
+    })
     aturan.value = await response.json()
     if (aturan.value) {
       jmlPenguji.value = aturan.value.jmlPenguji
@@ -83,7 +92,8 @@ onMounted(async () => {
       <div class="border m-2 py-1 px-2 rounded-sm">
         <Dialog>
           <DialogTrigger as-child>
-            <div class="py-2 cursor-pointer text-orange-600 hover:text-blue-600 hover:font-semibold flex gap-2 underline w-fit">
+            <div
+              class="py-2 cursor-pointer text-orange-600 hover:text-blue-600 hover:font-semibold flex gap-2 underline w-fit">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
                 <path fill="currentColor"
                   d="M5 19h1.425L16.2 9.225L14.775 7.8L5 17.575zm-2 2v-4.25L16.2 3.575q.3-.275.663-.425t.762-.15t.775.15t.65.45L20.425 5q.3.275.438.65T21 6.4q0 .4-.137.763t-.438.662L7.25 21zM19 6.4L17.6 5zm-3.525 2.125l-.7-.725L16.2 9.225z" />

@@ -52,7 +52,10 @@ async function login(user, pass) {
     try {
       const response = await fetch(`${baseUrl}/login`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': 'true',
+        },
         credentials: 'include',
         body: JSON.stringify({ username: user, password: pass }),
       })
@@ -77,10 +80,14 @@ async function login(user, pass) {
 
 onMounted(async () => {
   console.log(`onMounted Login`)
+  console.log(`backend: ${baseUrl}`)
   try {
     const response = await fetch(`${baseUrl}/user`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true',
+      },
       credentials: 'include',
     })
 

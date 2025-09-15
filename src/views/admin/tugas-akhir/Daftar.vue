@@ -18,7 +18,13 @@ const taList = ref()
 onMounted(async () => {
   console.log(`onMounted Daftar`)
   try {
-    const response = await fetch(`${baseUrl}/ta/list`)
+    const response = await fetch(`${baseUrl}/ta/list`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true',
+      },
+    })
     taList.value = await response.json()
   } catch (error) {
     console.log(error.message)

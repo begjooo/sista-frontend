@@ -25,7 +25,10 @@ async function tambah(cv) {
   try {
     const response = await fetch(`${baseUrl}/mhs/${username}/cv`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true',
+      },
       body: JSON.stringify({ cv: inputCv.value }),
     })
 
@@ -47,7 +50,10 @@ async function hapus(cv, index) {
   try {
     const response = await fetch(`${baseUrl}/mhs/${username}/cv`, {
       method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true',
+      },
       body: JSON.stringify({ index }),
     })
 
@@ -66,7 +72,13 @@ async function hapus(cv, index) {
 onMounted(async () => {
   console.log(`onMounted Cv`)
   try {
-    const response = await fetch(`${baseUrl}/mhs/${username}/cv`)
+    const response = await fetch(`${baseUrl}/mhs/${username}/cv`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true',
+      },
+    })
     const result = await response.json()
     if (result) {
       cvList.value = result

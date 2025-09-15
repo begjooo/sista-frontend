@@ -26,7 +26,10 @@ async function tambah(minat) {
   try {
     const response = await fetch(`${baseUrl}/dosen/${username}/penelitian/minat`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true',
+      },
       body: JSON.stringify({ minat: inputMinat.value }),
     })
 
@@ -48,7 +51,10 @@ async function hapus(minat, index) {
   try {
     const response = await fetch(`${baseUrl}/dosen/${username}/penelitian/minat`, {
       method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true',
+      },
       body: JSON.stringify({ index }),
     })
 
@@ -67,7 +73,13 @@ async function hapus(minat, index) {
 onMounted(async () => {
   console.log(`onMounted Minat`)
   try {
-    const response = await fetch(`${baseUrl}/dosen/${username}/penelitian`)
+    const response = await fetch(`${baseUrl}/dosen/${username}/penelitian`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true',
+      },
+    })
     userData.value = await response.json()
     if (userData.value) {
       minatList.value = userData.value.minat

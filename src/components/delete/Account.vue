@@ -20,7 +20,10 @@ async function hapus() {
   try {
     await fetch(`${baseUrl}/admin/${props.job}`, {
       method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true',
+      },
       body: JSON.stringify({ username: props.username }),
     })
   } catch (error) {

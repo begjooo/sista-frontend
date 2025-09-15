@@ -20,7 +20,13 @@ const entityList = ref([])
 
 onMounted(async () => {
   try {
-    const response = await fetch(`${baseUrl}/mhs/list`)
+    const response = await fetch(`${baseUrl}/mhs/list`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true',
+      },
+    })
     entityList.value = await response.json()
   } catch (error) {
     console.log(error)

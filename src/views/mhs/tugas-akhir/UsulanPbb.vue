@@ -17,7 +17,13 @@ const calonPbbPendamping2 = ref()
 onMounted(async () => {
   console.log(`onMounted UsulanPbb`)
   try {
-    const response = await fetch(`${baseUrl}/mhs/${username}/tugas-akhir/usulan`)
+    const response = await fetch(`${baseUrl}/mhs/${username}/tugas-akhir/usulan`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true',
+      },
+    })
     mhsData.value = await response.json()
 
     if (mhsData.value.usulan_ta) {
@@ -33,7 +39,13 @@ onMounted(async () => {
   }
 
   try {
-    const response = await fetch(`${baseUrl}/dosen/list`)
+    const response = await fetch(`${baseUrl}/dosen/list`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true',
+      },
+    })
     dosenList.value = await response.json()
     dosenUtamaList.value = dosenList.value.filter((item) => item.jabatan_fungsional !== 'CPNS' && item.jabatan_fungsional !== 'Purnabakti')
   } catch (error) {

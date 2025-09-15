@@ -14,7 +14,13 @@ const bimbinganPdp2List = ref()
 onMounted(async () => {
   console.log(`Bimbingan`)
   try {
-    const response = await fetch(`${baseUrl}/dosen/${username}/bimbingan`)
+    const response = await fetch(`${baseUrl}/dosen/${username}/bimbingan`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true',
+      },
+    })
     const result = await response.json()
     if (result) {
       bimbinganUtamaList.value = result.utama

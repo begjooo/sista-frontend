@@ -55,7 +55,13 @@ const inputMsg = ref('')
 async function lihatMhs(mhsUsername) {
   console.log(`lihatMhs`)
   try {
-    const response = await fetch(`${baseUrl}/mhs/${mhsUsername}/data`)
+    const response = await fetch(`${baseUrl}/mhs/${mhsUsername}/data`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true',
+      },
+    })
     const data = await response.json()
 
     if (!data) {
@@ -76,7 +82,10 @@ async function diskusi(taId, mhsUsername, mhsName, degree) {
     try {
       await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan-pdp/diskusi`, {
         method: `POST`,
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': 'true',
+        },
         body: JSON.stringify({ id: taId, dosenUsername: username, mhsUsername, message: inputMsg.value })
       })
 
@@ -92,7 +101,10 @@ async function tolak(taId, mhsUsername) {
   try {
     const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan-pdp/tolak`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true',
+      },
       body: JSON.stringify({ taId, mhsUsername })
     })
 
@@ -112,7 +124,10 @@ async function terima(taId, degree, mhsUsername, mhsName) {
   try {
     const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan-pdp/terima`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true',
+      },
       body: JSON.stringify({ taId, degree, mhsUsername, mhsName })
     })
 
@@ -132,7 +147,13 @@ onMounted(async () => {
   console.log(`onMounted() UsulanPbbPdp`)
 
   try {
-    const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan-pdp`)
+    const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan-pdp`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true',
+      },
+    })
     const result = await response.json()
     if (result) {
       usulanPdp1List.value = result.filter((item) => item.degree === 'Pembimbing Pendamping Pertama')
@@ -167,7 +188,7 @@ onMounted(async () => {
           <div class="p-1 cursor-pointer hover:underline hover:bg-gray-200" @click="handleList(2)"
             :class="{ 'font-semibold': selectedIndex === 2 }">
             Pendamping Kedua
-            <span v-if="usulanPdp2List"class="font-semibold">
+            <span v-if="usulanPdp2List" class="font-semibold">
               [{{ usulanPdp2List.length }} Mhs]
             </span>
           </div>

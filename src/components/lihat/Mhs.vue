@@ -35,7 +35,13 @@ const mhsCv = ref();
 async function lihatMhs() {
   console.log(`lihatMhs`)
   try {
-    const response = await fetch(`${baseUrl}/mhs/${props.username}/data`)
+    const response = await fetch(`${baseUrl}/mhs/${props.username}/data`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true',
+      },
+    })
     const data = await response.json()
 
     if (!data) {

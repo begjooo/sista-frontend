@@ -31,7 +31,10 @@ async function logout() {
   try {
     await fetch(`${baseUrl}/logout`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true',
+      },
       credentials: 'include',
     })
 

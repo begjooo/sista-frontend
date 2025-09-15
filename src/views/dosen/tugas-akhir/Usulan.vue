@@ -66,7 +66,10 @@ async function submitUsulan() {
   try {
     const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan-dosen`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true',
+      },
       body: JSON.stringify(newData),
     })
 
@@ -96,7 +99,10 @@ async function hapusUsulan(index, taId) {
   try {
     const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan-dosen`, {
       method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true',
+      },
       body: JSON.stringify({ taId, index }),
     });
 
@@ -118,7 +124,13 @@ const inputMsg = ref('')
 async function lihatMhs(mhsUsername) {
   console.log(`lihatMhs`)
   try {
-    const response = await fetch(`${baseUrl}/mhs/${mhsUsername}/data`)
+    const response = await fetch(`${baseUrl}/mhs/${mhsUsername}/data`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true',
+      },
+    })
     const data = await response.json()
 
     if (!data) {
@@ -139,7 +151,10 @@ async function diskusi(taId, mhsUsername, mhsName, degree) {
     try {
       await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan-dosen/diskusi`, {
         method: `POST`,
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': 'true',
+        },
         body: JSON.stringify({ id: taId, dosenUsername: username, mhsUsername, mhsName, degree: degree, message: inputMsg.value })
       })
 
@@ -155,7 +170,10 @@ async function tolakUsulan(taId, mhsUsername) {
   try {
     const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan-dosen/tolak`, {
       method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true',
+      },
       body: JSON.stringify({ taId, mhsUsername })
     })
 
@@ -175,7 +193,10 @@ async function tolakDiskusi(taId, mhsUsername) {
   try {
     const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan-dosen/diskusi`, {
       method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true',
+      },
       body: JSON.stringify({ taId, mhsUsername })
     })
 
@@ -196,7 +217,10 @@ async function terimaBimbingan(taId, mhsUsername, mhsName) {
   try {
     const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan-dosen/terima`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true',
+      },
       body: JSON.stringify({ taId, mhsUsername, mhsName })
     })
 
@@ -215,7 +239,13 @@ async function terimaBimbingan(taId, mhsUsername, mhsName) {
 onMounted(async () => {
   console.log(`Usulan`)
   try {
-    const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan-dosen`)
+    const response = await fetch(`${baseUrl}/dosen/${username}/tugas-akhir/usulan-dosen`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true',
+      },
+    })
     currentUsulan.value = await response.json()
   } catch (error) {
     console.log(error.message)

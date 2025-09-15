@@ -85,7 +85,10 @@ async function submit() {
       console.log(newData.value)
       const response = await fetch(`${baseUrl}/register/dosen`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': 'true',
+        },
         body: JSON.stringify(newData.value),
       });
 
@@ -104,7 +107,13 @@ async function submit() {
 
 onMounted(async () => {
   try {
-    const response = await fetch(`${baseUrl}/dosen/list-full`)
+    const response = await fetch(`${baseUrl}/dosen/list-full`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true',
+      },
+    })
     entityList.value = await response.json()
   } catch (error) {
     console.log(error)

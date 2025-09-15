@@ -9,7 +9,13 @@ const mhsList = ref([])
 onMounted(async () => {
   console.log(`/dosen onMounted`)
   try {
-    const response = await fetch(`${baseUrl}/dosen/data/${username}`)
+    const response = await fetch(`${baseUrl}/dosen/data/${username}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true',
+      },
+    })
     const dosenData = await response.json()
     mhsList.value = dosenData.permintaanBimbingan
   } catch (error) {

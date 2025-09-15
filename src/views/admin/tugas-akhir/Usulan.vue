@@ -19,7 +19,13 @@ const usulanMhs = ref()
 
 onMounted(async () => {
   try {
-    const response = await fetch(`${baseUrl}/admin/usulan-ta`)
+    const response = await fetch(`${baseUrl}/admin/usulan-ta`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true',
+      },
+    })
     const result = await response.json()
     if (result) {
       usulanDosen.value = result.usulanDosen
