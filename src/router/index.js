@@ -25,6 +25,7 @@ import TendikHome from "@/views/tendik/Home.vue"
 import MhsSignup from "@/views/mhs/Signup.vue"
 import MhsHome from "@/views/mhs/Home.vue"
 import MhsTaUsulanPbb from "@/views/mhs/tugas-akhir/UsulanPbb.vue"
+import MhsTaAdministrasi from "@/views/mhs/tugas-akhir/Administrasi.vue"
 import MhsProfileCv from "@/views/mhs/profile/Cv.vue"
 import MhsProfilePribadi from "@/views/mhs/profile/Pribadi.vue"
 import MhsProfileKeamanan from "@/views/mhs/profile/Keamanan.vue"
@@ -57,6 +58,7 @@ const router = createRouter({
     { path: '/mhs/signup', component: MhsSignup },
     { path: '/mhs', component: MhsHome },
     { path: '/mhs/tugas-akhir/usulan-pbb', component: MhsTaUsulanPbb },
+    { path: '/mhs/tugas-akhir/administrasi', component: MhsTaAdministrasi },
     { path: '/mhs/profile/cv', component: MhsProfileCv },
     { path: '/mhs/profile/pribadi', component: MhsProfilePribadi },
     { path: '/mhs/profile/keamanan', component: MhsProfileKeamanan },

@@ -13,7 +13,7 @@ const menuList = ref([
   },
   {
     name: 'Tugas Akhir',
-    link: '/mhs/tugas-akhir/usulan-pbb',
+    link: '/mhs/tugas-akhir/administrasi',
   },
   {
     name: 'Profile',
