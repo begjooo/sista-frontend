@@ -22,13 +22,22 @@ async function uploadFile() {
   formData.append(`file`, selectedFile.value)
 
   try {
-    const response = await fetch(`${baseUrl}/administrasi`, {
+    const response = await fetch(`${baseUrl}/administrasi/dok`, {
       method: 'POST',
       headers: {
         'ngrok-skip-browser-warning': 'true',
       },
       body: formData,
     });
+
+    // const response = await fetch(`${baseUrl}/administrasi`, {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     'ngrok-skip-browser-warning': 'true',
+    //   },
+    //   body: JSON.stringify({ formData, test: 'HAHA' }),
+    // });
 
     const result = await response.json();
     console.log(result);
