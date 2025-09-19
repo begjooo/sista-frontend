@@ -20,7 +20,6 @@ const selectedFile = ref(null);
 
 function handleFileUpload(event) {
   selectedFile.value = event.target.files[0]
-  console.log(selectedFile.value)
 }
 
 async function uploadFile() {
@@ -29,23 +28,19 @@ async function uploadFile() {
     return
   }
 
-  console.log(`gas!`)
-
   const formData = new FormData()
-  formData.append('file', selectedFile.value)
-  console.log(formData)
-  formData.get('file')
-  console.log(formData.get('file'))
+  formData.append(`file`, selectedFile.value)
 
   try {
-    const response = await fetch(`${baseUrl}/berkas/multer/${username}`, {
+    const response = await fetch(`${baseUrl}/berkas/ta/${username}`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
         'ngrok-skip-browser-warning': 'true',
       },
-      body: JSON.stringify(formData)
+      body: formData,
     });
+
+    const result = await response.json();
   } catch (error) {
     console.log(error.message)
   }
@@ -62,6 +57,7 @@ onMounted(async (req, res) => {
         'ngrok-skip-browser-warning': 'true',
       },
     })
+
     docList.value = await response.json()
   } catch (error) {
     console.log(error.message)
@@ -89,8 +85,8 @@ onMounted(async (req, res) => {
     <div>
       <div>Upload Dokumen</div>
       <div>
-        <input type="file" @change="handleFileUpload" ref="fileInput" class="border p-2 rounded-sm" />
-        <Button @click="uploadFile">Upload</Button>
+        <input type="file" @change="handleFileUpload" class="border p-1 mr-2 rounded-sm cursor-pointer" />
+        <Button @click="uploadFile" class="cursor-pointer">Upload</Button>
       </div>
     </div>
 

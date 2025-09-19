@@ -8,6 +8,7 @@ import AdminDosen from "@/views/admin/civitas/Dosen.vue"
 import AdminTendik from "@/views/admin/civitas/Tendik.vue"
 import AdminTaDaftar from "@/views/admin/tugas-akhir/Daftar.vue"
 import AdminTaUsulan from "@/views/admin/tugas-akhir/Usulan.vue"
+import AdminTaAdministrasi from "@/views/admin/tugas-akhir/Administrasi.vue"
 import AdminTaPeraturan from "@/views/admin/tugas-akhir/Peraturan.vue"
 import AdminTaPengumuman from "@/views/admin/tugas-akhir/Pengumuman.vue"
 
@@ -38,6 +39,7 @@ const router = createRouter({
     { path: '/admin', component: AdminHome },
     { path: '/admin/tugas-akhir/daftar', component: AdminTaDaftar },
     { path: '/admin/tugas-akhir/usulan', component: AdminTaUsulan },
+    { path: '/admin/tugas-akhir/administrasi', component: AdminTaAdministrasi },
     { path: '/admin/tugas-akhir/peraturan', component: AdminTaPeraturan },
     { path: '/admin/tugas-akhir/pengumuman', component: AdminTaPengumuman },
     { path: '/admin/civitas/dosen', component: AdminDosen },
