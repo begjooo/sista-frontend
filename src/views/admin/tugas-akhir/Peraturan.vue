@@ -19,6 +19,8 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import LiniWaktuComponent from '@/components/LiniWaktu.vue';
+import BuatLiniWaktu from '@/components/BuatLiniWaktu.vue';
+import LiniWaktuLihat from '@/components/LiniWaktuLihat.vue';
 
 const aturan = ref();
 
@@ -88,6 +90,12 @@ onMounted(async () => {
   <Sidebar />
 
   <div class="body-head-side text-sm">
+    <div>
+      <BuatLiniWaktu class="m-2" />
+    </div>
+
+    <LiniWaktuLihat />
+    
     <div v-if="aturan">
       <div class="border m-2 py-1 px-2 rounded-sm">
         <Dialog>
