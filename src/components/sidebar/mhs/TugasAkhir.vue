@@ -5,8 +5,8 @@ import { ref } from 'vue';
 const selectedIndex = Number(localStorage.getItem('sidebarIndex'))
 const menuList = ref([
   {
-    name: 'Administrasi',
-    link: '/mhs/tugas-akhir/administrasi',
+    name: 'Berkas',
+    link: '/mhs/tugas-akhir/berkas',
   },
   {
     name: 'Usulan Pembimbing',

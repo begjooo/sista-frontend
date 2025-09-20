@@ -8,7 +8,7 @@ import AdminDosen from "@/views/admin/civitas/Dosen.vue"
 import AdminTendik from "@/views/admin/civitas/Tendik.vue"
 import AdminTaDaftar from "@/views/admin/tugas-akhir/Daftar.vue"
 import AdminTaUsulan from "@/views/admin/tugas-akhir/Usulan.vue"
-import AdminTaAdministrasi from "@/views/admin/tugas-akhir/Administrasi.vue"
+import AdminTaBerkas from "@/views/admin/tugas-akhir/Berkas.vue"
 import AdminTaPeraturan from "@/views/admin/tugas-akhir/Peraturan.vue"
 import AdminTaPengumuman from "@/views/admin/tugas-akhir/Pengumuman.vue"
 
@@ -26,7 +26,7 @@ import TendikHome from "@/views/tendik/Home.vue"
 import MhsSignup from "@/views/mhs/Signup.vue"
 import MhsHome from "@/views/mhs/Home.vue"
 import MhsTaUsulanPbb from "@/views/mhs/tugas-akhir/UsulanPbb.vue"
-import MhsTaAdministrasi from "@/views/mhs/tugas-akhir/Administrasi.vue"
+import MhsTaBerkas from "@/views/mhs/tugas-akhir/Berkas.vue"
 import MhsProfileCv from "@/views/mhs/profile/Cv.vue"
 import MhsProfilePribadi from "@/views/mhs/profile/Pribadi.vue"
 import MhsProfileKeamanan from "@/views/mhs/profile/Keamanan.vue"
@@ -39,7 +39,7 @@ const router = createRouter({
     { path: '/admin', component: AdminHome },
     { path: '/admin/tugas-akhir/daftar', component: AdminTaDaftar },
     { path: '/admin/tugas-akhir/usulan', component: AdminTaUsulan },
-    { path: '/admin/tugas-akhir/administrasi', component: AdminTaAdministrasi },
+    { path: '/admin/tugas-akhir/berkas', component: AdminTaBerkas },
     { path: '/admin/tugas-akhir/peraturan', component: AdminTaPeraturan },
     { path: '/admin/tugas-akhir/pengumuman', component: AdminTaPengumuman },
     { path: '/admin/civitas/dosen', component: AdminDosen },
@@ -60,7 +60,7 @@ const router = createRouter({
     { path: '/mhs/signup', component: MhsSignup },
     { path: '/mhs', component: MhsHome },
     { path: '/mhs/tugas-akhir/usulan-pbb', component: MhsTaUsulanPbb },
-    { path: '/mhs/tugas-akhir/administrasi', component: MhsTaAdministrasi },
+    { path: '/mhs/tugas-akhir/berkas', component: MhsTaBerkas },
     { path: '/mhs/profile/cv', component: MhsProfileCv },
     { path: '/mhs/profile/pribadi', component: MhsProfilePribadi },
     { path: '/mhs/profile/keamanan', component: MhsProfileKeamanan },

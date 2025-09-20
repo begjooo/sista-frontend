@@ -13,8 +13,8 @@ const menuList = ref([
     link: '/admin/tugas-akhir/usulan',
   },
   {
-    name: 'Administrasi',
-    link: '/admin/tugas-akhir/administrasi',
+    name: 'Berkas',
+    link: '/admin/tugas-akhir/berkas',
   },
   {
     name: 'Peraturan',
